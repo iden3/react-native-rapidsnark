@@ -13,6 +13,9 @@ const modules = Object.keys({ ...pak.peerDependencies });
  *
  * @type {import('metro-config').MetroConfig}
  */
+
+const defaultAssetExts = require("metro-config/src/defaults/defaults").assetExts;
+
 const config = {
   watchFolders: [root],
 
@@ -30,6 +33,7 @@ const config = {
       acc[name] = path.join(__dirname, 'node_modules', name);
       return acc;
     }, {}),
+    assetExts: [defaultAssetExts,'zkey','wtns', 'png'],
   },
 
   transformer: {

@@ -14,6 +14,14 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-RapidsnarkExample-RapidsnarkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-RapidsnarkExample-RapidsnarkExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		CCFF55A12A979B9C00FD3D14 /* librapidsnark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFF559B2A9795BD00FD3D14 /* librapidsnark.a */; };
+		CCFF55B22A979CD100FD3D14 /* libfq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFF559A2A9795BD00FD3D14 /* libfq.a */; };
+		CCFF55B32A979CD100FD3D14 /* libfr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFF55982A9795BD00FD3D14 /* libfr.a */; };
+		CCFF55B42A979CD100FD3D14 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFF55992A9795BD00FD3D14 /* libgmp.a */; };
+		CCFF55B72A98200E00FD3D14 /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55B52A98200E00FD3D14 /* circuit_final.zkey */; };
+		CCFF55B82A98200E00FD3D14 /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55B62A98200E00FD3D14 /* witness.wtns */; };
+		CCFF55C02A98EC0700FD3D14 /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55BF2A98EC0700FD3D14 /* witness.wtns */; };
+		CCFF55C42A98EC8E00FD3D14 /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +51,18 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-RapidsnarkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RapidsnarkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RapidsnarkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		CCFF55982A9795BD00FD3D14 /* libfr.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfr.a; path = ../../ios/libfr.a; sourceTree = "<group>"; };
+		CCFF55992A9795BD00FD3D14 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmp.a; path = ../../ios/libgmp.a; sourceTree = "<group>"; };
+		CCFF559A2A9795BD00FD3D14 /* libfq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfq.a; path = ../../ios/libfq.a; sourceTree = "<group>"; };
+		CCFF559B2A9795BD00FD3D14 /* librapidsnark.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = librapidsnark.a; path = ../../ios/librapidsnark.a; sourceTree = "<group>"; };
+		CCFF55B52A98200E00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; name = circuit_final.zkey; path = ../circuit_final.zkey; sourceTree = "<group>"; };
+		CCFF55B62A98200E00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
+		CCFF55B92A9821AB00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
+		CCFF55BA2A9821AB00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; name = circuit_final.zkey; path = ../circuit_final.zkey; sourceTree = "<group>"; };
+		CCFF55BD2A98EBFB00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = witness.wtns; sourceTree = "<group>"; };
+		CCFF55BF2A98EC0700FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../../../../../iden3/circuits/build/authV2/authV2_js/witness.wtns; sourceTree = "<group>"; };
+		CCFF55C12A98EC1800FD3D14 /* verification_key.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
+		CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = circuit_final.zkey; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -60,6 +80,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-RapidsnarkExample.a in Frameworks */,
+				CCFF55B22A979CD100FD3D14 /* libfq.a in Frameworks */,
+				CCFF55B32A979CD100FD3D14 /* libfr.a in Frameworks */,
+				CCFF55B42A979CD100FD3D14 /* libgmp.a in Frameworks */,
+				CCFF55A12A979B9C00FD3D14 /* librapidsnark.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +123,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCFF559A2A9795BD00FD3D14 /* libfq.a */,
+				CCFF55982A9795BD00FD3D14 /* libfr.a */,
+				CCFF55992A9795BD00FD3D14 /* libgmp.a */,
+				CCFF559B2A9795BD00FD3D14 /* librapidsnark.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-RapidsnarkExample.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-RapidsnarkExample-RapidsnarkExampleTests.a */,
@@ -116,6 +144,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */,
+				CCFF55C12A98EC1800FD3D14 /* verification_key.json */,
+				CCFF55BD2A98EBFB00FD3D14 /* witness.wtns */,
+				CCFF55BF2A98EC0700FD3D14 /* witness.wtns */,
+				CCFF55B52A98200E00FD3D14 /* circuit_final.zkey */,
+				CCFF55BA2A9821AB00FD3D14 /* circuit_final.zkey */,
+				CCFF55B62A98200E00FD3D14 /* witness.wtns */,
+				CCFF55B92A9821AB00FD3D14 /* witness.wtns */,
 				13B07FAE1A68108700A75B9A /* RapidsnarkExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RapidsnarkExampleTests */,
@@ -235,6 +271,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCFF55B72A98200E00FD3D14 /* circuit_final.zkey in Resources */,
+				CCFF55B82A98200E00FD3D14 /* witness.wtns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +282,8 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				CCFF55C02A98EC0700FD3D14 /* witness.wtns in Resources */,
+				CCFF55C42A98EC8E00FD3D14 /* circuit_final.zkey in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,10 +484,60 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+					"\"${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Boost-iOSX\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-PeerTalk\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FlipperKit\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAppDelegate\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-debug\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-hermes\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimescheduler\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-utils\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SocketRocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-rapidsnark\"",
+					/usr/lib/swift,
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 					"$(inherited)",
+					"-force_load",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/librapidsnark.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -468,10 +558,53 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"\"${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAppDelegate\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-debug\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-hermes\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimescheduler\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-utils\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SocketRocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-rapidsnark\"",
+					/usr/lib/swift,
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 					"$(inherited)",
+					"-force_load",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/librapidsnark.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -486,6 +619,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2XKH75Z48;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -495,9 +629,10 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
-					"-lc++",
+					"-force_load",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/librapidsnark.a",
 				);
+				"OTHER_LIBTOOLFLAGS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RapidsnarkExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -513,6 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2XKH75Z48;
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -521,8 +657,8 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
-					"-lc++",
+					"-force_load",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/librapidsnark.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RapidsnarkExample;
@@ -564,7 +700,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -589,15 +725,20 @@
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/libfq.a",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/libfr.a",
+					"/Users/dmytrosukhyi/Development/Personal/react-native-rapidsnark/react-native-rapidsnark/ios/**",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -635,7 +776,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -655,12 +796,14 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
