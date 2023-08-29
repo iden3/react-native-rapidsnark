@@ -11,20 +11,19 @@ npm install react-native-rapidsnark
 ## Usage
 
 ```js
-import { multiply } from 'react-native-rapidsnark';
+var rapidsnark = NativeModules.Rapidsnark;
 
 // ...
 
-const result = await multiply(3, 7);
+var res = await rapidsnark.groth16_prover(zkey, wtns);
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
-MIT
+This project is licensed under either of
+
+- [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](LICENSE-APACHE))
+- [MIT license](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](LICENSE-MIT))at your option.
 
 ---
 
