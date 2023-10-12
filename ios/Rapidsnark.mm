@@ -11,10 +11,6 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-  CFTimeInterval startTime = CACurrentMediaTime(); // Capture start time
-
-    RCTLogInfo(@"groth16_prover called");
-
     // TODO: we should accept just the bytes as input, not base64 encoded strings
     // NSData decode base64
     NSData* zkeyBytes = [[NSData alloc]initWithBase64EncodedString:zkeyBytes1 options:0];
@@ -37,26 +33,17 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
 
     groth16_prover(zkey_buffer, zkey_size, wtns_buffer, wtns_size, proof_buffer, &proof_size, public_buffer, &public_size, error_msg, error_msg_maxsize);
 
-    CFTimeInterval endTime = CACurrentMediaTime(); // Capture end time
-    RCTLogInfo(@"Execution time: %f seconds", endTime - startTime); // Log the execution time
-
-    RCTLogInfo(@"groth16_prover 4");
     // Handle the result of groth16_prover
     NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
     NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
-    RCTLogInfo(@"groth16_prover 5");
 
     if(proofResult.length > 0) {
-        RCTLogInfo(@"groth16_prover 6");
-        RCTLogInfo(@"%@", proofResult);
-        RCTLogInfo(@"%@", publicResult);
-        resolve(proofResult);
+        NSDictionary *resultDict = @{@"proof": proofResult, @"public": publicResult};
+        resolve(resultDict);
     } else {
-        RCTLogInfo(@"groth16_prover 7");
         NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
         reject(@"PROVER_ERROR", errorString, nil);
     }
-
 
 }
 

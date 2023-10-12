@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		5E46D8CD2428F78900513E24 /* react-native-rapidsnark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */; };
 		5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */; };
+		CC7826322AAFD13C00124F49 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC78262E2AAFD13C00124F49 /* libgmp.a */; };
+		CC7826332AAFD13C00124F49 /* libfr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC78262F2AAFD13C00124F49 /* libfr.a */; };
+		CC7826342AAFD13C00124F49 /* librapidsnark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7826302AAFD13C00124F49 /* librapidsnark.a */; };
+		CC7826352AAFD13C00124F49 /* libfq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7826312AAFD13C00124F49 /* libfq.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,9 +29,13 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRapidsnark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRapidsnark.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = react-native-rapidsnark.cpp; path = ../cpp/react-native-rapidsnark.cpp; sourceTree = "<group>"; };
-		5E46D8CC2428F78900513E24 /* react-native-rapidsnark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = react-native-rapidsnark.h; path = ../cpp/react-native-rapidsnark.h; sourceTree = "<group>"; };
+		5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "react-native-rapidsnark.cpp"; path = "../cpp/react-native-rapidsnark.cpp"; sourceTree = "<group>"; };
+		5E46D8CC2428F78900513E24 /* react-native-rapidsnark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "react-native-rapidsnark.h"; path = "../cpp/react-native-rapidsnark.h"; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rapidsnark.mm; sourceTree = "<group>"; };
+		CC78262E2AAFD13C00124F49 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
+		CC78262F2AAFD13C00124F49 /* libfr.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfr.a; sourceTree = "<group>"; };
+		CC7826302AAFD13C00124F49 /* librapidsnark.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = librapidsnark.a; sourceTree = "<group>"; };
+		CC7826312AAFD13C00124F49 /* libfq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfq.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC7826322AAFD13C00124F49 /* libgmp.a in Frameworks */,
+				CC7826332AAFD13C00124F49 /* libfr.a in Frameworks */,
+				CC7826342AAFD13C00124F49 /* librapidsnark.a in Frameworks */,
+				CC7826352AAFD13C00124F49 /* libfq.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +68,19 @@
 				5E46D8CC2428F78900513E24 /* react-native-rapidsnark.h */,
 				B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				CC78262D2AAFD13C00124F49 /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		CC78262D2AAFD13C00124F49 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC7826312AAFD13C00124F49 /* libfq.a */,
+				CC78262F2AAFD13C00124F49 /* libfr.a */,
+				CC78262E2AAFD13C00124F49 /* libgmp.a */,
+				CC7826302AAFD13C00124F49 /* librapidsnark.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,7 +252,10 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
@@ -244,7 +271,11 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"${ROOT}",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
