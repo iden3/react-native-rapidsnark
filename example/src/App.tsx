@@ -3,7 +3,7 @@ import { Asset } from 'expo-asset';
 import RNFS from 'react-native-fs';
 
 
-import { StyleSheet, View, Text } from 'react-native';
+import { Platform, StyleSheet, View, Text } from 'react-native';
 import { NativeModules } from 'react-native';
 // import zkey from './circuit_final.zkey';
 // import wtns from './witness.wtns';
@@ -58,9 +58,18 @@ export default function App() {
     // .catch(error => {
     //   console.error(error);
     // });
+    
+    var zkeyF : string;
+    var wtnsF : string;
+    if (Platform.OS === 'android') {
+      zkeyF = await RNFS.readFileAssets('circuit_final.zkey', 'base64');
+      wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
+    } else {
+      zkeyF = await RNFS.readFile(RNFS.MainBundlePath + '/circuit_final.zkey', 'base64');
+      wtnsF = await RNFS.readFile(RNFS.MainBundlePath + '/witness.wtns', 'base64');
+    }
 
-    var zkeyF = await RNFS.readFile(RNFS.MainBundlePath +'/circuit_final.zkey', 'base64');
-    var wtnsF = await RNFS.readFile(RNFS.MainBundlePath +'/witness.wtns', 'base64');
+    
     console.log("zkey f: ", zkeyF.length);
     // var zkeyFdecoded = base64.decode(zkeyF);
     // var wtnsFdecoded = base64.decode(wtnsF);

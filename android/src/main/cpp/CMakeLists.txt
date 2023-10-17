@@ -1,16 +1,44 @@
 cmake_minimum_required(VERSION 3.4.1)
-project(rapidsnark)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_STANDARD 11)
+set (CMAKE_VERBOSE_MAKEFILE ON)
+set (CMAKE_CXX_STANDARD 11)
 
-add_library(lib_rapidsnark SHARED)
+# Define a name for this project. It will be accessible with ${PROJECT_NAME}.
+project(rapidsnark_module)
 
-target_include_directories(lib_rapidsnark INTERFACE ${CMAKE_SOURCE_DIR}/src/libs/${ANDROID_ABI}/include)
+# Create a library with the name defined for the project.
+# Set it as SHARED library (will generate a .so file)
+# Set the source file
+add_library(
+        ${PROJECT_NAME}
+        SHARED
+        rapidsnark_module.cpp)
 
-set_target_properties(lib_rapidsnark
+# Import an already existing .so file
+# Here, we add a dependency to the shared_library prebuilt
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../jniLibs/)
+set(
+        SHARED_LIBRARY_SO
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/librapidsnark.so
+)
+# IMPORTED allows to depends on a library file outside the project.
+add_library(
+        sharedLibrary
+        SHARED
+        IMPORTED
+)
+# IMPORTED_LOCATION specifies the location of the library file on disk
+set_target_properties(
+        sharedLibrary
         PROPERTIES
-        IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/src/libs/${ANDROID_ABI}/lib/libcrypto.a
-        INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/src/libs/${ANDROID_ABI}/include
-        )
+        IMPORTED_LOCATION ${SHARED_LIBRARY_SO}
+)
+# Add the library to this project
+target_link_libraries(
+        ${PROJECT_NAME}
+        sharedLibrary
+)
 
+# Add the log library
+find_library( log-lib log )
+target_link_libraries( ${PROJECT_NAME} ${log-lib} )
