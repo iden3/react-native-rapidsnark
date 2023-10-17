@@ -57,6 +57,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       long endTime = System.currentTimeMillis(); // Capture end time
       long executionTime = endTime - startTime;
+      Log.e("RapidsnarkModule", "Execution time: " + executionTime + "ms");
 
       // Convert byte arrays to strings
       String proofResult = new String(proof_buffer, StandardCharsets.UTF_8);

@@ -23,20 +23,20 @@ set(
 )
 # IMPORTED allows to depends on a library file outside the project.
 add_library(
-        sharedLibrary
+        rapidsnark_lib
         SHARED
         IMPORTED
 )
 # IMPORTED_LOCATION specifies the location of the library file on disk
 set_target_properties(
-        sharedLibrary
+        rapidsnark_lib
         PROPERTIES
         IMPORTED_LOCATION ${SHARED_LIBRARY_SO}
 )
 # Add the library to this project
 target_link_libraries(
         ${PROJECT_NAME}
-        sharedLibrary
+        rapidsnark_lib
 )
 
 # Add the log library
