@@ -43,9 +43,9 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/demonsh/react-native-rapidsnark",
+  "repository": "https://github.com/0xPolygonID/react-native-rapidsnark",
   "author": "Dmytro Sukhyi <dmytro.sukhiy@gmail.com> (https://github.com/demonsh)",
-  "license": "MIT",
+  "license": "MIT & Apache",
   "bugs": {
     "url": "https://github.com/demonsh/react-native-rapidsnark/issues"
   },
