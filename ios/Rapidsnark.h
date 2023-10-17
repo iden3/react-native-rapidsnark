@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-#import "react-native-rapidsnark.h"
-#endif
-
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNRapidsnarkSpec.h"
 
