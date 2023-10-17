@@ -30,22 +30,22 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void groth16_prover(String zkeyBytes1, String wtnsBytes1, Promise promise) {
-    long startTime = System.currentTimeMillis(); // Capture start time
-
-    // Decode base64
-    byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
-    byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
-
-    // Create buffers to get results
-    // TODO: Replace with actual buffer sizes if necessary
-    byte[] proof_buffer = new byte[16384];
-    byte[] public_buffer = new byte[16384];
-    byte[] error_msg = new byte[256];
-
-    Log.e("RapidsnarkModule", "zkeyBytes: " + zkeyBytes.length);
-    Log.e("RapidsnarkModule", "wtnsBytes: " + wtnsBytes.length);
-
     new Thread(() -> {
+      long startTime = System.currentTimeMillis(); // Capture start time
+
+      // Decode base64
+      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
+      byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
+
+      // Create buffers to get results
+      // TODO: Replace with actual buffer sizes if necessary
+      byte[] proof_buffer = new byte[16384];
+      byte[] public_buffer = new byte[16384];
+      byte[] error_msg = new byte[256];
+
+      Log.e("RapidsnarkModule", "zkeyBytes: " + zkeyBytes.length);
+      Log.e("RapidsnarkModule", "wtnsBytes: " + wtnsBytes.length);
+
       // This will require you to write a JNI bridge to your C library.
       new GrothProver().groth16Prover(
         zkeyBytes, zkeyBytes.length,

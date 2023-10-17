@@ -22,18 +22,18 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     void *nativeWtnsBuffer = env->GetByteArrayElements(wtnsBuffer, NULL);
 
     // TODO - figure out right way to cast these
-    char *nativeProofBuffer = (char *) env->GetByteArrayElements(proofBuffer, NULL);
-    char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, NULL);
-    char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, NULL);
+    void *nativeProofBuffer = env->GetByteArrayElements(proofBuffer, NULL);
+    void *nativePublicBuffer = env->GetByteArrayElements(publicBuffer, NULL);
+    void *nativeErrorMsg = env->GetByteArrayElements(errorMsg, NULL);
 
     LOGE("nativeZkeyBuffer %p", nativeZkeyBuffer);
     LOGE("nativeWtnsBuffer %p", nativeWtnsBuffer);
-    LOGE("nativeProofBuffer %s", nativeProofBuffer);
-    LOGE("nativePublicBuffer %s", nativePublicBuffer);
-    LOGE("nativeErrorMsg %s", nativeErrorMsg);
+    LOGE("nativeProofBuffer %s", (char*) nativeProofBuffer);
+    LOGE("nativePublicBuffer %s", (char*) nativePublicBuffer);
+    LOGE("nativeErrorMsg %s", (char*) nativeErrorMsg);
 
-    unsigned long nativeProofSize;
-    unsigned long nativePublicSize;
+    unsigned long nativeProofSize = 16384;
+    unsigned long nativePublicSize = 16384;
 
     LOGE("initialized native buffers, calling groth16_prover");
 
@@ -41,9 +41,9 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     int result = groth16_prover(
             nativeZkeyBuffer, zkeySize,
             nativeWtnsBuffer, wtnsSize,
-            nativeProofBuffer, &nativeProofSize,
-            nativePublicBuffer, &nativePublicSize,
-            nativeErrorMsg, errorMsgMaxSize
+            (char*) nativeProofBuffer, &nativeProofSize,
+            (char*) nativePublicBuffer, &nativePublicSize,
+            (char*) nativeErrorMsg, errorMsgMaxSize
     );
 
     LOGE("groth16_prover returned");
@@ -59,7 +59,7 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     env->ReleaseByteArrayElements(proofBuffer, nativeProofBuffer, 0);
     env->ReleaseByteArrayElements(publicBuffer, nativePublicBuffer, 0);
     env->ReleaseByteArrayElements(errorMsg, nativeErrorMsg, 0);
-*/
+    */
     LOGE("buffers released, returning result");
 
     return result;
