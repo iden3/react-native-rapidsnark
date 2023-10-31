@@ -63,8 +63,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       Log.e("RapidsnarkModule", "Exec time: " + executionTime + "ms");
 
       // Convert byte arrays to strings
-      String proofResult = new String(proof_buffer, StandardCharsets.UTF_8);
-      String publicResult = new String(public_buffer, StandardCharsets.UTF_8);
+      String proofResult = (new String(proof_buffer, StandardCharsets.UTF_8)).trim();
+      String publicResult = (new String(public_buffer, StandardCharsets.UTF_8)).trim();
 
       if (!proofResult.isEmpty()) {
         HashMap<String, String> result = new HashMap<>();
