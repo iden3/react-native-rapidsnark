@@ -6,13 +6,16 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.module.annotations.ReactModule;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 @ReactModule(name = RapidsnarkModule.NAME)
 public class RapidsnarkModule extends ReactContextBaseJavaModule {
@@ -30,22 +33,22 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void groth16_prover(String zkeyBytes1, String wtnsBytes1, Promise promise) {
-    new Thread(() -> {
-      long startTime = System.currentTimeMillis(); // Capture start time
+    long startTime = System.currentTimeMillis(); // Capture start time
 
-      // Decode base64
-      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
-      byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
+    // Decode base64
+    byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
+    byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
-      // Create buffers to get results
-      // TODO: Replace with actual buffer sizes if necessary
-      byte[] proof_buffer = new byte[16384];
-      byte[] public_buffer = new byte[16384];
-      byte[] error_msg = new byte[256];
+    // Create buffers to get results
+    // TODO: Replace with actual buffer sizes if necessary
+    byte[] proof_buffer = new byte[16384];
+    byte[] public_buffer = new byte[16384];
+    byte[] error_msg = new byte[256];
 
-      Log.e("RapidsnarkModule", "zkeyBytes: " + zkeyBytes.length);
-      Log.e("RapidsnarkModule", "wtnsBytes: " + wtnsBytes.length);
+    Log.e("RapidsnarkModule", "zkeyBytes: " + zkeyBytes.length);
+    Log.e("RapidsnarkModule", "wtnsBytes: " + wtnsBytes.length);
 
+    try {
       // This will require you to write a JNI bridge to your C library.
       new GrothProver().groth16Prover(
         zkeyBytes, zkeyBytes.length,
@@ -57,19 +60,31 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       long endTime = System.currentTimeMillis(); // Capture end time
       long executionTime = endTime - startTime;
-      Log.e("RapidsnarkModule", "Execution time: " + executionTime + "ms");
+      Log.e("RapidsnarkModule", "Exec time: " + executionTime + "ms");
 
       // Convert byte arrays to strings
       String proofResult = new String(proof_buffer, StandardCharsets.UTF_8);
       String publicResult = new String(public_buffer, StandardCharsets.UTF_8);
 
       if (!proofResult.isEmpty()) {
-        promise.resolve(proofResult);
+        HashMap<String, String> result = new HashMap<>();
+        result.put("proofResult", proofResult);
+        result.put("publicResult", publicResult);
+
+        WritableMap map = new WritableNativeMap();
+        for (Map.Entry<String, String> entry : result.entrySet()) {
+          map.putString(entry.getKey(), entry.getValue());
+        }
+
+        promise.resolve(map);
       } else {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
         promise.reject("PROVER_ERROR", errorString);
       }
-    }).start();
+    } catch (Exception e) {
+      Log.e("RapidsnarkModule", "Error: " + e.getMessage());
+      promise.reject("PROVER_ERROR", e.getMessage());
+    }
   }
 }
 
