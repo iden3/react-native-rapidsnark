@@ -68,8 +68,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       if (!proofResult.isEmpty()) {
         HashMap<String, String> result = new HashMap<>();
-        result.put("proofResult", proofResult);
-        result.put("publicResult", publicResult);
+        result.put("proof", proofResult);
+        result.put("pub_signals", publicResult);
 
         WritableMap map = new WritableNativeMap();
         for (Map.Entry<String, String> entry : result.entrySet()) {
