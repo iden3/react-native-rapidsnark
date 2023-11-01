@@ -38,7 +38,7 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
 
     if(proofResult.length > 0) {
-        NSDictionary *resultDict = @{@"proof": proofResult, @"public": publicResult};
+        NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);
     } else {
         NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];

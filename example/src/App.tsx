@@ -100,10 +100,10 @@ export default function App() {
 
         const startTime = performance.now();
 
-        const res = await rapidsnark.groth16_prover(zkeyF, wtnsF);
-        console.log('res: ', res);
+        const {proof, pub} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        console.log('res: ', proof, pub);
 
-        setResult(res);
+        setResult(proof);
 
         const diff = performance.now() - startTime;
         setExecTime(diff);
@@ -121,7 +121,7 @@ export default function App() {
       <Text selectable={true}>{result}</Text>
       <Text>Execution time: {execTime}ms</Text>
       <Button
-        onPress={() => Clipboard.setString(result)}
+        onPress={() => Clipboard.setString(proof)}
         title="Copy result to clipboard"
       />
     </View>
