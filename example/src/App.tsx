@@ -1,19 +1,18 @@
 import * as React from 'react';
 import RNFS from 'react-native-fs';
 
-import { Platform, StyleSheet, View, Text, Button } from 'react-native';
+import {Button, NativeModules, Platform, StyleSheet, Text, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { NativeModules } from 'react-native';
 // import zkey from './circuit_final.zkey';
 // import wtns from './witness.wtns';
 // var zkey = require('../circuit_final.zkey');
 // var wtns = require('../witness.wtns');
-import base64 from 'base-64';
 
 let rapidsnark = NativeModules.Rapidsnark;
 
 export default function App() {
-  const [result, setResult] = React.useState('');
+  const [proofResult, setProofResult] = React.useState('');
+  const [publicResult, setPublicResult] = React.useState('');
   const [execTime, setExecTime] = React.useState(0);
 
   //   async function getFileBytes(fp) {
@@ -100,10 +99,12 @@ export default function App() {
 
         const startTime = performance.now();
 
-        const {proof, pub} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
-        console.log('res: ', proof, pub);
+        const {proofResult, publicResult} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        console.log('proofResult: ', proofResult);
+        console.log('publicResult: ', publicResult);
 
-        setResult(proof);
+        setProofResult(proofResult);
+        setPublicResult(publicResult);
 
         const diff = performance.now() - startTime;
         setExecTime(diff);
@@ -118,10 +119,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Result</Text>
-      <Text selectable={true}>{result}</Text>
+      <Text selectable={true}>{proofResult}</Text>
+      <Text>Public result</Text>
+      <Text selectable={true}>{proofResult}</Text>
       <Text>Execution time: {execTime}ms</Text>
       <Button
-        onPress={() => Clipboard.setString(proof)}
+        onPress={() => Clipboard.setString(proofResult)}
         title="Copy result to clipboard"
       />
     </View>
