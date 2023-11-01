@@ -99,12 +99,12 @@ export default function App() {
 
         const startTime = performance.now();
 
-        const {proofResult, publicResult} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
-        console.log('proofResult: ', proofResult);
-        console.log('publicResult: ', publicResult);
+        const {proof, pub_signals} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        console.log('proofResult: ', proof);
+        console.log('publicResult: ', pub_signals);
 
-        setProofResult(proofResult);
-        setPublicResult(publicResult);
+        setProofResult(proof);
+        setPublicResult(pub_signals);
 
         const diff = performance.now() - startTime;
         setExecTime(diff);
