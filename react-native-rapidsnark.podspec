@@ -12,16 +12,18 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "11.0" }
-  s.source       = { :git => "https://github.com/demonsh/react-native-rapidsnark.git", :tag => "#{s.version}" }
+  s.source       = { :path => "/Users/moria/development/projects/react-native-rapidsnark" }
 
-  s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
+  s.source_files = "ios/**/*.{h,m,mm}"
+
+  s.vendored_frameworks = "Frameworks/RapidsnarkFramework.xcframework", "Frameworks/libfr.xcframework", "Frameworks/libfq.xcframework", "Frameworks/libgmp.xcframework"
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
   if respond_to?(:install_modules_dependencies, true)
     install_modules_dependencies(s)
   else
-  s.dependency "React-Core"
+    s.dependency "React-Core"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
@@ -37,5 +39,5 @@ Pod::Spec.new do |s|
     s.dependency "RCTTypeSafety"
     s.dependency "ReactCommon/turbomodule/core"
    end
-  end    
+  end
 end

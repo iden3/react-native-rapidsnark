@@ -1,7 +1,7 @@
-#import "prover.h"
 #import "Rapidsnark.h"
 
 #import <React/RCTLog.h>
+#import "RapidsnarkFramework.h"
 
 @implementation Rapidsnark
 RCT_EXPORT_MODULE()

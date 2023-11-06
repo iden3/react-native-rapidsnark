@@ -3,22 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E46D8CD2428F78900513E24 /* react-native-rapidsnark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */; };
 		5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */; };
-		CC7826322AAFD13C00124F49 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC78262E2AAFD13C00124F49 /* libgmp.a */; };
-		CC7826332AAFD13C00124F49 /* libfr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC78262F2AAFD13C00124F49 /* libfr.a */; };
-		CC7826342AAFD13C00124F49 /* librapidsnark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7826302AAFD13C00124F49 /* librapidsnark.a */; };
-		CC7826352AAFD13C00124F49 /* libfq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC7826312AAFD13C00124F49 /* libfq.a */; };
+		8D2DF3602AF927E700EF1CDD /* libfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */; };
+		8D2DF3612AF927E700EF1CDD /* libfq.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */; };
+		8D2DF3622AF927E700EF1CDD /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */; };
+		8D2DF3632AF927E700EF1CDD /* libgmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */; };
+		8D2DF3672AF9324300EF1CDD /* RapidsnarkFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8D2DF3682AF932A900EF1CDD /* libfq.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */; };
+		8D2DF3692AF932A900EF1CDD /* libfr.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */; };
+		8D2DF36A2AF932A900EF1CDD /* libgmp.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */; };
+		8D2DF36B2AF932A900EF1CDD /* Rapidsnark.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
@@ -29,13 +33,12 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRapidsnark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRapidsnark.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "react-native-rapidsnark.cpp"; path = "../cpp/react-native-rapidsnark.cpp"; sourceTree = "<group>"; };
-		5E46D8CC2428F78900513E24 /* react-native-rapidsnark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "react-native-rapidsnark.h"; path = "../cpp/react-native-rapidsnark.h"; sourceTree = "<group>"; };
+		8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libfr.xcframework; path = Frameworks/libfr.xcframework; sourceTree = "<group>"; };
+		8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libfq.xcframework; path = Frameworks/libfq.xcframework; sourceTree = "<group>"; };
+		8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
+		8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libgmp.xcframework; path = Frameworks/libgmp.xcframework; sourceTree = "<group>"; };
+		8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RapidsnarkFramework.h; path = "Frameworks/Rapidsnark.xcframework/ios-arm64/Headers/RapidsnarkFramework.h"; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rapidsnark.mm; sourceTree = "<group>"; };
-		CC78262E2AAFD13C00124F49 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
-		CC78262F2AAFD13C00124F49 /* libfr.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfr.a; sourceTree = "<group>"; };
-		CC7826302AAFD13C00124F49 /* librapidsnark.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = librapidsnark.a; sourceTree = "<group>"; };
-		CC7826312AAFD13C00124F49 /* libfq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfq.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,10 +46,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC7826322AAFD13C00124F49 /* libgmp.a in Frameworks */,
-				CC7826332AAFD13C00124F49 /* libfr.a in Frameworks */,
-				CC7826342AAFD13C00124F49 /* librapidsnark.a in Frameworks */,
-				CC7826352AAFD13C00124F49 /* libfq.a in Frameworks */,
+				8D2DF3632AF927E700EF1CDD /* libgmp.xcframework in Frameworks */,
+				8D2DF3612AF927E700EF1CDD /* libfq.xcframework in Frameworks */,
+				8D2DF3622AF927E700EF1CDD /* Rapidsnark.xcframework in Frameworks */,
+				8D2DF3602AF927E700EF1CDD /* libfr.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,9 +67,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				5E46D8CB2428F78900513E24 /* react-native-rapidsnark.cpp */,
-				5E46D8CC2428F78900513E24 /* react-native-rapidsnark.h */,
 				B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */,
+				8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				CC78262D2AAFD13C00124F49 /* Frameworks */,
 			);
@@ -75,21 +77,33 @@
 		CC78262D2AAFD13C00124F49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC7826312AAFD13C00124F49 /* libfq.a */,
-				CC78262F2AAFD13C00124F49 /* libfr.a */,
-				CC78262E2AAFD13C00124F49 /* libgmp.a */,
-				CC7826302AAFD13C00124F49 /* librapidsnark.a */,
+				8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */,
+				8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */,
+				8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */,
+				8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		8D2DF3662AF9322400EF1CDD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D2DF3672AF9324300EF1CDD /* RapidsnarkFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		58B511DA1A9E6C8500147676 /* Rapidsnark */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "Rapidsnark" */;
 			buildPhases = (
+				8D2DF3662AF9322400EF1CDD /* Headers */,
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
@@ -140,7 +154,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E46D8CD2428F78900513E24 /* react-native-rapidsnark.cpp in Sources */,
+				8D2DF3682AF932A900EF1CDD /* libfq.xcframework in Sources */,
+				8D2DF3692AF932A900EF1CDD /* libfr.xcframework in Sources */,
+				8D2DF36A2AF932A900EF1CDD /* libgmp.xcframework in Sources */,
+				8D2DF36B2AF932A900EF1CDD /* Rapidsnark.xcframework in Sources */,
 				5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +194,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=*]" = arm64;
+				FRAMEWORK_SEARCH_PATHS = "$(SRC_ROOT)/Frameworks/";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -228,6 +246,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=*]" = arm64;
+				FRAMEWORK_SEARCH_PATHS = "$(SRC_ROOT)/Frameworks/";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -257,6 +276,8 @@
 					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
 			};
@@ -277,6 +298,8 @@
 					"${ROOT}",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
 			};
