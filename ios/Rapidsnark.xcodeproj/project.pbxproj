@@ -8,15 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */; };
-		8D2DF3602AF927E700EF1CDD /* libfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */; };
-		8D2DF3612AF927E700EF1CDD /* libfq.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */; };
-		8D2DF3622AF927E700EF1CDD /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */; };
-		8D2DF3632AF927E700EF1CDD /* libgmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */; };
-		8D2DF3672AF9324300EF1CDD /* RapidsnarkFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8D2DF3682AF932A900EF1CDD /* libfq.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */; };
-		8D2DF3692AF932A900EF1CDD /* libfr.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */; };
-		8D2DF36A2AF932A900EF1CDD /* libgmp.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */; };
-		8D2DF36B2AF932A900EF1CDD /* Rapidsnark.xcframework in Sources */ = {isa = PBXBuildFile; fileRef = 8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */; };
+		8D65809C2B0ED61E00468A74 /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,11 +25,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRapidsnark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRapidsnark.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libfr.xcframework; path = Frameworks/libfr.xcframework; sourceTree = "<group>"; };
-		8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libfq.xcframework; path = Frameworks/libfq.xcframework; sourceTree = "<group>"; };
-		8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
-		8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libgmp.xcframework; path = Frameworks/libgmp.xcframework; sourceTree = "<group>"; };
-		8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RapidsnarkFramework.h; path = "Frameworks/Rapidsnark.xcframework/ios-arm64/Headers/RapidsnarkFramework.h"; sourceTree = "<group>"; };
+		8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rapidsnark.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -46,10 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D2DF3632AF927E700EF1CDD /* libgmp.xcframework in Frameworks */,
-				8D2DF3612AF927E700EF1CDD /* libfq.xcframework in Frameworks */,
-				8D2DF3622AF927E700EF1CDD /* Rapidsnark.xcframework in Frameworks */,
-				8D2DF3602AF927E700EF1CDD /* libfr.xcframework in Frameworks */,
+				8D65809C2B0ED61E00468A74 /* Rapidsnark.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +53,6 @@
 			isa = PBXGroup;
 			children = (
 				B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */,
-				8D2DF3652AF931BC00EF1CDD /* RapidsnarkFramework.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				CC78262D2AAFD13C00124F49 /* Frameworks */,
 			);
@@ -77,10 +61,7 @@
 		CC78262D2AAFD13C00124F49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8D2DF35D2AF927E700EF1CDD /* libfq.xcframework */,
-				8D2DF35C2AF927E700EF1CDD /* libfr.xcframework */,
-				8D2DF35F2AF927E700EF1CDD /* libgmp.xcframework */,
-				8D2DF35E2AF927E700EF1CDD /* Rapidsnark.xcframework */,
+				8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -92,7 +73,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D2DF3672AF9324300EF1CDD /* RapidsnarkFramework.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,10 +134,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D2DF3682AF932A900EF1CDD /* libfq.xcframework in Sources */,
-				8D2DF3692AF932A900EF1CDD /* libfr.xcframework in Sources */,
-				8D2DF36A2AF932A900EF1CDD /* libgmp.xcframework in Sources */,
-				8D2DF36B2AF932A900EF1CDD /* Rapidsnark.xcframework in Sources */,
 				5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,7 +169,6 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(SRC_ROOT)/Frameworks/";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -214,6 +189,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -245,7 +221,6 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(SRC_ROOT)/Frameworks/";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -257,8 +232,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
@@ -297,6 +274,7 @@
 					"$(PROJECT_DIR)",
 					"${ROOT}",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				"OTHER_LDFLAGS[sdk=iphoneos*]" = "-ObjC";
 				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC";
