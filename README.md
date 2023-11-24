@@ -1,6 +1,6 @@
 # react-native-rapidsnark
 
-React-native wrapper for rapidsnark
+React-native wrapper for rapidsnark prover library.
 
 ## Installation
 
@@ -11,11 +11,11 @@ npm install react-native-rapidsnark
 ## Usage
 
 ```js
-var rapidsnark = NativeModules.Rapidsnark;
+const rapidsnark = NativeModules.Rapidsnark;
 
 // ...
 
-var res = await rapidsnark.groth16_prover(zkey, wtns);
+const res = await rapidsnark.groth16_prover(zkey, wtns);
 ```
 
 ## License

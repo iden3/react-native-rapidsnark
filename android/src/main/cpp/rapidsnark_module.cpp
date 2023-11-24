@@ -25,16 +25,8 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
     char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, nullptr);
 
-    LOGE("nativeZkeyBuffer %p", nativeZkeyBuffer);
-    LOGE("nativeWtnsBuffer %p", nativeWtnsBuffer);
-    LOGE("nativeProofBuffer %s", nativeProofBuffer);
-    LOGE("nativePublicBuffer %s", nativePublicBuffer);
-    LOGE("nativeErrorMsg %s", nativeErrorMsg);
-
     unsigned long nativeProofSize = 16384;
     unsigned long nativePublicSize = 16384;
-
-    LOGE("initialized native buffers, calling groth16_prover");
 
     // Call the groth16_prover function
     int result = groth16_prover(
@@ -44,8 +36,6 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
             nativePublicBuffer, &nativePublicSize,
             nativeErrorMsg, errorMsgMaxSize
     );
-
-    LOGE("groth16_prover returned");
 
     // Convert the results back to JNI types
     env->SetLongArrayRegion(proofSize, 0, 1, (jlong *) &nativeProofSize);
@@ -57,8 +47,6 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     env->ReleaseByteArrayElements(proofBuffer, (jbyte *) nativeProofBuffer, 0);
     env->ReleaseByteArrayElements(publicBuffer, (jbyte *) nativePublicBuffer, 0);
     env->ReleaseByteArrayElements(errorMsg, (jbyte *) nativeErrorMsg, 0);
-
-    LOGE("buffers released, returning result");
 
     return result;
 }

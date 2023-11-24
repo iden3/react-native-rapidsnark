@@ -45,9 +45,6 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     byte[] public_buffer = new byte[16384];
     byte[] error_msg = new byte[256];
 
-    Log.e("RapidsnarkModule", "zkeyBytes: " + zkeyBytes.length);
-    Log.e("RapidsnarkModule", "wtnsBytes: " + wtnsBytes.length);
-
     try {
       // This will require you to write a JNI bridge to your C library.
       new GrothProver().groth16Prover(
@@ -60,7 +57,6 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       long endTime = System.currentTimeMillis(); // Capture end time
       long executionTime = endTime - startTime;
-      Log.e("RapidsnarkModule", "Exec time: " + executionTime + "ms");
 
       // Convert byte arrays to strings
       String proofResult = (new String(proof_buffer, StandardCharsets.UTF_8)).trim();
@@ -82,7 +78,6 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
         promise.reject("PROVER_ERROR", errorString);
       }
     } catch (Exception e) {
-      Log.e("RapidsnarkModule", "Error: " + e.getMessage());
       promise.reject("PROVER_ERROR", e.getMessage());
     }
   }
