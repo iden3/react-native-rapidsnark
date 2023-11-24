@@ -35,8 +35,9 @@ const rapidsnark = NativeModules.Rapidsnark;
 
 // ...
 
-const res = await rapidsnark.groth16_prover(zkey, wtns);
+const {proof, pub_signals} = await rapidsnark.groth16_prover(zkey, wtns);
 ```
+`proof` and `pub_signals` are JSON encoded strings.
 
 ## License
 

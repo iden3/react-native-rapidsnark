@@ -17,6 +17,6 @@ const Rapidsnark = NativeModules.Rapidsnark
     }
   );
 
-export function groth16_prover(zkey: string, witness: string): Promise<number> {
+export function groth16_prover(zkey: string, witness: string): Promise<{ proof: string, pub_signals: string }> {
   return Rapidsnark.groth16_prover(zkey, witness);
 }
