@@ -2,6 +2,8 @@ import React from 'react';
 import RNFS from "react-native-fs";
 import {Button, NativeModules, Platform, StyleSheet, Text, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native';
 
 const rapidsnark = NativeModules.Rapidsnark;
 
@@ -58,29 +60,81 @@ export default function App() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result</Text>
-      <Text selectable={true}>{proofResult}</Text>
-      <Text>Public result</Text>
-      <Text selectable={true}>{publicResult}</Text>
-      <Text>Execution time: {execTime}ms</Text>
-      <Button
-        onPress={() => Clipboard.setString(proofResult)}
-        title="Copy result to clipboard"
-      />
-    </View>
-  );
+      <View style={styles.container}>
+       <ScrollView style={styles.scrollView}>
+        <Text style={styles.title}>Proof:</Text>
+        <View style={styles.resultBox}>
+          <Text style={styles.resultText} selectable={true}>
+            {proofResult}
+          </Text>
+        </View>
+        <Text style={styles.title}>Public inputs:</Text>
+        <View style={styles.resultBox}>
+          <Text style={styles.resultText} selectable={true}>
+            {publicResult}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => Clipboard.setString(proofResult+publicResult)}
+        >
+          <Text style={styles.buttonText}>Copy result to clipboard</Text>
+        </TouchableOpacity>
+
+        <Text>Execution time: {execTime}ms</Text>
+        </ScrollView>
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    marginBottom: 15,
+    marginTop: 10,
   },
-  box: {
-    width: 60,
-    height: 60,
+  scrollView: {
+    flex: 1,
+    marginHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginVertical: 20,
   },
+  resultBox: {
+    alignSelf: 'stretch',
+    padding: 20,
+    backgroundColor: '#f7f7f7',
+    borderRadius: 10,
+    marginVertical: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  resultText: {
+    fontFamily: 'monospace',
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#1a73e8',
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '500',
+  },
 });
+
