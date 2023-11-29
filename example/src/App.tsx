@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 20,
+    color: '#000',
+
   },
   resultBox: {
     alignSelf: 'stretch',
@@ -113,14 +115,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 10,
     elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   resultText: {
     fontFamily: 'monospace',
     fontSize: 16,
+    color: '#000',
   },
   button: {
     backgroundColor: '#1a73e8',
