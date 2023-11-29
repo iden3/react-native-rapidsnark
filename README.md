@@ -1,5 +1,3 @@
-!!! Important project moved to https://github.com/iden3/react-native-rapidsnark
-
 # react-native-rapidsnark
 
 ---
