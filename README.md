@@ -2,17 +2,31 @@
 
 ---
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/react-native-rapidsnark.svg)](https://badge.fury.io/js/react-native-rapidsnark)
+This library is React Native wrapper for the [Rapidsnark](https://github.com/iden3/rapidsnark). It enables the generation of proofs for specified circuits and witnesses within a React Native environment.
 
-React Native wrapper for rapidsnark prover library.
-Currently only supports groth16 prover.
+## Platform Support
+
+**iOS**: Compatible with any iOS device with 64 bit architecture.
+> Version for emulator built without assembly optimizations, resulting in slower performance.
+
+**Android**: Compatible with arm64-v8a, armeabi-v7a, x86_64 architectures.
 
 ## Installation
 
 ```sh
 npm install react-native-rapidsnark
 ```
+
+## Usage
+
+```js
+const rapidsnark = NativeModules.Rapidsnark;
+
+// ...
+
+const {proof, pub_signals} = await rapidsnark.groth16_prover(zkey, wtns);
+```
+`proof` and `pub_signals` are JSON encoded strings.
 
 #### iOS linking troubleshooting
 
@@ -28,23 +42,12 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 4. Expand `Link Binary With Libraries`
 5. Add `RapidSnark.xcframework` from `Workspace/Pods` folder.
 
-## Usage
-
-```js
-const rapidsnark = NativeModules.Rapidsnark;
-
-// ...
-
-const {proof, pub_signals} = await rapidsnark.groth16_prover(zkey, wtns);
-```
-`proof` and `pub_signals` are JSON encoded strings.
+## TODO:
+[-]: Add verification.
 
 ## License
 
-This project is licensed under either of
-
-- [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](LICENSE-APACHE))
-- [MIT license](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](LICENSE-MIT))at your option.
+react-native-rapidsnark is part of the iden3 project 0KIMS association. Please check the [COPYING](./COPYING) file for more details.
 
 ---
 
