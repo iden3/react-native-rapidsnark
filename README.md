@@ -42,6 +42,10 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 4. Expand `Link Binary With Libraries`
 5. Add `RapidSnark.xcframework` from `Workspace/Pods` folder.
 
+## Example App
+
+Check out the [example app](./example) for a working example.
+
 ## TODO:
 [-]: Add verification.
 
