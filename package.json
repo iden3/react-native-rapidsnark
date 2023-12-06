@@ -1,5 +1,5 @@
 {
-  "name": "react-native-rapidsnark",
+  "name": "@iden3/react-native-rapidsnark",
   "version": "0.1.0",
   "description": "React-native wrapper for rapidsnark",
   "main": "lib/commonjs/index",
@@ -41,15 +41,17 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "rapidsnark",
+    "groth16",
+    "circom"
   ],
   "repository": "https://github.com/0xPolygonID/react-native-rapidsnark",
-  "author": "Dmytro Sukhyi <dmytro.sukhiy@gmail.com> (https://github.com/demonsh)",
-  "license": "MIT & Apache",
+  "author": "demonsh <dmytro.sukhiy@gmail.com>",
+  "license": "AGPL",
   "bugs": {
-    "url": "https://github.com/demonsh/react-native-rapidsnark/issues"
+    "url": "https://github.com/0xPolygonID/react-native-rapidsnark/issues"
   },
-  "homepage": "https://github.com/demonsh/react-native-rapidsnark#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
