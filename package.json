@@ -46,12 +46,12 @@
     "groth16",
     "circom"
   ],
-  "repository": "https://github.com/0xPolygonID/react-native-rapidsnark",
-  "homepage": "https://github.com/0xPolygonID/react-native-rapidsnark",
+  "repository": "https://github.com/iden3/react-native-rapidsnark",
+  "homepage": "https://github.com/iden3/react-native-rapidsnark",
   "author": "demonsh <dmytro.sukhiy@gmail.com>",
-  "license": "AGPL",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/0xPolygonID/react-native-rapidsnark/issues"
+    "url": "https://github.com/iden3/react-native-rapidsnark/issues"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
