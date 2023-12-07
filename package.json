@@ -47,6 +47,7 @@
     "circom"
   ],
   "repository": "https://github.com/0xPolygonID/react-native-rapidsnark",
+  "homepage": "https://github.com/0xPolygonID/react-native-rapidsnark",
   "author": "demonsh <dmytro.sukhiy@gmail.com>",
   "license": "AGPL",
   "bugs": {
