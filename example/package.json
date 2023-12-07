@@ -15,8 +15,7 @@
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-fs": "^2.20.0",
-    "@react-native-clipboard/clipboard": "^1.12.1",
-    "react-native-rapidsnark": "file:../../react-native-rapidsnark"
+    "@react-native-clipboard/clipboard": "^1.12.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
