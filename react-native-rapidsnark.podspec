@@ -12,9 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "11.0" }
-#   s.source       = { :git => pkg["repository"], :tag => "#{s.version}" }
-#   s.source       = { :git => pkg["repository"] }
-  s.source       = { :path => "/Users/moria/development/projects/react-native-rapidsnark" }
+  s.source       = { :git => package["repository"], :tag => "#{s.version}" }
 
   s.static_framework = true
   s.source_files = "ios/**/*.{h,m,mm}"
