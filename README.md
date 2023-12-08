@@ -14,7 +14,7 @@ This library is React Native wrapper for the [Rapidsnark](https://github.com/ide
 ## Installation
 
 ```sh
-npm install react-native-rapidsnark
+npm i @iden3/react-native-rapidsnark
 ```
 
 ## Usage
