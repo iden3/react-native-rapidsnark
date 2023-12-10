@@ -48,6 +48,7 @@ Check out the [example app](./example) for a working example.
 
 ## TODO:
 [-]: Add verification.
+[-]: Dynamic buffers size. Currently set to 16384 and error 256
 
 ## License
 
