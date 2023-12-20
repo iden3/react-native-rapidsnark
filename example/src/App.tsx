@@ -7,6 +7,8 @@ import { ScrollView } from 'react-native';
 
 const rapidsnark = NativeModules.Rapidsnark;
 
+const verificationKey = require('./verification_key.json');
+
 export default function App() {
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
@@ -33,6 +35,7 @@ export default function App() {
         }
 
         console.log('zkey f: ', zkeyF.length);
+        console.log('wtns f: ', wtnsF.length);
 
         const startTime = performance.now();
 
@@ -52,6 +55,9 @@ export default function App() {
         const diff = performance.now() - startTime;
         setExecTime(diff);
         console.log('exec time ' + diff + 'ms');
+
+        await rapidsnark.groth16_verify(pub_signals, proof, JSON.stringify(verificationKey));
+
       } catch (error) {
         console.error('Error reading file', error);
       }
