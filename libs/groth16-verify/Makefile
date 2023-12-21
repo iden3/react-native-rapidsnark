@@ -104,3 +104,20 @@ clean:
 .PHONY: test
 test:
 	cargo test
+
+.PHONY: copy_update_libs
+copy_update_libs: update_ios_libs update_android_libs
+
+.PHONY: update_ios_libs
+update_ios_libs:
+	@echo "Updating iOS libs"
+	cp target/aarch64-apple-ios/release/libgroth16_verify.a ../../ios_xcframework/libs_ios/libgroth16_verify.a
+	cp target/aarch64-apple-ios-sim/release/libgroth16_verify.a ../../ios_xcframework/libs_sim/libgroth16_verify.a
+	@echo "Updated iOS libs"
+
+.PHONY: update_android_libs
+update_android_libs:
+	@echo "Updating Android libs"
+	cp target/aarch64-linux-android/release/libgroth16_verify.so ../../android/src/jniLibs/arm64-v8a/libgroth16_verify.so
+	cp target/x86_64-linux-android/release/libgroth16_verify.so ../../android/src/jniLibs/x86_64/libgroth16_verify.so
+	@echo "Updated Android libs"
