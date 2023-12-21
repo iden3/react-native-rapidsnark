@@ -23,11 +23,11 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     const void *wtns_buffer = [wtnsBytes bytes];
     unsigned long wtns_size = [wtnsBytes length];
 
-    char proof_buffer[16384];
-    unsigned long proof_size = 16384;
+    char proof_buffer[163840];
+    unsigned long proof_size = 163840;
 
-    char public_buffer[16384];
-    unsigned long public_size = 16384;
+    char public_buffer[163840];
+    unsigned long public_size = 163840;
 
     char error_msg[256];
     unsigned long error_msg_maxsize = 256;

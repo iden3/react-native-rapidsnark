@@ -7,8 +7,6 @@ import { ScrollView } from 'react-native';
 
 const rapidsnark = NativeModules.Rapidsnark;
 
-const verificationKey = require('./verification_key.json');
-
 export default function App() {
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
@@ -20,9 +18,11 @@ export default function App() {
       try {
         let zkeyF: string;
         let wtnsF: string;
+        let verificationKey: string;
         if (Platform.OS === 'android') {
           zkeyF = await RNFS.readFileAssets('circuit_final.zkey', 'base64');
           wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
+          verificationKey = await RNFS.readFileAssets('verification_key.json', 'utf8');
         } else {
           zkeyF = await RNFS.readFile(
             RNFS.MainBundlePath + '/circuit_final.zkey',
@@ -31,6 +31,10 @@ export default function App() {
           wtnsF = await RNFS.readFile(
             RNFS.MainBundlePath + '/witness.wtns',
             'base64'
+          );
+          verificationKey = await RNFS.readFile(
+            RNFS.MainBundlePath + '/verification_key.json',
+            'utf8'
           );
         }
 
@@ -56,7 +60,13 @@ export default function App() {
         setExecTime(diff);
         console.log('exec time ' + diff + 'ms');
 
-        await rapidsnark.groth16_verify(pub_signals, proof, JSON.stringify(verificationKey));
+        console.log(verificationKey);
+
+        const result = await rapidsnark.groth16_verify(pub_signals, proof, verificationKey);
+
+        console.log('verification result:' + result);
+        const diffVerification = performance.now() - startTime - diff;
+        console.log('verification exec time:' + diffVerification);
 
       } catch (error) {
         console.error('Error reading file', error);

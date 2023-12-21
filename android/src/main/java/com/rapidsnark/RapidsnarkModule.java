@@ -81,6 +81,16 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       promise.reject("PROVER_ERROR", e.getMessage());
     }
   }
+
+  @ReactMethod
+  public void groth16_verifier(String inputs, String proof, String verificationKey, Promise promise) {
+    try {
+      boolean result = new GrothProver().groth16Verifier(inputs, proof, verificationKey);
+      promise.resolve(result);
+    } catch (Exception e) {
+      promise.reject("VERIFIER_ERROR", e.getMessage());
+    }
+  }
 }
 
 class GrothProver {
@@ -94,4 +104,6 @@ class GrothProver {
                                   byte[] proofBuffer, long[] proofSize,
                                   byte[] publicBuffer, long[] publicSize,
                                   byte[] errorMsg, long errorMsgMaxSize);
+
+  public native boolean groth16Verifier(String inputs, String proof, String verificationKey);
 }
