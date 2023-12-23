@@ -25,8 +25,8 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
     char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, nullptr);
 
-    unsigned long nativeProofSize = 16384;
-    unsigned long nativePublicSize = 16384;
+    unsigned long nativeProofSize = 65536;
+    unsigned long nativePublicSize = 65536;
 
     // Call the groth16_prover function
     int result = groth16_prover(

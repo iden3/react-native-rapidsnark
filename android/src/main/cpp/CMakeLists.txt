@@ -12,7 +12,9 @@ project(rapidsnark_module)
 add_library(
         ${PROJECT_NAME}
         SHARED
-        rapidsnark_module.cpp)
+        rapidsnark_module.cpp
+)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wno-unused-value)
 
 # Import an already existing .so file
 # Here, we add a dependency to the shared_library prebuilt
@@ -46,6 +48,7 @@ set_target_properties(
         rapidsnark_verifier_lib
         PROPERTIES
         IMPORTED_LOCATION ${SHARED_VERIFIER_LIBRARY_SO}
+        IMPORTED_NO_SONAME TRUE
 )
 # Add the library to this project
 target_link_libraries(

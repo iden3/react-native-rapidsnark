@@ -83,7 +83,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16_verifier(String inputs, String proof, String verificationKey, Promise promise) {
+  public void groth16_verify(String inputs, String proof, String verificationKey, Promise promise) {
     try {
       boolean result = new GrothProver().groth16Verifier(inputs, proof, verificationKey);
       promise.resolve(result);

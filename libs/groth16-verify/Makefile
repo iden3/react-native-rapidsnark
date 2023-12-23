@@ -6,8 +6,6 @@ OS_NAME=$(shell uname | tr '[:upper:]' '[:lower:]')
 PATH := $(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin:$(PATH)
 
 ANDROID_AARCH64_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/aarch64-linux-android29-clang
-ANDROID_ARMV7_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/armv7a-linux-androideabi29-clang
-ANDROID_I686_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/i686-linux-android29-clang
 ANDROID_X86_64_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/x86_64-linux-android29-clang
 
 SHELL := /bin/bash
@@ -27,10 +25,12 @@ help: makefile
 ## init: Install missing dependencies.
 .PHONY: init
 init:
-	rustup target add x86_64-apple-ios
+	# iOS
+	rustup target add aarch64-apple-ios
 	rustup target add aarch64-apple-ios-sim
-	#rustup target add armv7-apple-ios armv7s-apple-ios i386-apple-ios ## deprecated
-	rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+	# Android
+	rustup target add aarch64-linux-android
+	rustup target add x86_64-linux-android
 	@if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
 	cargo install cbindgen
 
@@ -52,23 +52,13 @@ target/universal/release/libgroth16Verify.a: $(SOURCES) ndk-home
 		else echo "Skipping iOS compilation on $$(uname)" ; \
 	fi
 
-## android: Compile the android targets (arm64, armv7 and i686)
-android: target/aarch64-linux-android/release/libexample.so target/armv7-linux-androideabi/release/libexample.so target/i686-linux-android/release/libexample.so target/x86_64-linux-android/release/libexample.so
+## android: Compile the android targets (arm64 and x86_64)
+android: target/aarch64-linux-android/release/libexample.so target/x86_64-linux-android/release/libexample.so
 
 target/aarch64-linux-android/release/libexample.so: $(SOURCES) ndk-home
 	CC_aarch64_linux_android=$(ANDROID_AARCH64_LINKER) \
 	CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$(ANDROID_AARCH64_LINKER) \
 		cargo build --target aarch64-linux-android --release
-
-target/armv7-linux-androideabi/release/libexample.so: $(SOURCES) ndk-home
-	CC_armv7_linux_androideabi=$(ANDROID_ARMV7_LINKER) \
-	CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$(ANDROID_ARMV7_LINKER) \
-		cargo build --target armv7-linux-androideabi --release
-
-target/i686-linux-android/release/libexample.so: $(SOURCES) ndk-home
-	CC_i686_linux_android=$(ANDROID_I686_LINKER) \
-	CARGO_TARGET_I686_LINUX_ANDROID_LINKER=$(ANDROID_I686_LINKER) \
-		cargo  build --target i686-linux-android --release
 
 target/x86_64-linux-android/release/libexample.so: $(SOURCES) ndk-home
 	CC_x86_64_linux_android=$(ANDROID_X86_64_LINKER) \
