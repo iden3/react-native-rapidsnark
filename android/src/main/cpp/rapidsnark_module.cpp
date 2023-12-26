@@ -25,8 +25,8 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
     char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, nullptr);
 
-    unsigned long nativeProofSize = 16384;
-    unsigned long nativePublicSize = 16384;
+    unsigned long nativeProofSize = 65536;
+    unsigned long nativePublicSize = 65536;
 
     // Call the groth16_prover function
     int result = groth16_prover(
@@ -47,6 +47,27 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     env->ReleaseByteArrayElements(proofBuffer, (jbyte *) nativeProofBuffer, 0);
     env->ReleaseByteArrayElements(publicBuffer, (jbyte *) nativePublicBuffer, 0);
     env->ReleaseByteArrayElements(errorMsg, (jbyte *) nativeErrorMsg, 0);
+
+    return result;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_rapidsnark_GrothProver_groth16Verifier(
+        JNIEnv *env, jobject obj, jstring inputs, jstring proof, jstring verificationKey
+) {
+    LOGE("groth16Verifier native called");
+
+    // Convert jstring to native types
+    const char *nativeInputs = env->GetStringUTFChars(inputs, nullptr);
+    const char *nativeProof = env->GetStringUTFChars(proof, nullptr);
+    const char *nativeVerificationKey = env->GetStringUTFChars(verificationKey, nullptr);
+
+    // Call the groth16_verify function
+    bool result = groth16_verify(nativeInputs, nativeProof, nativeVerificationKey);
+
+    // Release the native buffers
+    env->ReleaseStringUTFChars(inputs, nativeInputs);
+    env->ReleaseStringUTFChars(proof, nativeProof);
+    env->ReleaseStringUTFChars(verificationKey, nativeVerificationKey);
 
     return result;
 }

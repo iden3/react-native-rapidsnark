@@ -1,0 +1,113 @@
+.DEFAULT_GOAL := help
+PROJECTNAME=$(shell basename "$(PWD)")
+SOURCES=$(sort $(wildcard ./src/*.rs ./src/**/*.rs))
+
+OS_NAME=$(shell uname | tr '[:upper:]' '[:lower:]')
+PATH := $(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin:$(PATH)
+
+ANDROID_AARCH64_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/aarch64-linux-android29-clang
+ANDROID_X86_64_LINKER=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(OS_NAME)-x86_64/bin/x86_64-linux-android29-clang
+
+SHELL := /bin/bash
+
+# ##############################################################################
+# # GENERAL
+# ##############################################################################
+
+.PHONY: help
+help: makefile
+	@echo
+	@echo " Available actions in "$(PROJECTNAME)":"
+	@echo
+	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
+	@echo
+
+## init: Install missing dependencies.
+.PHONY: init
+init:
+	# iOS
+	rustup target add aarch64-apple-ios
+	rustup target add aarch64-apple-ios-sim
+	# Android
+	rustup target add aarch64-linux-android
+	rustup target add x86_64-linux-android
+	@if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
+	cargo install cbindgen
+
+## :
+
+# ##############################################################################
+# # RECIPES
+# ##############################################################################
+
+## all: Compile iOS, Android and bindings targets
+all: ios android bindings
+
+## ios: Compile the iOS universal library
+ios: target/universal/release/libgroth16Verify.a
+
+target/universal/release/libgroth16Verify.a: $(SOURCES) ndk-home
+	@if [ $$(uname) == "Darwin" ] ; then \
+		cargo lipo --release ; \
+		else echo "Skipping iOS compilation on $$(uname)" ; \
+	fi
+
+## android: Compile the android targets (arm64 and x86_64)
+android: target/aarch64-linux-android/release/libexample.so target/x86_64-linux-android/release/libexample.so
+
+target/aarch64-linux-android/release/libexample.so: $(SOURCES) ndk-home
+	CC_aarch64_linux_android=$(ANDROID_AARCH64_LINKER) \
+	CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$(ANDROID_AARCH64_LINKER) \
+		cargo build --target aarch64-linux-android --release
+
+target/x86_64-linux-android/release/libexample.so: $(SOURCES) ndk-home
+	CC_x86_64_linux_android=$(ANDROID_X86_64_LINKER) \
+	CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$(ANDROID_X86_64_LINKER) \
+		cargo build --target x86_64-linux-android --release
+
+.PHONY: ndk-home
+ndk-home:
+	@if [ ! -d "${ANDROID_NDK_HOME}" ] ; then \
+		echo "Error: Please, set the ANDROID_NDK_HOME env variable to point to your NDK folder" ; \
+		exit 1 ; \
+	fi
+
+## bindings: Generate the .h file for iOS
+bindings: target/bindings.h
+
+target/bindings.h: $(SOURCES)
+	## cbindgen $^ -c cbindgen.toml | grep -v \#include | uniq > $@
+	cbindgen ./src/lib.rs -c cbindgen.toml | grep -v \#include | uniq > $@
+## :
+
+# ##############################################################################
+# # OTHER
+# ##############################################################################
+
+## clean:
+.PHONY: clean
+clean:
+	cargo clean
+	rm -f target/bindings.h target/bindings.src.h
+
+## test:
+.PHONY: test
+test:
+	cargo test
+
+.PHONY: copy_update_libs
+copy_update_libs: update_ios_libs update_android_libs
+
+.PHONY: update_ios_libs
+update_ios_libs:
+	@echo "Updating iOS libs"
+	cp target/aarch64-apple-ios/release/libgroth16_verify.a ../../ios_xcframework/libs_ios/libgroth16_verify.a
+	cp target/aarch64-apple-ios-sim/release/libgroth16_verify.a ../../ios_xcframework/libs_sim/libgroth16_verify.a
+	@echo "Updated iOS libs"
+
+.PHONY: update_android_libs
+update_android_libs:
+	@echo "Updating Android libs"
+	cp target/aarch64-linux-android/release/libgroth16_verify.so ../../android/src/jniLibs/arm64-v8a/libgroth16_verify.so
+	cp target/x86_64-linux-android/release/libgroth16_verify.so ../../android/src/jniLibs/x86_64/libgroth16_verify.so
+	@echo "Updated Android libs"

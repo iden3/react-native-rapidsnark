@@ -1,9 +1,7 @@
 import React from 'react';
 import RNFS from "react-native-fs";
-import {Button, NativeModules, Platform, StyleSheet, Text, View} from 'react-native';
+import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native';
 
 const rapidsnark = NativeModules.Rapidsnark;
 
@@ -11,16 +9,24 @@ export default function App() {
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
   const [execTime, setExecTime] = React.useState(0);
+  const [verificationResult, setVerificationResult] = React.useState<boolean>(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
       console.log('Calling groth16_prover');
+
+      let zkeyF: string;
+      let wtnsF: string;
+      let verificationKey: string;
+
+      let proof: string;
+      let pub_signals: string;
+
       try {
-        let zkeyF: string;
-        let wtnsF: string;
         if (Platform.OS === 'android') {
           zkeyF = await RNFS.readFileAssets('circuit_final.zkey', 'base64');
           wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
+          verificationKey = await RNFS.readFileAssets('verification_key.json', 'utf8');
         } else {
           zkeyF = await RNFS.readFile(
             RNFS.MainBundlePath + '/circuit_final.zkey',
@@ -30,13 +36,21 @@ export default function App() {
             RNFS.MainBundlePath + '/witness.wtns',
             'base64'
           );
+          verificationKey = await RNFS.readFile(
+            RNFS.MainBundlePath + '/verification_key.json',
+            'utf8'
+          );
         }
 
         console.log('zkey f: ', zkeyF.length);
+        console.log('wtns f: ', wtnsF.length);
+        console.log('vkey f: ', verificationKey.length);
 
         const startTime = performance.now();
 
-        const {proof, pub_signals} = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        const proverResult = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        proof = proverResult.proof;
+        pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
         console.log('publicResult: ', pub_signals);
 
@@ -53,15 +67,30 @@ export default function App() {
         setExecTime(diff);
         console.log('exec time ' + diff + 'ms');
       } catch (error) {
-        console.error('Error reading file', error);
+        console.error('Error proving circuit', error);
+        return;
+      }
+
+      try {
+        const startTime = performance.now();
+
+        const result = await rapidsnark.groth16_verify(pub_signals, proof, verificationKey);
+        setVerificationResult(result);
+
+        console.log('verification result proof valid:' + result);
+        const diffVerification = performance.now() - startTime;
+        console.log('verification exec time:' + diffVerification);
+
+      } catch (error) {
+        console.error('Error verifying proof', error);
       }
     };
     fetchData();
   }, []);
 
   return (
-      <View style={styles.container}>
-       <ScrollView style={styles.scrollView}>
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
         <Text style={styles.title}>Proof:</Text>
         <View style={styles.resultBox}>
           <Text style={styles.resultText} selectable={true}>
@@ -77,15 +106,19 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => Clipboard.setString(proofResult+publicResult)}
+          onPress={() => Clipboard.setString(proofResult + publicResult)}
         >
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
         </TouchableOpacity>
 
+        <Text>Proof valid: {verificationResult?.toString() ?? "checking"}</Text>
+
+        <View style={{height: 20}}/>
+
         <Text>Execution time: {execTime}ms</Text>
-        </ScrollView>
-      </View>
-    );
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

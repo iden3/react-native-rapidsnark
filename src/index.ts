@@ -20,3 +20,7 @@ const Rapidsnark = NativeModules.Rapidsnark
 export function groth16_prover(zkey: string, witness: string): Promise<{ proof: string, pub_signals: string }> {
   return Rapidsnark.groth16_prover(zkey, witness);
 }
+
+export function groth16_verifier(inputs: string, proof: string, verificationKey: string): Promise<boolean> {
+  return Rapidsnark.groth16_verifier(inputs, proof, verificationKey);
+}

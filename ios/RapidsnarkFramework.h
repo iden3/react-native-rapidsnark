@@ -24,6 +24,8 @@ groth16_prover(const void *zkey_buffer,   unsigned long  zkey_size,
                char       *public_buffer, unsigned long *public_size,
                char       *error_msg,     unsigned long  error_msg_maxsize);
 
+extern BOOL groth16_verify(const char* inputs, const char* proof, const char* verification_key);
+
 #ifdef __cplusplus
 }
 #endif

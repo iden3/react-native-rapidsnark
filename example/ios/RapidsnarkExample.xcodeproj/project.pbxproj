@@ -13,8 +13,9 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		86AE9A97D55524ACFEBE1964 /* Pods_RapidsnarkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6462460858153BB68C04764 /* Pods_RapidsnarkExample.framework */; };
 		8D13329B2B111E9F0045657C /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D77C8E92B0F7F3A00E660D1 /* Rapidsnark.xcframework */; };
-		CCFF55C02A98EC0700FD3D14 /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55BF2A98EC0700FD3D14 /* witness.wtns */; };
-		CCFF55C42A98EC8E00FD3D14 /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */; };
+		8DAB43CF2B349A680031DDE2 /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8DAB43CC2B349A680031DDE2 /* circuit_final.zkey */; };
+		8DAB43D02B349A680031DDE2 /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8DAB43CD2B349A680031DDE2 /* verification_key.json */; };
+		8DAB43D12B349A680031DDE2 /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8DAB43CE2B349A680031DDE2 /* witness.wtns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,15 +34,10 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RapidsnarkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D77C8E92B0F7F3A00E660D1 /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = ../../ios/Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
+		8DAB43CC2B349A680031DDE2 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = circuit_final.zkey; sourceTree = "<group>"; };
+		8DAB43CD2B349A680031DDE2 /* verification_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
+		8DAB43CE2B349A680031DDE2 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = witness.wtns; sourceTree = "<group>"; };
 		C6462460858153BB68C04764 /* Pods_RapidsnarkExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RapidsnarkExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCFF55B52A98200E00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; name = circuit_final.zkey; path = ../circuit_final.zkey; sourceTree = "<group>"; };
-		CCFF55B62A98200E00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
-		CCFF55B92A9821AB00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
-		CCFF55BA2A9821AB00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; name = circuit_final.zkey; path = ../circuit_final.zkey; sourceTree = "<group>"; };
-		CCFF55BD2A98EBFB00FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = witness.wtns; sourceTree = "<group>"; };
-		CCFF55BF2A98EC0700FD3D14 /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
-		CCFF55C12A98EC1800FD3D14 /* verification_key.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
-		CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = circuit_final.zkey; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -109,14 +105,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				CCFF55C32A98EC8E00FD3D14 /* circuit_final.zkey */,
-				CCFF55C12A98EC1800FD3D14 /* verification_key.json */,
-				CCFF55BD2A98EBFB00FD3D14 /* witness.wtns */,
-				CCFF55BF2A98EC0700FD3D14 /* witness.wtns */,
-				CCFF55B52A98200E00FD3D14 /* circuit_final.zkey */,
-				CCFF55BA2A9821AB00FD3D14 /* circuit_final.zkey */,
-				CCFF55B62A98200E00FD3D14 /* witness.wtns */,
-				CCFF55B92A9821AB00FD3D14 /* witness.wtns */,
+				8DAB43CC2B349A680031DDE2 /* circuit_final.zkey */,
+				8DAB43CD2B349A680031DDE2 /* verification_key.json */,
+				8DAB43CE2B349A680031DDE2 /* witness.wtns */,
 				13B07FAE1A68108700A75B9A /* RapidsnarkExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RapidsnarkExampleTests */,
@@ -211,8 +202,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				CCFF55C02A98EC0700FD3D14 /* witness.wtns in Resources */,
-				CCFF55C42A98EC8E00FD3D14 /* circuit_final.zkey in Resources */,
+				8DAB43D02B349A680031DDE2 /* verification_key.json in Resources */,
+				8DAB43CF2B349A680031DDE2 /* circuit_final.zkey in Resources */,
+				8DAB43D12B349A680031DDE2 /* witness.wtns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,10 +324,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y2XKH75Z48;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -362,10 +355,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y2XKH75Z48;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
