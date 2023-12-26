@@ -9,6 +9,7 @@ export default function App() {
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
   const [execTime, setExecTime] = React.useState(0);
+  const [verificationResult, setVerificationResult] = React.useState<boolean>(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -74,8 +75,9 @@ export default function App() {
         const startTime = performance.now();
 
         const result = await rapidsnark.groth16_verify(pub_signals, proof, verificationKey);
+        setVerificationResult(result);
 
-        console.log('verification result:' + result);
+        console.log('verification result proof valid:' + result);
         const diffVerification = performance.now() - startTime;
         console.log('verification exec time:' + diffVerification);
 
@@ -108,6 +110,10 @@ export default function App() {
         >
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
         </TouchableOpacity>
+
+        <Text>Proof valid: {verificationResult?.toString() ?? "checking"}</Text>
+
+        <View style={{height: 20}}/>
 
         <Text>Execution time: {execTime}ms</Text>
       </ScrollView>
