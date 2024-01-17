@@ -45,7 +45,7 @@ echo "generate wtns"
 
 
 
-if [ ! -f $INPUTS ]; then
+if [ -f $INPUTS ]; then
   CIRCUIT_PATH_JS=$DIST/circuit_js
 
   time node $CIRCUIT_PATH_JS/generate_witness.js $CIRCUIT_PATH_JS/circuit.wasm $INPUTS $CIRCUIT_PATH_JS/witness.wtns
