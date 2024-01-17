@@ -7,6 +7,23 @@
 extern "C" {
 #endif
 
+JNIEXPORT jlong JNICALL Java_com_rapidsnark_GrothProver_calculatePublicBufferSize(
+        JNIEnv *env, jobject obj,
+        jbyteArray zkeyBuffer, jlong zkeySize
+) {
+    LOGE("calculatePublicBufferSize native called");
+
+    void *nativeZkeyBuffer = env->GetByteArrayElements(zkeyBuffer, nullptr);
+
+    unsigned long nativePublicSize = CalcPublicBufferSize(
+        nativeZkeyBuffer, zkeySize
+    );
+
+    LOGE("calculatePublicBufferSize:%lu", nativePublicSize);
+
+    return nativePublicSize;
+}
+
 JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
         JNIEnv *env, jobject obj,
         jbyteArray zkeyBuffer, jlong zkeySize,
@@ -25,16 +42,19 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
     char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
     char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, nullptr);
 
-    unsigned long nativeProofSize = 65536;
-    unsigned long nativePublicSize = 65536;
+    jlong *nativeProofSizeArr = env->GetLongArrayElements(proofSize, 0);
+    jlong *nativePublicSizeArr = env->GetLongArrayElements(publicSize, 0);
+
+    unsigned long nativeProofSize = nativeProofSizeArr[0];
+    unsigned long nativePublicSize = nativePublicSizeArr[0];
 
     // Call the groth16_prover function
     int result = groth16_prover(
-            nativeZkeyBuffer, zkeySize,
-            nativeWtnsBuffer, wtnsSize,
-            nativeProofBuffer, &nativeProofSize,
-            nativePublicBuffer, &nativePublicSize,
-            nativeErrorMsg, errorMsgMaxSize
+        nativeZkeyBuffer, zkeySize,
+        nativeWtnsBuffer, wtnsSize,
+        nativeProofBuffer, &nativeProofSize,
+        nativePublicBuffer, &nativePublicSize,
+        nativeErrorMsg, errorMsgMaxSize
     );
 
     // Convert the results back to JNI types

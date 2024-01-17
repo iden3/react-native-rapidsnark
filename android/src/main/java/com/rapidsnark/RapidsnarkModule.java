@@ -39,10 +39,14 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
     byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
+    int public_buffer_size = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
+
+    Log.e("RapidsnarkModule", "PublicBufferSize: " + public_buffer_size);
+
     // Create buffers to get results
     // TODO: Replace with actual buffer sizes if necessary
     byte[] proof_buffer = new byte[16384];
-    byte[] public_buffer = new byte[16384];
+    byte[] public_buffer = new byte[public_buffer_size];
     byte[] error_msg = new byte[256];
 
     try {
@@ -98,6 +102,8 @@ class GrothProver {
   static {
     System.loadLibrary("rapidsnark_module");
   }
+
+  public native long calculatePublicBufferSize(byte[] zkeyBuffer, long zkeySize);
 
   public native int groth16Prover(byte[] zkeyBuffer, long zkeySize,
                                   byte[] wtnsBuffer, long wtnsSize,

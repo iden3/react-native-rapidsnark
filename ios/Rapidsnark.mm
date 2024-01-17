@@ -23,20 +23,21 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     const void *wtns_buffer = [wtnsBytes bytes];
     unsigned long wtns_size = [wtnsBytes length];
 
-    char proof_buffer[163840];
-    unsigned long proof_size = 163840;
+    unsigned long proof_size = 16384;
+    char proof_buffer[proof_size];
 
-    char public_buffer[163840];
-    unsigned long public_size = 163840;
+    unsigned long public_buffer_size = CalcPublicBufferSize(zkey_buffer, zkey_size);
+    char public_buffer[public_buffer_size];
 
-    char error_msg[256];
     unsigned long error_msg_maxsize = 256;
+    char error_msg[error_msg_maxsize];
+
     RCTLogInfo(@"groth16_prover prove start");
     groth16_prover(
       zkey_buffer, zkey_size,
       wtns_buffer, wtns_size,
       proof_buffer, &proof_size,
-      public_buffer, &public_size,
+      public_buffer, &public_buffer_size,
       error_msg, error_msg_maxsize
     );
     RCTLogInfo(@"groth16_prover prove end");
@@ -46,7 +47,7 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
     NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
 
-   if(proofResult.length > 0) {
+    if(proofResult.length > 0) {
         NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);
     } else {
@@ -87,6 +88,5 @@ RCT_EXPORT_METHOD(groth16_verify:(NSString *)inputs
         reject(@"E_VERIFICATION_FAILED", @"Verification failed", nil);
     }
 }
-
 
 @end
