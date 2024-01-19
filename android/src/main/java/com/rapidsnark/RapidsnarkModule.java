@@ -87,6 +87,60 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1, Promise promise) {
+    long startTime = System.currentTimeMillis(); // Capture start time
+
+    // Decode base64
+    byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
+
+    int public_buffer_size = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
+
+    Log.e("RapidsnarkModule", "PublicBufferSize: " + public_buffer_size);
+
+    // Create buffers to get results
+    // TODO: Replace with actual buffer sizes if necessary
+    byte[] proof_buffer = new byte[16384];
+    byte[] public_buffer = new byte[public_buffer_size];
+    byte[] error_msg = new byte[256];
+
+    try {
+      // This will require you to write a JNI bridge to your C library.
+      new GrothProver().groth16ProverZkeyFile(
+        zkeyPath,
+        wtnsBytes, wtnsBytes.length,
+        proof_buffer, new long[]{proof_buffer.length},
+        public_buffer, new long[]{public_buffer.length},
+        error_msg, error_msg.length
+      );
+
+      long endTime = System.currentTimeMillis(); // Capture end time
+      long executionTime = endTime - startTime;
+
+      // Convert byte arrays to strings
+      String proofResult = (new String(proof_buffer, StandardCharsets.UTF_8)).trim();
+      String publicResult = (new String(public_buffer, StandardCharsets.UTF_8)).trim();
+
+      if (!proofResult.isEmpty()) {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("proof", proofResult);
+        result.put("pub_signals", publicResult);
+
+        WritableMap map = new WritableNativeMap();
+        for (Map.Entry<String, String> entry : result.entrySet()) {
+          map.putString(entry.getKey(), entry.getValue());
+        }
+
+        promise.resolve(map);
+      } else {
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
+        promise.reject("PROVER_ERROR", errorString);
+      }
+    } catch (Exception e) {
+      promise.reject("PROVER_ERROR", e.getMessage());
+    }
+  }
+
+  @ReactMethod
   public void groth16_verify(String inputs, String proof, String verificationKey, Promise promise) {
     try {
       boolean result = new GrothProver().groth16Verifier(inputs, proof, verificationKey);
@@ -110,6 +164,12 @@ class GrothProver {
                                   byte[] proofBuffer, long[] proofSize,
                                   byte[] publicBuffer, long[] publicSize,
                                   byte[] errorMsg, long errorMsgMaxSize);
+
+  public native int groth16ProverZkeyFile(String zkeyPath,
+                                          byte[] wtnsBuffer, long wtnsSize,
+                                          byte[] proofBuffer, long[] proofSize,
+                                          byte[] publicBuffer, long[] publicSize,
+                                          byte[] errorMsg, long errorMsgMaxSize);
 
   public native boolean groth16Verifier(String inputs, String proof, String verificationKey);
 }

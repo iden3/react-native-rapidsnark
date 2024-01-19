@@ -18,6 +18,15 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
         jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
+JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16ProverZkeyFile(
+        JNIEnv *env, jobject obj,
+        jstring zkeyPath,
+        jbyteArray wtnsBuffer, jlong wtnsSize,
+        jbyteArray proofBuffer, jlongArray proofSize,
+        jbyteArray publicBuffer, jlongArray publicSize,
+        jbyteArray errorMsg, jlong errorMsgMaxSize
+);
+
 JNIEXPORT jboolean JNICALL Java_com_rapidsnark_GrothProver_groth16Verifier(
         JNIEnv *env, jobject obj, jstring inputs, jstring proof, jstring verificationKey
 );

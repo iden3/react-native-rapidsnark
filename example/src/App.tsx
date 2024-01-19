@@ -2,6 +2,7 @@ import React from 'react';
 import RNFS from "react-native-fs";
 import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {groth16_prover_zkey_file} from "../../src";
 
 const rapidsnark = NativeModules.Rapidsnark;
 
@@ -16,6 +17,7 @@ export default function App() {
       console.log('Calling groth16_prover');
 
       let zkeyF: string;
+      let zkeyPath: string;
       let wtnsF: string;
       let verificationKey: string;
 
@@ -24,14 +26,12 @@ export default function App() {
 
       try {
         if (Platform.OS === 'android') {
-          zkeyF = await RNFS.readFileAssets('circuit_final.zkey', 'base64');
+          // TODO : Get full path instead of using assets
+          zkeyPath = 'circuit_final.zkey';
           wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
           verificationKey = await RNFS.readFileAssets('verification_key.json', 'utf8');
         } else {
-          zkeyF = await RNFS.readFile(
-            RNFS.MainBundlePath + '/circuit_final.zkey',
-            'base64'
-          );
+          zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
           wtnsF = await RNFS.readFile(
             RNFS.MainBundlePath + '/witness.wtns',
             'base64'
@@ -42,13 +42,13 @@ export default function App() {
           );
         }
 
-        console.log('zkey f: ', zkeyF.length);
+        console.log('zkey path: ', zkeyPath);
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
 
         const startTime = performance.now();
 
-        const proverResult = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        const proverResult = await rapidsnark.groth16_prover_zkey_file(zkeyPath, wtnsF);
         proof = proverResult.proof;
         pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
