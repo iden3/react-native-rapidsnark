@@ -16,7 +16,7 @@ JNIEXPORT jlong JNICALL Java_com_rapidsnark_GrothProver_calculatePublicBufferSiz
     void *nativeZkeyBuffer = env->GetByteArrayElements(zkeyBuffer, nullptr);
 
     unsigned long nativePublicSize = CalcPublicBufferSize(
-        nativeZkeyBuffer, zkeySize
+            nativeZkeyBuffer, zkeySize
     );
 
     LOGE("calculatePublicBufferSize:%lu", nativePublicSize);
@@ -50,11 +50,11 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
 
     // Call the groth16_prover function
     int result = groth16_prover(
-        nativeZkeyBuffer, zkeySize,
-        nativeWtnsBuffer, wtnsSize,
-        nativeProofBuffer, &nativeProofSize,
-        nativePublicBuffer, &nativePublicSize,
-        nativeErrorMsg, errorMsgMaxSize
+            nativeZkeyBuffer, zkeySize,
+            nativeWtnsBuffer, wtnsSize,
+            nativeProofBuffer, &nativeProofSize,
+            nativePublicBuffer, &nativePublicSize,
+            nativeErrorMsg, errorMsgMaxSize
     );
 
     // Convert the results back to JNI types
@@ -76,20 +76,21 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16ProverZkeyFile(
         jstring zkeyPath,
         jbyteArray wtnsBuffer, jlong wtnsSize,
         jbyteArray proofBuffer, jlongArray proofSize,
-        jbyteArray publicBuffer, jlongArray publicSize,
+        jobjectArray publicBufferArr, jlongArray publicSize,
         jbyteArray errorMsg, jlong errorMsgMaxSize
 ) {
-    LOGE("groth16Prover native called");
+    LOGE("groth16ProverZkeyFile native called");
 
     // Convert jbyteArray to native types
     const char *nativeZkeyPath = env->GetStringUTFChars(zkeyPath, nullptr);
-    std::string zkeyPathStr = std::string(nativeZkeyPath);
 
     void *nativeWtnsBuffer = env->GetByteArrayElements(wtnsBuffer, nullptr);
 
     char *nativeProofBuffer = (char *) env->GetByteArrayElements(proofBuffer, nullptr);
-    char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
     char *nativeErrorMsg = (char *) env->GetByteArrayElements(errorMsg, nullptr);
+
+    jbyteArray publicBuffer = (jbyteArray) env->GetObjectArrayElement(publicBufferArr, 0);
+    char *nativePublicBuffer = (char *) env->GetByteArrayElements(publicBuffer, nullptr);
 
     jlong *nativeProofSizeArr = env->GetLongArrayElements(proofSize, 0);
     jlong *nativePublicSizeArr = env->GetLongArrayElements(publicSize, 0);
@@ -97,27 +98,49 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16ProverZkeyFile(
     unsigned long nativeProofSize = nativeProofSizeArr[0];
     unsigned long nativePublicSize = nativePublicSizeArr[0];
 
-    // Call the groth16_prover function
-    int result = groth16_prover_zkey_file(
-        zkeyPathStr,
-        nativeWtnsBuffer, wtnsSize,
-        nativeProofBuffer, &nativeProofSize,
-        nativePublicBuffer, &nativePublicSize,
-        nativeErrorMsg, errorMsgMaxSize
+    // Call the groth16_prover function`
+    int status_code = groth16_prover_zkey_file(
+            nativeZkeyPath,
+            nativeWtnsBuffer, wtnsSize,
+            nativeProofBuffer, &nativeProofSize,
+            nativePublicBuffer, &nativePublicSize,
+            nativeErrorMsg, errorMsgMaxSize
     );
+
+    if (status_code == PROVER_ERROR_SHORT_BUFFER) {
+        // The public buffer is too small, so we need to allocate a new one
+        LOGE("groth16ProverZkeyFile short buffer, extending the buffer and calling again");
+
+        LOGE("groth16ProverZkeyFile new public buffer size:%lu", nativePublicSize);
+        nativePublicBuffer = new char[nativePublicSize];
+
+        status_code = groth16_prover_zkey_file(
+                nativeZkeyPath,
+                nativeWtnsBuffer, wtnsSize,
+                nativeProofBuffer, &nativeProofSize,
+                nativePublicBuffer, &nativePublicSize,
+                nativeErrorMsg, errorMsgMaxSize
+        );
+
+        jbyteArray updatedPublicBuffer = env->NewByteArray(nativePublicSize);
+        env->SetByteArrayRegion(updatedPublicBuffer, 0, nativePublicSize,
+                                (jbyte *) nativePublicBuffer);
+        env->SetObjectArrayElement(publicBufferArr, 0, updatedPublicBuffer);
+        LOGE("groth16ProverZkeyFile finished with new public buffer");
+        env->DeleteLocalRef(updatedPublicBuffer);
+    }
 
     // Convert the results back to JNI types
     env->SetLongArrayRegion(proofSize, 0, 1, (jlong *) &nativeProofSize);
     env->SetLongArrayRegion(publicSize, 0, 1, (jlong *) &nativePublicSize);
 
     // Release the native buffers
-    env->ReleaseByteArrayElements(zkeyBuffer, (jbyte *) nativeZkeyBuffer, 0);
     env->ReleaseByteArrayElements(wtnsBuffer, (jbyte *) nativeWtnsBuffer, 0);
     env->ReleaseByteArrayElements(proofBuffer, (jbyte *) nativeProofBuffer, 0);
     env->ReleaseByteArrayElements(publicBuffer, (jbyte *) nativePublicBuffer, 0);
     env->ReleaseByteArrayElements(errorMsg, (jbyte *) nativeErrorMsg, 0);
 
-    return result;
+    return status_code;
 }
 
 JNIEXPORT jboolean JNICALL Java_com_rapidsnark_GrothProver_groth16Verifier(

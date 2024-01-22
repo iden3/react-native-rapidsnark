@@ -42,12 +42,11 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     );
     RCTLogInfo(@"groth16_prover prove end");
 
-
     // Handle the result of groth16_prover
     NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
     NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
 
-    if(proofResult.length > 0) {
+    if (proofResult.length > 0) {
         NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);
     } else {
@@ -70,10 +69,7 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     // TODO: we should accept just the bytes as input, not base64 encoded strings
     // NSData decode base64
 
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"circuit_final.zkey" ofType:@""];
-    RCTLogInfo(filePath);
-
-    std::string file_path = std::string([zkey_file_path UTF8String]);
+    const char *file_path = [zkey_file_path UTF8String];
 
     NSData* wtnsBytes = [[NSData alloc]initWithBase64EncodedString:wtnsBytes1 options:0];
 
@@ -83,27 +79,51 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     unsigned long proof_size = 16384;
     char proof_buffer[proof_size];
 
-    unsigned long public_buffer_size = 16384;
+    unsigned long public_buffer_size = 65536;
     char public_buffer[public_buffer_size];
 
     unsigned long error_msg_maxsize = 256;
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover_zkey_file prove start");
-    groth16_prover_zkey_file(
+    int status_code = groth16_prover_zkey_file(
       file_path,
       wtns_buffer, wtns_size,
       proof_buffer, &proof_size,
       public_buffer, &public_buffer_size,
       error_msg, error_msg_maxsize
     );
+
+    NSString *proofResult;
+    NSString *publicResult;
+
+    if (status_code == PROVER_ERROR_SHORT_BUFFER) {
+      RCTLogInfo(@"groth16_prover_zkey_file short buffer");
+      // The public buffer is too small, so we need to allocate a new one
+      char *extended_public_buffer = (char*)malloc(public_buffer_size);
+
+      status_code = groth16_prover_zkey_file(
+        file_path,
+        wtns_buffer, wtns_size,
+        proof_buffer, &proof_size,
+        extended_public_buffer, &public_buffer_size,
+        error_msg, error_msg_maxsize
+      );
+
+      proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
+      publicResult = [NSString stringWithCString:extended_public_buffer encoding:NSUTF8StringEncoding];
+
+      free(extended_public_buffer);
+    } else {
+      // Handle the result of groth16_prover
+      proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
+      publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
+    }
+
     RCTLogInfo(@"groth16_prover_zkey_file prove end");
 
-    // Handle the result of groth16_prover
-    NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
-    NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
-
-    if(proofResult.length > 0) {
+    RCTLogInfo(@"%i", status_code);
+    if (proofResult.length > 0) {
         NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);
     } else {

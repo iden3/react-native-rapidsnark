@@ -51,7 +51,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
     try {
       // This will require you to write a JNI bridge to your C library.
-      new GrothProver().groth16Prover(
+      int statusCode = new GrothProver().groth16Prover(
         zkeyBytes, zkeyBytes.length,
         wtnsBytes, wtnsBytes.length,
         proof_buffer, new long[]{proof_buffer.length},
@@ -63,8 +63,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       long executionTime = endTime - startTime;
 
       // Convert byte arrays to strings
-      String proofResult = (new String(proof_buffer, StandardCharsets.UTF_8)).trim();
-      String publicResult = (new String(public_buffer, StandardCharsets.UTF_8)).trim();
+      String proofResult = new String(proof_buffer, StandardCharsets.UTF_8).trim();
+      String publicResult = new String(public_buffer, StandardCharsets.UTF_8).trim();
 
       if (!proofResult.isEmpty()) {
         HashMap<String, String> result = new HashMap<>();
@@ -93,23 +93,19 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     // Decode base64
     byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
-    int public_buffer_size = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
-
-    Log.e("RapidsnarkModule", "PublicBufferSize: " + public_buffer_size);
-
     // Create buffers to get results
     // TODO: Replace with actual buffer sizes if necessary
     byte[] proof_buffer = new byte[16384];
-    byte[] public_buffer = new byte[public_buffer_size];
+    byte[][] public_buffer = new byte[1][16];
     byte[] error_msg = new byte[256];
 
     try {
       // This will require you to write a JNI bridge to your C library.
-      new GrothProver().groth16ProverZkeyFile(
+      int statusCode = new GrothProver().groth16ProverZkeyFile(
         zkeyPath,
         wtnsBytes, wtnsBytes.length,
         proof_buffer, new long[]{proof_buffer.length},
-        public_buffer, new long[]{public_buffer.length},
+        public_buffer, new long[]{public_buffer[0].length},
         error_msg, error_msg.length
       );
 
@@ -117,8 +113,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       long executionTime = endTime - startTime;
 
       // Convert byte arrays to strings
-      String proofResult = (new String(proof_buffer, StandardCharsets.UTF_8)).trim();
-      String publicResult = (new String(public_buffer, StandardCharsets.UTF_8)).trim();
+      String proofResult = new String(proof_buffer, StandardCharsets.UTF_8).trim();
+      String publicResult = new String(public_buffer[0], StandardCharsets.UTF_8).trim();
 
       if (!proofResult.isEmpty()) {
         HashMap<String, String> result = new HashMap<>();
@@ -168,7 +164,7 @@ class GrothProver {
   public native int groth16ProverZkeyFile(String zkeyPath,
                                           byte[] wtnsBuffer, long wtnsSize,
                                           byte[] proofBuffer, long[] proofSize,
-                                          byte[] publicBuffer, long[] publicSize,
+                                          byte[][] publicBuffer, long[] publicSize,
                                           byte[] errorMsg, long errorMsgMaxSize);
 
   public native boolean groth16Verifier(String inputs, String proof, String verificationKey);

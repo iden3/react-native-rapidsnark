@@ -55,7 +55,41 @@
 				B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				CC78262D2AAFD13C00124F49 /* Frameworks */,
+				634309F4AADAF7D47F97E0EF /* xcschemes */,
+				63430FBD0223041CC7DA4C82 /* xcuserdata */,
 			);
+			sourceTree = "<group>";
+		};
+		6343015150D27FA0F2314B26 /* moria.xcuserdatad */ = {
+			isa = PBXGroup;
+			children = (
+				634306EEC3C0BB906FB21BE4 /* xcschemes */,
+			);
+			path = moria.xcuserdatad;
+			sourceTree = "<group>";
+		};
+		634306EEC3C0BB906FB21BE4 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = xcschemes;
+			sourceTree = "<group>";
+		};
+		634309F4AADAF7D47F97E0EF /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = Rapidsnark.xcodeproj/project.xcworkspace/xcuserdata/moria.xcuserdatad/xcschemes;
+			sourceTree = "<group>";
+		};
+		63430FBD0223041CC7DA4C82 /* xcuserdata */ = {
+			isa = PBXGroup;
+			children = (
+				6343015150D27FA0F2314B26 /* moria.xcuserdatad */,
+			);
+			name = xcuserdata;
+			path = Rapidsnark.xcodeproj/xcuserdata;
 			sourceTree = "<group>";
 		};
 		CC78262D2AAFD13C00124F49 /* Frameworks */ = {

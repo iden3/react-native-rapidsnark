@@ -1,8 +1,7 @@
 import React from 'react';
-import RNFS from "react-native-fs";
-import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import RNFS from 'react-native-fs';
+import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {groth16_prover_zkey_file} from "../../src";
 
 const rapidsnark = NativeModules.Rapidsnark;
 
@@ -10,7 +9,8 @@ export default function App() {
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
   const [execTime, setExecTime] = React.useState(0);
-  const [verificationResult, setVerificationResult] = React.useState<boolean>(null);
+  const [verificationResult, setVerificationResult] =
+    React.useState<boolean>(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -26,12 +26,21 @@ export default function App() {
 
       try {
         if (Platform.OS === 'android') {
-          // TODO : Get full path instead of using assets
-          zkeyPath = 'circuit_final.zkey';
-          wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
-          verificationKey = await RNFS.readFileAssets('verification_key.json', 'utf8');
+          await writeAssetFilesToDocumentsDirectory();
+
+          zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
+          zkeyF = await RNFS.readFile(zkeyPath, 'base64');
+          wtnsF = await RNFS.readFile(RNFS.DocumentDirectoryPath + '/witness.wtns', 'base64');
+          verificationKey = await RNFS.readFile(
+            RNFS.DocumentDirectoryPath + '/verification_key.json',
+            'utf8'
+          );
         } else {
           zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
+          zkeyF = await RNFS.readFile(
+            RNFS.MainBundlePath + '/circuit_final.zkey',
+            'base64'
+          );
           wtnsF = await RNFS.readFile(
             RNFS.MainBundlePath + '/witness.wtns',
             'base64'
@@ -43,19 +52,38 @@ export default function App() {
         }
 
         console.log('zkey path: ', zkeyPath);
+        console.log('zkey f: ', zkeyF.length);
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
 
         const startTime = performance.now();
 
-        const proverResult = await rapidsnark.groth16_prover_zkey_file(zkeyPath, wtnsF);
+        const useFileProver = true;
+
+        let proverResult: any;
+        if (useFileProver) {
+          proverResult = await rapidsnark.groth16_prover_zkey_file(
+            zkeyPath,
+            wtnsF
+          );
+        } else {
+          proverResult = await rapidsnark.groth16_prover(
+            zkeyF,
+            wtnsF
+          );
+        }
+
         proof = proverResult.proof;
         pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
         console.log('publicResult: ', pub_signals);
 
         const formattedProof = JSON.stringify(JSON.parse(proof), null, '\t');
-        const formattedSignals = JSON.stringify(JSON.parse(pub_signals), null, '\t');
+        const formattedSignals = JSON.stringify(
+          JSON.parse(pub_signals),
+          null,
+          '\t'
+        );
 
         console.log('formattedProof: ', formattedProof);
         console.log('formattedSignals: ', formattedSignals);
@@ -74,13 +102,16 @@ export default function App() {
       try {
         const startTime = performance.now();
 
-        const result = await rapidsnark.groth16_verify(pub_signals, proof, verificationKey);
+        const result = await rapidsnark.groth16_verify(
+          pub_signals,
+          proof,
+          verificationKey
+        );
         setVerificationResult(result);
 
         console.log('verification result proof valid:' + result);
         const diffVerification = performance.now() - startTime;
         console.log('verification exec time:' + diffVerification);
-
       } catch (error) {
         console.error('Error verifying proof', error);
       }
@@ -111,7 +142,7 @@ export default function App() {
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
         </TouchableOpacity>
 
-        <Text>Proof valid: {verificationResult?.toString() ?? "checking"}</Text>
+        <Text>Proof valid: {verificationResult?.toString() ?? 'checking'}</Text>
 
         <View style={{height: 20}}/>
 
@@ -119,6 +150,15 @@ export default function App() {
       </ScrollView>
     </View>
   );
+
+
+  function writeAssetFilesToDocumentsDirectory(): Promise<any> {
+    return Promise.all([
+      RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey'),
+      RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
+      RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
+    ]);
+  }
 }
 
 const styles = StyleSheet.create({
@@ -139,7 +179,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
     color: '#000',
-
   },
   resultBox: {
     alignSelf: 'stretch',
@@ -169,4 +208,3 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-

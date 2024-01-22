@@ -23,7 +23,7 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16ProverZkeyFile(
         jstring zkeyPath,
         jbyteArray wtnsBuffer, jlong wtnsSize,
         jbyteArray proofBuffer, jlongArray proofSize,
-        jbyteArray publicBuffer, jlongArray publicSize,
+        jobjectArray publicBuffer, jlongArray publicSize,
         jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
