@@ -8,6 +8,7 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
                   witnessData:(NSString *)wtnsBytes1
+                  publicBufferSizeStr:(NSNumber *)publicBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -26,21 +27,27 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     unsigned long proof_size = 16384;
     char proof_buffer[proof_size];
 
-    unsigned long public_buffer_size = CalcPublicBufferSize(zkey_buffer, zkey_size);
+    int nativePublicBufferSize = [publicBufferSize intValue];
+    unsigned long public_buffer_size;
+    if (nativePublicBufferSize > 0) {
+        public_buffer_size = nativePublicBufferSize;
+    } else {
+        public_buffer_size = CalcPublicBufferSize(zkey_buffer, zkey_size);
+    }
     char public_buffer[public_buffer_size];
 
     unsigned long error_msg_maxsize = 256;
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover prove start");
-    groth16_prover(
+    int statusCode = groth16_prover(
       zkey_buffer, zkey_size,
       wtns_buffer, wtns_size,
       proof_buffer, &proof_size,
       public_buffer, &public_buffer_size,
       error_msg, error_msg_maxsize
     );
-    RCTLogInfo(@"groth16_prover prove end");
+    RCTLogInfo(@"groth16_prover prove end, status code %i", statusCode);
 
     // Handle the result of groth16_prover
     NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
@@ -163,6 +170,21 @@ RCT_EXPORT_METHOD(groth16_verify:(NSString *)inputs
         RCTLogInfo(@"Verified false");
         reject(@"E_VERIFICATION_FAILED", @"Verification failed", nil);
     }
+}
+
+RCT_EXPORT_METHOD(calculate_public_buffer_size:(NSString *)zkeyBytes1
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    // NSData decode base64
+    NSData* zkeyBytes = [[NSData alloc]initWithBase64EncodedString:zkeyBytes1 options:0];
+
+    const void *zkey_buffer = [zkeyBytes bytes];
+    unsigned long zkey_size = [zkeyBytes length];
+
+    NSInteger public_buffer_size = (NSInteger) ((int) CalcPublicBufferSize(zkey_buffer, zkey_size));
+
+    resolve(@(public_buffer_size));
 }
 
 @end
