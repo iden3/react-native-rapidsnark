@@ -1,5 +1,5 @@
 import React from 'react';
-import RNFS from "react-native-fs";
+import RNFS from 'react-native-fs';
 import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -16,6 +16,7 @@ export default function App() {
       console.log('Calling groth16_prover');
 
       let zkeyF: string;
+      let zkeyPath: string;
       let wtnsF: string;
       let verificationKey: string;
 
@@ -23,13 +24,24 @@ export default function App() {
       let pub_signals: string;
 
       try {
+        let startTime: number;
+
         if (Platform.OS === 'android') {
-          zkeyF = await RNFS.readFileAssets('circuit_final.zkey', 'base64');
-          wtnsF = await RNFS.readFileAssets('witness.wtns', 'base64');
-          verificationKey = await RNFS.readFileAssets('verification_key.json', 'utf8');
+          await writeAssetFilesToDocumentsDirectory();
+
+          startTime = performance.now();
+
+          zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
+          zkeyF = await RNFS.readFile(zkeyPath, 'base64');
+          wtnsF = await RNFS.readFile(RNFS.DocumentDirectoryPath + '/witness.wtns', 'base64');
+          verificationKey = await RNFS.readFile(
+            RNFS.DocumentDirectoryPath + '/verification_key.json',
+            'utf8'
+          );
         } else {
+          zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
           zkeyF = await RNFS.readFile(
-            RNFS.MainBundlePath + '/circuit_final.zkey',
+            zkeyPath,
             'base64'
           );
           wtnsF = await RNFS.readFile(
@@ -46,7 +58,6 @@ export default function App() {
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
 
-        const startTime = performance.now();
 
         const proverResult = await rapidsnark.groth16_prover(zkeyF, wtnsF);
 
@@ -122,6 +133,15 @@ export default function App() {
       </ScrollView>
     </View>
   );
+
+
+  function writeAssetFilesToDocumentsDirectory(): Promise<any> {
+    return Promise.all([
+      RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey'),
+      RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
+      RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
+    ]);
+  }
 }
 
 const styles = StyleSheet.create({
