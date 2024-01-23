@@ -71,7 +71,8 @@ export default function App() {
         } else {
           proverResult = await groth16_prover(
             zkeyF,
-            wtnsF
+            wtnsF,
+            publicBufferSize,
           );
         }
 
@@ -104,7 +105,7 @@ export default function App() {
       try {
         const startTime = performance.now();
 
-        const result = await groth16_verify(
+        const result = await groth16_verifier(
           pub_signals,
           proof,
           verificationKey
