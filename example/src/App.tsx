@@ -25,8 +25,12 @@ export default function App() {
       let pub_signals: string;
 
       try {
+        let startTime: number;
+
         if (Platform.OS === 'android') {
           await writeAssetFilesToDocumentsDirectory();
+
+          startTime = performance.now();
 
           zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
           zkeyF = await RNFS.readFile(zkeyPath, 'base64');
@@ -38,7 +42,7 @@ export default function App() {
         } else {
           zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
           zkeyF = await RNFS.readFile(
-            RNFS.MainBundlePath + '/circuit_final.zkey',
+            zkeyPath,
             'base64'
           );
           wtnsF = await RNFS.readFile(
@@ -58,7 +62,6 @@ export default function App() {
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
 
-        const startTime = performance.now();
 
         const useFileProver = true;
 
