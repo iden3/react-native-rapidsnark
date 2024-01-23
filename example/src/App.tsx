@@ -16,10 +16,13 @@ export default function App() {
     const fetchData = async () => {
       console.log('Calling groth16_prover');
 
-      let zkeyF: string;
-      let zkeyPath: string;
-      let wtnsF: string;
-      let verificationKey: string;
+      const useFileProver = true;
+      const calculatePublicBufferSize = true;
+
+      let zkeyF: string = '';
+      let zkeyPath: string = '';
+      let wtnsF: string = '';
+      let verificationKey: string = '';
 
       let proof: string;
       let pub_signals: string;
@@ -33,6 +36,12 @@ export default function App() {
           startTime = performance.now();
 
           zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
+          if (useFileProver) {
+            zkeyF = await RNFS.readFile(
+              zkeyPath,
+              'base64'
+            );
+          }
           zkeyF = await RNFS.readFile(zkeyPath, 'base64');
           wtnsF = await RNFS.readFile(RNFS.DocumentDirectoryPath + '/witness.wtns', 'base64');
           verificationKey = await RNFS.readFile(
@@ -40,11 +49,15 @@ export default function App() {
             'utf8'
           );
         } else {
+          startTime = performance.now();
+
           zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
-          zkeyF = await RNFS.readFile(
-            zkeyPath,
-            'base64'
-          );
+          if (useFileProver) {
+            zkeyF = await RNFS.readFile(
+              zkeyPath,
+              'base64'
+            );
+          }
           wtnsF = await RNFS.readFile(
             RNFS.MainBundlePath + '/witness.wtns',
             'base64'
@@ -55,15 +68,12 @@ export default function App() {
           );
         }
 
-        const publicBufferSize = await calculate_public_buffer_size(zkeyF);
+        const publicBufferSize = calculatePublicBufferSize ? await calculate_public_buffer_size(zkeyF) : 16384;
 
         console.log('zkey path: ', zkeyPath);
         console.log('zkey f: ', zkeyF.length);
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
-
-
-        const useFileProver = true;
 
         let proverResult: any;
         if (useFileProver) {

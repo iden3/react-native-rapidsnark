@@ -9,7 +9,7 @@
 
 extern "C" {
 
-JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Prover(
         JNIEnv *env, jobject obj,
         jbyteArray zkeyBuffer, jlong zkeySize,
         jbyteArray wtnsBuffer, jlong wtnsSize,
@@ -18,17 +18,22 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
         jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
-JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16ProverZkeyFile(
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16ProverZkeyFile(
         JNIEnv *env, jobject obj,
         jstring zkeyPath,
         jbyteArray wtnsBuffer, jlong wtnsSize,
         jbyteArray proofBuffer, jlongArray proofSize,
-        jobjectArray publicBuffer, jlongArray publicSize,
+        jbyteArray publicBuffer, jlongArray publicSize,
         jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
-JNIEXPORT jboolean JNICALL Java_com_rapidsnark_GrothProver_groth16Verifier(
+JNIEXPORT jboolean JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Verifier(
         JNIEnv *env, jobject obj, jstring inputs, jstring proof, jstring verificationKey
+);
+
+JNIEXPORT jlong JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_calculatePublicBufferSize(
+        JNIEnv *env, jobject obj,
+        jbyteArray zkeyBuffer, jlong zkeySize
 );
 
 }
