@@ -61,10 +61,6 @@ export default function App() {
         console.log('proofResult: ', proof);
         console.log('publicResult: ', pub_signals);
 
-        const diff = performance.now() - startTime;
-        setExecTime(diff);
-        console.log('exec time ' + diff + 'ms');
-
         const formattedProof = JSON.stringify(JSON.parse(proof), null, '\t');
         const formattedSignals = JSON.stringify(JSON.parse(pub_signals), null, '\t');
 
