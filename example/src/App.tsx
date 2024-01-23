@@ -49,6 +49,11 @@ export default function App() {
         const startTime = performance.now();
 
         const proverResult = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+
+        const diff = performance.now() - startTime;
+        setExecTime(diff);
+        console.log('exec time ' + diff + 'ms');
+
         proof = proverResult.proof;
         pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
@@ -62,10 +67,6 @@ export default function App() {
 
         setProofResult(formattedProof);
         setPublicResult(pub_signals);
-
-        const diff = performance.now() - startTime;
-        setExecTime(diff);
-        console.log('exec time ' + diff + 'ms');
       } catch (error) {
         console.error('Error proving circuit', error);
         return;
@@ -104,6 +105,10 @@ export default function App() {
           </Text>
         </View>
 
+        <View style={{height: 20}}/>
+
+        <Text style={styles.resultText}>Execution time: {execTime}ms</Text>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => Clipboard.setString(proofResult + publicResult)}
@@ -114,8 +119,6 @@ export default function App() {
         <Text>Proof valid: {verificationResult?.toString() ?? "checking"}</Text>
 
         <View style={{height: 20}}/>
-
-        <Text>Execution time: {execTime}ms</Text>
       </ScrollView>
     </View>
   );
