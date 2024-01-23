@@ -51,6 +51,11 @@ export default function App() {
         const startTime = performance.now();
 
         const proverResult = await groth16_prover(zkeyF, wtnsF, publicBufferSize);
+
+        const diff = performance.now() - startTime;
+        setExecTime(diff);
+        console.log('exec time ' + diff + 'ms');
+
         proof = proverResult.proof;
         pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
