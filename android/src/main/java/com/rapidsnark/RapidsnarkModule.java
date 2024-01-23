@@ -32,26 +32,26 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16_prover(String zkeyBytes1, String wtnsBytes1, Promise promise) {
+  public void groth16_prover(String zkeyBytes1, String wtnsBytes1, Integer publicBufferSize, Promise promise) {
     long startTime = System.currentTimeMillis(); // Capture start time
 
     // Decode base64
     byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
     byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
-    int public_buffer_size = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
-
-    Log.e("RapidsnarkModule", "PublicBufferSize: " + public_buffer_size);
+    if (publicBufferSize == null || publicBufferSize <= 0) {
+      publicBufferSize = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
+    }
 
     // Create buffers to get results
     // TODO: Replace with actual buffer sizes if necessary
     byte[] proof_buffer = new byte[16384];
-    byte[] public_buffer = new byte[public_buffer_size];
+    byte[] public_buffer = new byte[publicBufferSize];
     byte[] error_msg = new byte[256];
 
     try {
       // This will require you to write a JNI bridge to your C library.
-      new GrothProver().groth16Prover(
+      int statusCode = new GrothProver().groth16Prover(
         zkeyBytes, zkeyBytes.length,
         wtnsBytes, wtnsBytes.length,
         proof_buffer, new long[]{proof_buffer.length},
@@ -93,6 +93,20 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       promise.resolve(result);
     } catch (Exception e) {
       promise.reject("VERIFIER_ERROR", e.getMessage());
+    }
+  }
+
+  @ReactMethod
+  public void calculate_public_buffer_size(String zkeyBytes1, Promise promise) {
+    try {
+      // Decode base64
+      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
+
+      int public_buffer_size = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
+
+      promise.resolve(public_buffer_size);
+    } catch (Exception e) {
+      promise.reject("", e.getMessage());
     }
   }
 }

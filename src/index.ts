@@ -17,10 +17,15 @@ const Rapidsnark = NativeModules.Rapidsnark
     }
   );
 
-export function groth16_prover(zkey: string, witness: string): Promise<{ proof: string, pub_signals: string }> {
-  return Rapidsnark.groth16_prover(zkey, witness);
+export function groth16_prover(zkey: string, witness: string, publicBufferSize: number = 0): Promise<{ proof: string, pub_signals: string }> {
+  console.log("groth16_prover", publicBufferSize);
+  return Rapidsnark.groth16_prover(zkey, witness, publicBufferSize);
 }
 
 export function groth16_verifier(inputs: string, proof: string, verificationKey: string): Promise<boolean> {
-  return Rapidsnark.groth16_verifier(inputs, proof, verificationKey);
+  return Rapidsnark.groth16_verify(inputs, proof, verificationKey);
+}
+
+export function calculate_public_buffer_size(zkey: string) : Promise<number> {
+  return Rapidsnark.calculate_public_buffer_size(zkey);
 }

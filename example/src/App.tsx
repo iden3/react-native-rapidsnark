@@ -1,9 +1,9 @@
 import React from 'react';
 import RNFS from "react-native-fs";
-import {NativeModules, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {calculate_public_buffer_size, groth16_prover, groth16_verifier} from "../../src";
 
-const rapidsnark = NativeModules.Rapidsnark;
 
 export default function App() {
   const [proofResult, setProofResult] = React.useState('');
@@ -42,17 +42,23 @@ export default function App() {
           );
         }
 
+        const publicBufferSize = await calculate_public_buffer_size(zkeyF);
+
         console.log('zkey f: ', zkeyF.length);
         console.log('wtns f: ', wtnsF.length);
         console.log('vkey f: ', verificationKey.length);
 
         const startTime = performance.now();
 
-        const proverResult = await rapidsnark.groth16_prover(zkeyF, wtnsF);
+        const proverResult = await groth16_prover(zkeyF, wtnsF, publicBufferSize);
         proof = proverResult.proof;
         pub_signals = proverResult.pub_signals;
         console.log('proofResult: ', proof);
         console.log('publicResult: ', pub_signals);
+
+        const diff = performance.now() - startTime;
+        setExecTime(diff);
+        console.log('exec time ' + diff + 'ms');
 
         const formattedProof = JSON.stringify(JSON.parse(proof), null, '\t');
         const formattedSignals = JSON.stringify(JSON.parse(pub_signals), null, '\t');
@@ -62,10 +68,6 @@ export default function App() {
 
         setProofResult(formattedProof);
         setPublicResult(pub_signals);
-
-        const diff = performance.now() - startTime;
-        setExecTime(diff);
-        console.log('exec time ' + diff + 'ms');
       } catch (error) {
         console.error('Error proving circuit', error);
         return;
@@ -74,7 +76,7 @@ export default function App() {
       try {
         const startTime = performance.now();
 
-        const result = await rapidsnark.groth16_verify(pub_signals, proof, verificationKey);
+        const result = await groth16_verifier(pub_signals, proof, verificationKey);
         setVerificationResult(result);
 
         console.log('verification result proof valid:' + result);
@@ -104,6 +106,10 @@ export default function App() {
           </Text>
         </View>
 
+        <View style={{height: 20}}/>
+
+        <Text style={styles.resultText}>Execution time: {execTime}ms</Text>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => Clipboard.setString(proofResult + publicResult)}
@@ -114,8 +120,6 @@ export default function App() {
         <Text>Proof valid: {verificationResult?.toString() ?? "checking"}</Text>
 
         <View style={{height: 20}}/>
-
-        <Text>Execution time: {execTime}ms</Text>
       </ScrollView>
     </View>
   );
