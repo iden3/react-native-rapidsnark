@@ -7,23 +7,6 @@
 extern "C" {
 #endif
 
-JNIEXPORT jlong JNICALL Java_com_rapidsnark_GrothProver_calculatePublicBufferSize(
-        JNIEnv *env, jobject obj,
-        jbyteArray zkeyBuffer, jlong zkeySize
-) {
-    LOGE("calculatePublicBufferSize native called");
-
-    void *nativeZkeyBuffer = env->GetByteArrayElements(zkeyBuffer, nullptr);
-
-    unsigned long nativePublicSize = CalcPublicBufferSize(
-            nativeZkeyBuffer, zkeySize
-    );
-
-    LOGE("calculatePublicBufferSize:%lu", nativePublicSize);
-
-    return nativePublicSize;
-}
-
 JNIEXPORT jint JNICALL Java_com_rapidsnark_GrothProver_groth16Prover(
         JNIEnv *env, jobject obj,
         jbyteArray zkeyBuffer, jlong zkeySize,
@@ -162,6 +145,23 @@ JNIEXPORT jboolean JNICALL Java_com_rapidsnark_GrothProver_groth16Verifier(
     env->ReleaseStringUTFChars(verificationKey, nativeVerificationKey);
 
     return result;
+}
+
+JNIEXPORT jlong JNICALL Java_com_rapidsnark_GrothProver_calculatePublicBufferSize(
+        JNIEnv *env, jobject obj,
+        jbyteArray zkeyBuffer, jlong zkeySize
+) {
+    LOGE("calculatePublicBufferSize native called");
+
+    void *nativeZkeyBuffer = env->GetByteArrayElements(zkeyBuffer, nullptr);
+
+    unsigned long nativePublicSize = CalcPublicBufferSize(
+            nativeZkeyBuffer, zkeySize
+    );
+
+    LOGE("calculatePublicBufferSize:%lu", nativePublicSize);
+
+    return nativePublicSize;
 }
 
 #ifdef __cplusplus

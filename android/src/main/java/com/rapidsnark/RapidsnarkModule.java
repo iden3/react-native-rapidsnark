@@ -32,22 +32,20 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16_prover(String zkeyBytes1, String wtnsBytes1, Integer publicBufferSize, Promise promise) {
+  public void groth16_prover(String zkeyBytes1, String wtnsBytes1,
+                             Integer proofBufferSize, Integer publicBufferSize,
+                             Integer errorBufferSize,
+                             Promise promise) {
     long startTime = System.currentTimeMillis(); // Capture start time
 
     // Decode base64
     byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
     byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
-    if (publicBufferSize == null || publicBufferSize <= 0) {
-      publicBufferSize = (int) (new GrothProver().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
-    }
-
     // Create buffers to get results
-    // TODO: Replace with actual buffer sizes if necessary
-    byte[] proof_buffer = new byte[16384];
+    byte[] proof_buffer = new byte[proofBufferSize];
     byte[] public_buffer = new byte[publicBufferSize];
-    byte[] error_msg = new byte[256];
+    byte[] error_msg = new byte[errorBufferSize];
 
     try {
       // This will require you to write a JNI bridge to your C library.
@@ -87,17 +85,19 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1, Promise promise) {
+  public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1,
+                                       Integer proofBufferSize, Integer publicBufferSize,
+                                       Integer errorBufferSize,
+                                       Promise promise) {
     long startTime = System.currentTimeMillis(); // Capture start time
 
     // Decode base64
     byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
     // Create buffers to get results
-    // TODO: Replace with actual buffer sizes if necessary
-    byte[] proof_buffer = new byte[16384];
-    byte[][] public_buffer = new byte[1][16];
-    byte[] error_msg = new byte[256];
+    byte[] proof_buffer = new byte[proofBufferSize];
+    byte[][] public_buffer = new byte[1][publicBufferSize];
+    byte[] error_msg = new byte[errorBufferSize];
 
     try {
       // This will require you to write a JNI bridge to your C library.
@@ -167,19 +167,11 @@ class GrothProver {
     System.loadLibrary("rapidsnark_module");
   }
 
-  public native long calculatePublicBufferSize(byte[] zkeyBuffer, long zkeySize);
+  public native int groth16Prover(byte[] zkeyBuffer, long zkeySize, byte[] wtnsBuffer, long wtnsSize, byte[] proofBuffer, long[] proofSize, byte[] publicBuffer, long[] publicSize, byte[] errorMsg, long errorMsgMaxSize);
 
-  public native int groth16Prover(byte[] zkeyBuffer, long zkeySize,
-                                  byte[] wtnsBuffer, long wtnsSize,
-                                  byte[] proofBuffer, long[] proofSize,
-                                  byte[] publicBuffer, long[] publicSize,
-                                  byte[] errorMsg, long errorMsgMaxSize);
-
-  public native int groth16ProverZkeyFile(String zkeyPath,
-                                          byte[] wtnsBuffer, long wtnsSize,
-                                          byte[] proofBuffer, long[] proofSize,
-                                          byte[][] publicBuffer, long[] publicSize,
-                                          byte[] errorMsg, long errorMsgMaxSize);
+  public native int groth16ProverZkeyFile(String zkeyPath, byte[] wtnsBuffer, long wtnsSize, byte[] proofBuffer, long[] proofSize, byte[][] publicBuffer, long[] publicSize, byte[] errorMsg, long errorMsgMaxSize);
 
   public native boolean groth16Verifier(String inputs, String proof, String verificationKey);
+
+  public native long calculatePublicBufferSize(byte[] zkeyBuffer, long zkeySize);
 }

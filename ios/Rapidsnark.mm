@@ -8,7 +8,9 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
                   witnessData:(NSString *)wtnsBytes1
-                  publicBufferSizeStr:(NSNumber *)publicBufferSize
+                  proofBufferSize:(NSNumber *)proofBufferSize
+                  publicBufferSize:(NSNumber *)publicBufferSize
+                  errBufferSize:(NSNumber *)errBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -24,19 +26,13 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     const void *wtns_buffer = [wtnsBytes bytes];
     unsigned long wtns_size = [wtnsBytes length];
 
-    unsigned long proof_size = 16384;
+    unsigned long proof_size = (unsigned long) [proofBufferSize intValue];
     char proof_buffer[proof_size];
 
-    int nativePublicBufferSize = [publicBufferSize intValue];
-    unsigned long public_buffer_size;
-    if (nativePublicBufferSize > 0) {
-        public_buffer_size = nativePublicBufferSize;
-    } else {
-        public_buffer_size = CalcPublicBufferSize(zkey_buffer, zkey_size);
-    }
+    unsigned long public_buffer_size = (unsigned long) [publicBufferSize intValue];
     char public_buffer[public_buffer_size];
 
-    unsigned long error_msg_maxsize = 256;
+    unsigned long error_msg_maxsize = (unsigned long) [errBufferSize intValue];
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover prove start");
@@ -69,6 +65,9 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
 
 RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
                   witnessData:(NSString *)wtnsBytes1
+                  proofBufferSize:(NSNumber *)proofBufferSize
+                  publicBufferSize:(NSNumber *)publicBufferSize
+                  errBufferSize:(NSNumber *)errBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -83,13 +82,13 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     const void *wtns_buffer = [wtnsBytes bytes];
     unsigned long wtns_size = [wtnsBytes length];
 
-    unsigned long proof_size = 16384;
+    unsigned long proof_size = (unsigned long) [proofBufferSize intValue];
     char proof_buffer[proof_size];
 
-    unsigned long public_buffer_size = 65536;
+    unsigned long public_buffer_size = (unsigned long) [publicBufferSize intValue];
     char public_buffer[public_buffer_size];
 
-    unsigned long error_msg_maxsize = 256;
+    unsigned long error_msg_maxsize = (unsigned long) [errBufferSize intValue];
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover_zkey_file prove start");

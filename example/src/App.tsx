@@ -66,13 +66,14 @@ export default function App() {
         if (useFileProver) {
           proverResult = await groth16_prover_zkey_file(
             zkeyPath,
-            wtnsF
+            wtnsF,
+            {publicBufferSize},
           );
         } else {
           proverResult = await groth16_prover(
             zkeyF,
             wtnsF,
-            publicBufferSize,
+            {publicBufferSize},
           );
         }
 
