@@ -45,10 +45,43 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     );
     RCTLogInfo(@"groth16_prover prove end, status code %i", statusCode);
 
-    // Handle the result of groth16_prover
-    NSString *proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
-    NSString *publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
+    if (statusCode == PROVER_ERROR) {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"groth16_prover error %@", errorString);
+      reject(@"groth16_prover error", errorString, nil);
+      return;
+    } else if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"groth16_prover error - invalid witness length %@", errorString);
+      reject(@"groth16_prover error", errorString, nil);
+      return;
+    }
 
+    NSString *proofResult;
+    NSString *publicResult;
+
+    if (status_code == PROVER_ERROR_SHORT_BUFFER) {
+      RCTLogInfo(@"groth16_prover_zkey_file short buffer");
+      // The public buffer is too small, so we need to allocate a new one
+      char *extended_public_buffer = (char*)malloc(public_buffer_size);
+
+      status_code = groth16_prover_zkey_file(
+        file_path,
+        wtns_buffer, wtns_size,
+        proof_buffer, &proof_size,
+        extended_public_buffer, &public_buffer_size,
+        error_msg, error_msg_maxsize
+      );
+
+      proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
+      publicResult = [NSString stringWithCString:extended_public_buffer encoding:NSUTF8StringEncoding];
+
+      free(extended_public_buffer);
+    } else {
+      // Handle the result of groth16_prover
+      proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
+      publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
+    }
     if (proofResult.length > 0) {
         NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);
@@ -59,7 +92,7 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
         //print error_msg
         RCTLogInfo(@"%s", error_msg);
 
-        reject(@"PROVER_ERROR", errorString, nil);
+        reject(@"groth16_prover error", errorString, nil);
     }
 }
 
@@ -99,6 +132,18 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
       public_buffer, &public_buffer_size,
       error_msg, error_msg_maxsize
     );
+
+    if (statusCode == PROVER_ERROR) {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"groth16_prover_zkey_file error %@", errorString);
+      reject(@"groth16_prover_zkey_file error", errorString, nil);
+      return;
+    } else if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"groth16_prover_zkey_file error - invalid witness length %@", errorString);
+      reject(@"groth16_prover_zkey_file error", errorString, nil);
+      return;
+    }
 
     NSString *proofResult;
     NSString *publicResult;
@@ -167,7 +212,7 @@ RCT_EXPORT_METHOD(groth16_verify:(NSString *)inputs
         resolve(@(result));
     } else {
         RCTLogInfo(@"Verified false");
-        reject(@"E_VERIFICATION_FAILED", @"Verification failed", nil);
+        reject(@"groth16_verify error", @"Verification failed", nil);
     }
 }
 

@@ -1,141 +1,164 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {calculate_public_buffer_size, groth16_prover, groth16_prover_zkey_file, groth16_verifier} from "../../src";
 
 
 export default function App() {
+  const [enableBufferProver, setEnableBufferProver] = React.useState(false);
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
-  const [execTime, setExecTime] = React.useState(0);
+  const [bufferExecTime, setBufferExecTime] = React.useState(0);
+  const [fileExecTime, setFileExecTime] = React.useState(0);
+  const [bufferCalcExecTime, setBufferCalcExecTime] = React.useState(0);
   const [verificationResult, setVerificationResult] =
     React.useState<boolean>(null);
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      console.log('Calling groth16_prover');
+  const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
 
-      const useFileProver = true;
-      const calculatePublicBufferSize = true;
+  const useCalculatedPublicBufferSize = async () => {
+    const zkeyF = await getZkeyFile();
+    return calculate_public_buffer_size(zkeyF);
+  };
 
-      let zkeyF: string = '';
-      let zkeyPath: string = '';
-      let wtnsF: string = '';
-      let verificationKey: string = '';
+  const useGroth16BufferProver = async () => {
+    console.log('Calling useGroth16BufferProver');
 
-      let proof: string;
-      let pub_signals: string;
+    const zkeyF = await getZkeyFile();
+    const wtnsF = await getWtnsFile();
 
-      try {
-        let startTime: number;
+    return groth16_prover(
+      zkeyF,
+      wtnsF,
+    );
+  };
 
-        if (Platform.OS === 'android') {
-          await writeAssetFilesToDocumentsDirectory(useFileProver);
+  const useGroth16FileProver = async () => {
+    console.log('Calling useGroth16FileProver');
 
-          console.log('Copied assets to documents directory');
+    const wtnsF = await getWtnsFile();
 
-          startTime = performance.now();
+    return groth16_prover_zkey_file(
+      zkeyPath,
+      wtnsF,
+    );
+  };
 
-          zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
-          if (!useFileProver) {
-            zkeyF = await RNFS.readFile(zkeyPath, 'base64');
-          }
-          wtnsF = await RNFS.readFile(RNFS.DocumentDirectoryPath + '/witness.wtns', 'base64');
-          verificationKey = await RNFS.readFile(
-            RNFS.DocumentDirectoryPath + '/verification_key.json',
-            'utf8'
-          );
-        } else {
-          startTime = performance.now();
+  const logProof = ({proof, pub_signals}) => {
+    console.log('proofResult: ', proof);
+    console.log('publicResult: ', pub_signals);
 
-          zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
-          if (!useFileProver) {
-            zkeyF = await RNFS.readFile(zkeyPath, 'base64');
-          }
-          wtnsF = await RNFS.readFile(
-            RNFS.MainBundlePath + '/witness.wtns',
-            'base64'
-          );
-          verificationKey = await RNFS.readFile(
-            RNFS.MainBundlePath + '/verification_key.json',
-            'utf8'
-          );
-        }
+    const formattedProof = JSON.stringify(JSON.parse(proof), null, '\t');
+    const formattedSignals = JSON.stringify(
+      JSON.parse(pub_signals),
+      null,
+      '\t'
+    );
 
-        console.log('Got assets');
+    console.log('formattedProof: ', formattedProof);
+    console.log('formattedSignals: ', formattedSignals);
+  };
 
-        const publicBufferSize = calculatePublicBufferSize ? await calculate_public_buffer_size(zkeyF) : 16384;
+  const runProver = React.useCallback(async () => {
+    let proofResult: string;
+    let publicResult: string;
 
-        console.log('zkey path: ', zkeyPath);
-        console.log('zkey f: ', zkeyF.length);
-        console.log('wtns f: ', wtnsF.length);
-        console.log('vkey f: ', verificationKey.length);
+    // Copy assets to documents directory on Android
+    if (Platform.OS === 'android') {
+      await writeAssetFilesToDocumentsDirectory();
+    }
 
-        let proverResult: any;
-        if (useFileProver) {
-          proverResult = await groth16_prover_zkey_file(
-            zkeyPath,
-            wtnsF,
-            {publicBufferSize},
-          );
-        } else {
-          proverResult = await groth16_prover(
-            zkeyF,
-            wtnsF,
-            {publicBufferSize},
-          );
-        }
+    console.log('Calling groth16_prover');
 
-        const diff = performance.now() - startTime;
-        setExecTime(diff);
-        console.log('exec time ' + diff + 'ms');
-
-        proof = proverResult.proof;
-        pub_signals = proverResult.pub_signals;
-        console.log('proofResult: ', proof);
-        console.log('publicResult: ', pub_signals);
-
-        const formattedProof = JSON.stringify(JSON.parse(proof), null, '\t');
-        const formattedSignals = JSON.stringify(
-          JSON.parse(pub_signals),
-          null,
-          '\t'
-        );
-
-        console.log('formattedProof: ', formattedProof);
-        console.log('formattedSignals: ', formattedSignals);
-
-        setProofResult(formattedProof);
-        setPublicResult(pub_signals);
-      } catch (error) {
-        console.error('Error proving circuit', error);
-        return;
+    let startTime: number;
+    let proverResult: { proof: string; pub_signals: string; };
+    let diff: number;
+    try {
+      if (enableBufferProver) {
+        startTime = performance.now();
+        proverResult = await useGroth16BufferProver();
+        diff = performance.now() - startTime;
+        setBufferExecTime(diff);
+        logProof(proverResult);
       }
 
-      try {
-        const startTime = performance.now();
+      startTime = performance.now();
+      proverResult = await useGroth16FileProver();
+      diff = performance.now() - startTime;
+      setFileExecTime(diff);
+      logProof(proverResult);
 
-        const result = await groth16_verifier(
-          pub_signals,
-          proof,
-          verificationKey
-        );
-        setVerificationResult(result);
+      proofResult = proverResult.proof;
+      publicResult = proverResult.pub_signals;
+      setProofResult(proofResult)
+      setPublicResult(publicResult);
 
-        console.log('verification result proof valid:' + result);
-        const diffVerification = performance.now() - startTime;
-        console.log('verification exec time:' + diffVerification);
-      } catch (error) {
-        console.error('Error verifying proof', error);
+      if (enableBufferProver) {
+        startTime = performance.now();
+        const publicBufferSize = await useCalculatedPublicBufferSize();
+        diff = performance.now() - startTime;
+        setBufferCalcExecTime(diff);
+        console.log('publicBufferSize: ', publicBufferSize);
       }
-    };
-    fetchData();
+    } catch (error) {
+      console.error('Error proving circuit', error);
+      return;
+    }
+
+    try {
+      const startTime = performance.now();
+
+      const verificationKey = await getVerificationKeyFile();
+
+      const result = await groth16_verifier(
+        publicResult,
+        proofResult,
+        verificationKey
+      );
+      setVerificationResult(result);
+
+      console.log('verification result proof valid:' + result);
+      const diffVerification = performance.now() - startTime;
+      console.log('verification exec time:' + diffVerification);
+    } catch (error) {
+      console.error('Error verifying proof', error);
+    }
   }, []);
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
+        <View style={{height: 40}}/>
+
+        <View style={{flexDirection: "row", alignItems: "center", alignContent: "center"}}>
+          <Switch value={enableBufferProver} onValueChange={onToggleSwitch}/>
+          <View style={{width: 10}}/>
+          <Text style={styles.resultText}>Enable buffer prover</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => runProver()}
+        >
+          <Text style={styles.buttonText}>Run prover</Text>
+        </TouchableOpacity>
+
+        <View style={{height: 20}}/>
+
+        <Text style={styles.resultText}>Buffer execution time: {bufferExecTime}ms</Text>
+        <Text style={styles.resultText}>File execution time: {fileExecTime}ms</Text>
+        <Text style={styles.resultText}>Buffer calc execution time: {bufferCalcExecTime}ms</Text>
+
+        <View style={{height: 20}}/>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => Clipboard.setString(proofResult + '\n' + publicResult)}
+        >
+          <Text style={styles.buttonText}>Copy result to clipboard</Text>
+        </TouchableOpacity>
+
         <Text style={styles.title}>Proof:</Text>
         <View style={styles.resultBox}>
           <Text style={styles.resultText} selectable={true}>
@@ -149,32 +172,36 @@ export default function App() {
           </Text>
         </View>
 
-        <View style={{height: 20}}/>
-
-        <Text style={styles.resultText}>Execution time: {execTime}ms</Text>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => Clipboard.setString(proofResult + publicResult)}
-        >
-          <Text style={styles.buttonText}>Copy result to clipboard</Text>
-        </TouchableOpacity>
-
         <Text>Proof valid: {verificationResult?.toString() ?? 'checking'}</Text>
 
         <View style={{height: 20}}/>
       </ScrollView>
     </View>
   );
+}
 
+function writeAssetFilesToDocumentsDirectory(): Promise<any> {
+  return Promise.all([
+    RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey'),
+    RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
+    RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
+  ]);
+}
 
-  function writeAssetFilesToDocumentsDirectory(useFileProver: boolean): Promise<any> {
-    return Promise.all([
-      useFileProver ? RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey') : Promise.resolve(""),
-      RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
-      RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
-    ]);
-  }
+const zkeyPath = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/circuit_final.zkey';
+
+function getZkeyFile(): Promise<string> {
+  return RNFS.readFile(zkeyPath, 'base64');
+}
+
+function getWtnsFile(): Promise<string> {
+  const path = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/witness.wtns';
+  return RNFS.readFile(path, 'base64');
+}
+
+function getVerificationKeyFile(): Promise<string> {
+  const path = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/verification_key.json';
+  return RNFS.readFile(path, 'utf8');
 }
 
 const styles = StyleSheet.create({
