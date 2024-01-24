@@ -8,7 +8,6 @@ WITNESS=$DIST/circuit_js/witness.wtns
 echo "--------------------"
 
 if [[ -f $ZKEY ]]; then
-  cp $ZKEY ../../example
   cp $ZKEY ../../example/ios
   cp $ZKEY ../../example/android/app/src/main/assets
   echo "zkey copied"
@@ -19,7 +18,6 @@ fi
 echo "--------------------"
 
 if [[ -f $VERIFICATION_KEY ]]; then
-  cp $VERIFICATION_KEY ../../example
   cp $VERIFICATION_KEY ../../example/ios
   cp $VERIFICATION_KEY ../../example/android/app/src/main/assets
   echo "verification key copied"
@@ -30,7 +28,6 @@ fi
 echo "--------------------"
 
 if [[ -f $WITNESS ]]; then
-  cp $WITNESS ../../example
   cp $WITNESS ../../example/ios
   cp $WITNESS ../../example/android/app/src/main/assets
   echo "witness copied"

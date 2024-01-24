@@ -2,7 +2,8 @@
 
 ---
 
-This library is React Native wrapper for the [Rapidsnark](https://github.com/iden3/rapidsnark). It enables the generation of proofs for specified circuits and witnesses within a React Native environment.
+This library is React Native wrapper for the [Rapidsnark](https://github.com/iden3/rapidsnark). It enables the
+generation of proofs for specified circuits and witnesses within a React Native environment.
 
 ## Platform Support
 
@@ -26,7 +27,14 @@ const rapidsnark = NativeModules.Rapidsnark;
 
 const {proof, pub_signals} = await rapidsnark.groth16_prover(zkey, wtns);
 ```
+
 `proof` and `pub_signals` are JSON encoded strings.
+
+### Troubleshooting
+
+#### libgroth16_verify.a is not an object file
+
+Install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory to fetch large files.
 
 #### iOS linking troubleshooting
 
@@ -45,14 +53,17 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 ## Example App
 
 Check out the [example app](./example) for a working example.
+To use bundled circuits, install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory.
 
 ## TODO:
+
 [-]: Add verification.
 [-]: Dynamic buffers size. Currently set to 16384 and error 256
 
 ## License
 
-react-native-rapidsnark is part of the iden3 project 0KIMS association. Please check the [COPYING](./COPYING) file for more details.
+react-native-rapidsnark is part of the iden3 project 0KIMS association. Please check the [COPYING](./COPYING) file for
+more details.
 
 ---
 
