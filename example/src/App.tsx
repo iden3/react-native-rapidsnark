@@ -31,18 +31,16 @@ export default function App() {
         let startTime: number;
 
         if (Platform.OS === 'android') {
-          await writeAssetFilesToDocumentsDirectory();
+          await writeAssetFilesToDocumentsDirectory(useFileProver);
+
+          console.log('Copied assets to documents directory');
 
           startTime = performance.now();
 
           zkeyPath = RNFS.DocumentDirectoryPath + '/circuit_final.zkey';
-          if (useFileProver) {
-            zkeyF = await RNFS.readFile(
-              zkeyPath,
-              'base64'
-            );
+          if (!useFileProver) {
+            zkeyF = await RNFS.readFile(zkeyPath, 'base64');
           }
-          zkeyF = await RNFS.readFile(zkeyPath, 'base64');
           wtnsF = await RNFS.readFile(RNFS.DocumentDirectoryPath + '/witness.wtns', 'base64');
           verificationKey = await RNFS.readFile(
             RNFS.DocumentDirectoryPath + '/verification_key.json',
@@ -52,11 +50,8 @@ export default function App() {
           startTime = performance.now();
 
           zkeyPath = RNFS.MainBundlePath + '/circuit_final.zkey';
-          if (useFileProver) {
-            zkeyF = await RNFS.readFile(
-              zkeyPath,
-              'base64'
-            );
+          if (!useFileProver) {
+            zkeyF = await RNFS.readFile(zkeyPath, 'base64');
           }
           wtnsF = await RNFS.readFile(
             RNFS.MainBundlePath + '/witness.wtns',
@@ -67,6 +62,8 @@ export default function App() {
             'utf8'
           );
         }
+
+        console.log('Got assets');
 
         const publicBufferSize = calculatePublicBufferSize ? await calculate_public_buffer_size(zkeyF) : 16384;
 
@@ -171,9 +168,9 @@ export default function App() {
   );
 
 
-  function writeAssetFilesToDocumentsDirectory(): Promise<any> {
+  function writeAssetFilesToDocumentsDirectory(useFileProver: boolean): Promise<any> {
     return Promise.all([
-      RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey'),
+      useFileProver ? RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey') : Promise.resolve(""),
       RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
       RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
     ]);
