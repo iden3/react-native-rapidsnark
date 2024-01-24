@@ -42,40 +42,31 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
                              Integer proofBufferSize, Integer publicBufferSize,
                              Integer errorBufferSize,
                              Promise promise) {
-    RapidsnarkJniBridge rapidsnarkJNI = new RapidsnarkJniBridge();
-
-    long startTime = System.currentTimeMillis(); // Capture start time
-
-    // Decode base64
-    byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
-    byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
-
-    // Create buffers to get results
-    byte[] proof_buffer = new byte[proofBufferSize];
-    long[] proof_buffer_size = new long[]{proofBufferSize};
-    byte[] public_buffer = new byte[publicBufferSize];
-    long[] public_buffer_size = new long[]{publicBufferSize};
-    byte[] error_msg = new byte[errorBufferSize];
 
     try {
-      // This will require you to write a JNI bridge to your C library.
-      int statusCode = rapidsnarkJNI.groth16Prover(
-        zkeyBytes, zkeyBytes.length,
-        wtnsBytes, wtnsBytes.length,
-        proof_buffer, proof_buffer_size,
-        public_buffer, public_buffer_size,
-        error_msg, error_msg.length
-      );
-      if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
-        public_buffer = new byte[(int) public_buffer_size[0]];
 
-        statusCode = rapidsnarkJNI.groth16Prover(
-          zkeyBytes, zkeyBytes.length,
-          wtnsBytes, wtnsBytes.length,
-          proof_buffer, proof_buffer_size,
-          public_buffer, public_buffer_size,
-          error_msg, error_msg.length
-        );
+      RapidsnarkJniBridge rapidsnarkJNI = new RapidsnarkJniBridge();
+
+      long startTime = System.currentTimeMillis(); // Capture start time
+
+      // Decode base64
+      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
+      byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
+
+      // Create buffers to get results
+      byte[] proof_buffer = new byte[proofBufferSize];
+      long[] proof_buffer_size = new long[]{proofBufferSize};
+      byte[] public_buffer = new byte[publicBufferSize];
+      long[] public_buffer_size = new long[]{publicBufferSize};
+      byte[] error_msg = new byte[errorBufferSize];
+
+      // This will require you to write a JNI bridge to your C library.
+      int statusCode = groth16Prove(rapidsnarkJNI, zkeyBytes, wtnsBytes, proof_buffer,
+        proof_buffer_size, public_buffer, public_buffer_size, error_msg);
+      if (statusCode != 0) {
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
+        promise.reject("PROVER_ERROR", errorString);
+        return;
       }
 
       long endTime = System.currentTimeMillis(); // Capture end time
@@ -126,25 +117,21 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
     try {
       // This will require you to write a JNI bridge to your C library.
-      int statusCode = rapidsnarkJNI.groth16ProverZkeyFile(
-        zkeyPath,
-        wtnsBytes, wtnsBytes.length,
-        proof_buffer, proof_buffer_size,
-        public_buffer, public_buffer_size,
-        error_msg, error_msg.length
-      );
+      int statusCode = groth16ProverZkeyFile(rapidsnarkJNI, zkeyPath, wtnsBytes,
+        proof_buffer, proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
         // public_buffer_size is updated at lib side with needed size
         public_buffer = new byte[(int) public_buffer_size[0]];
 
-        statusCode = rapidsnarkJNI.groth16ProverZkeyFile(
-          zkeyPath,
-          wtnsBytes, wtnsBytes.length,
-          proof_buffer, proof_buffer_size,
-          public_buffer, public_buffer_size,
-          error_msg, error_msg.length
-        );
+        statusCode = groth16ProverZkeyFile(rapidsnarkJNI, zkeyPath, wtnsBytes, proof_buffer, proof_buffer_size,
+          public_buffer, public_buffer_size, error_msg);
+
+        if (statusCode != 0) {
+          String errorString = new String(error_msg, StandardCharsets.UTF_8);
+          promise.reject("PROVER_ERROR", errorString);
+          return;
+        }
       }
 
       long endTime = System.currentTimeMillis(); // Capture end time
@@ -172,6 +159,39 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     } catch (Exception e) {
       promise.reject("PROVER_ERROR", e.getMessage());
     }
+  }
+
+  private static int groth16Prove(RapidsnarkJniBridge rapidsnarkJNI, byte[] zkeyBytes,
+                                  byte[] wtnsBytes, byte[] proof_buffer, long[] proof_buffer_size,
+                                  byte[] public_buffer, long[] public_buffer_size, byte[] error_msg) {
+    int statusCode = rapidsnarkJNI.groth16Prover(
+      zkeyBytes, zkeyBytes.length,
+      wtnsBytes, wtnsBytes.length,
+      proof_buffer, proof_buffer_size,
+      public_buffer, public_buffer_size,
+      error_msg, error_msg.length
+    );
+
+    if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
+      Log.d("RapidsnarkModule", "groth16Prove: PROVER_ERROR_SHORT_BUFFER:" + public_buffer_size[0]);
+      public_buffer = new byte[(int) public_buffer_size[0]];
+      return groth16Prove(rapidsnarkJNI, zkeyBytes, wtnsBytes, proof_buffer,
+        proof_buffer_size, public_buffer, public_buffer_size, error_msg);
+    }
+    return statusCode;
+  }
+
+  private static int groth16ProverZkeyFile(RapidsnarkJniBridge rapidsnarkJNI, String zkeyPath,
+                                            byte[] wtnsBytes, byte[] proof_buffer,
+                                            long[] proof_buffer_size, byte[] public_buffer,
+                                            long[] public_buffer_size, byte[] error_msg) {
+    return rapidsnarkJNI.groth16ProverZkeyFile(
+      zkeyPath,
+      wtnsBytes, wtnsBytes.length,
+      proof_buffer, proof_buffer_size,
+      public_buffer, public_buffer_size,
+      error_msg, error_msg.length
+    );
   }
 
   @ReactMethod
