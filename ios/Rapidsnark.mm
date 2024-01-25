@@ -60,13 +60,13 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     NSString *proofResult;
     NSString *publicResult;
 
-    if (status_code == PROVER_ERROR_SHORT_BUFFER) {
+    if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
       RCTLogInfo(@"groth16_prover_zkey_file short buffer");
       // The public buffer is too small, so we need to allocate a new one
       char *extended_public_buffer = (char*)malloc(public_buffer_size);
 
-      status_code = groth16_prover_zkey_file(
-        file_path,
+      statusCode = groth16_prover(
+        zkey_buffer, zkey_size,
         wtns_buffer, wtns_size,
         proof_buffer, &proof_size,
         extended_public_buffer, &public_buffer_size,
@@ -125,7 +125,7 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover_zkey_file prove start");
-    int status_code = groth16_prover_zkey_file(
+    int statusCode = groth16_prover_zkey_file(
       file_path,
       wtns_buffer, wtns_size,
       proof_buffer, &proof_size,
@@ -148,12 +148,12 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     NSString *proofResult;
     NSString *publicResult;
 
-    if (status_code == PROVER_ERROR_SHORT_BUFFER) {
+    if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
       RCTLogInfo(@"groth16_prover_zkey_file short buffer");
       // The public buffer is too small, so we need to allocate a new one
       char *extended_public_buffer = (char*)malloc(public_buffer_size);
 
-      status_code = groth16_prover_zkey_file(
+      statusCode = groth16_prover_zkey_file(
         file_path,
         wtns_buffer, wtns_size,
         proof_buffer, &proof_size,
@@ -173,7 +173,7 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
 
     RCTLogInfo(@"groth16_prover_zkey_file prove end");
 
-    RCTLogInfo(@"%i", status_code);
+    RCTLogInfo(@"%i", statusCode);
     if (proofResult.length > 0) {
         NSDictionary *resultDict = @{@"proof": proofResult, @"pub_signals": publicResult};
         resolve(resultDict);

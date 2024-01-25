@@ -60,6 +60,7 @@ Install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root direc
 
 Check out the [example app](./example) for a working example.
 To use bundled circuits, install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory.
+To use custom circuits, place your circuit, witness and zkey files in the `example/ios` and `example/android/app/src/main/assets` directory.
 
 ## Circuits generation
 
