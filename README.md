@@ -32,10 +32,6 @@ const {proof, pub_signals} = await rapidsnark.groth16_prover(zkey, wtns);
 
 ### Troubleshooting
 
-#### libgroth16_verify.a is not an object file
-
-Install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory to fetch large files.
-
 #### iOS linking troubleshooting
 
 If you get an error like this:
@@ -50,15 +46,31 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 4. Expand `Link Binary With Libraries`
 5. Add `RapidSnark.xcframework` from `Workspace/Pods` folder.
 
+#### libgroth16_verify.a is not an object file
+
+If you're trying to run package locally, you might get an error like this:
+
+```
+error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: file: libs_ios/libgroth16_verify.a is not an object file (not allowed in a library)
+```
+Install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory to fetch large files.
+
+
 ## Example App
 
 Check out the [example app](./example) for a working example.
 To use bundled circuits, install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory.
 
+## Circuits generation
+
+You can build your own circuits and witnesses to use with example app.
+
+Check out the [circuits](./circuits) directory and [REAMDE.md](./circuits/README.md) inside for more details.
+
 ## TODO:
 
-[-]: Add verification.
-[-]: Dynamic buffers size. Currently set to 16384 and error 256
+- [x] Add verification.
+- [x] Dynamic buffers size. Currently set to 16384 and error 256
 
 ## License
 
