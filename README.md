@@ -48,7 +48,7 @@ Function that takes zkey file path and witness file and returns proof and public
 Reads zkey file directly from filesystem, so it's more memory and efficient than `groth16_prover`.
 
 ```js
-import {groth16_prover} from "react-native-rapidsnark";
+import {groth16_prover_zkey_file} from "react-native-rapidsnark";
 
 // ...
 

@@ -2,8 +2,7 @@ import React from 'react';
 import RNFS from 'react-native-fs';
 import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {calculate_public_buffer_size, groth16_prover, groth16_prover_zkey_file, groth16_verifier} from "../../src";
-
+import {calculate_public_buffer_size, groth16_prover, groth16_prover_zkey_file, groth16_verifier,} from '../../src';
 
 export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
@@ -17,32 +16,26 @@ export default function App() {
 
   const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
 
-  const useCalculatedPublicBufferSize = async () => {
+  const runCalculatePublicBufferSize = async () => {
     const zkeyF = await getZkeyFile();
     return calculate_public_buffer_size(zkeyF);
   };
 
-  const useGroth16BufferProver = async () => {
+  const runGroth16BufferProver = async () => {
     console.log('Calling useGroth16BufferProver');
 
     const zkeyF = await getZkeyFile();
     const wtnsF = await getWtnsFile();
 
-    return groth16_prover(
-      zkeyF,
-      wtnsF,
-    );
+    return groth16_prover(zkeyF, wtnsF);
   };
 
-  const useGroth16FileProver = async () => {
+  const runGroth16FileProver = async () => {
     console.log('Calling useGroth16FileProver');
 
     const wtnsF = await getWtnsFile();
 
-    return groth16_prover_zkey_file(
-      zkeyPath,
-      wtnsF,
-    );
+    return groth16_prover_zkey_file(zkeyPath, wtnsF);
   };
 
   const logProof = ({proof, pub_signals}) => {
@@ -61,8 +54,8 @@ export default function App() {
   };
 
   const runProver = React.useCallback(async () => {
-    let proofResult: string;
-    let publicResult: string;
+    let proof: string;
+    let publicInputs: string;
 
     // Copy assets to documents directory on Android
     if (Platform.OS === 'android') {
@@ -77,26 +70,26 @@ export default function App() {
     try {
       if (enableBufferProver) {
         startTime = performance.now();
-        proverResult = await useGroth16BufferProver();
+        proverResult = await runGroth16BufferProver();
         diff = performance.now() - startTime;
         setBufferExecTime(diff);
         logProof(proverResult);
       }
 
       startTime = performance.now();
-      proverResult = await useGroth16FileProver();
+      proverResult = await runGroth16FileProver();
       diff = performance.now() - startTime;
       setFileExecTime(diff);
       logProof(proverResult);
 
-      proofResult = proverResult.proof;
-      publicResult = proverResult.pub_signals;
-      setProofResult(proofResult)
-      setPublicResult(publicResult);
+      proof = proverResult.proof;
+      publicInputs = proverResult.pub_signals;
+      setProofResult(proof);
+      setPublicResult(publicInputs);
 
       if (enableBufferProver) {
         startTime = performance.now();
-        const publicBufferSize = await useCalculatedPublicBufferSize();
+        const publicBufferSize = await runCalculatePublicBufferSize();
         diff = performance.now() - startTime;
         setBufferCalcExecTime(diff);
         console.log('publicBufferSize: ', publicBufferSize);
@@ -112,8 +105,8 @@ export default function App() {
       const verificationKey = await getVerificationKeyFile();
 
       const result = await groth16_verifier(
-        publicResult,
-        proofResult,
+        publicInputs,
+        proof,
         verificationKey
       );
       setVerificationResult(result);
@@ -124,7 +117,7 @@ export default function App() {
     } catch (error) {
       console.error('Error verifying proof', error);
     }
-  }, []);
+  }, [enableBufferProver]);
 
   return (
     <View style={styles.container}>
@@ -137,18 +130,21 @@ export default function App() {
           <Text style={styles.resultText}>Enable buffer prover</Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => runProver()}
-        >
+        <TouchableOpacity style={styles.button} onPress={() => runProver()}>
           <Text style={styles.buttonText}>Run prover</Text>
         </TouchableOpacity>
 
         <View style={{height: 20}}/>
 
-        <Text style={styles.resultText}>Buffer execution time: {bufferExecTime}ms</Text>
-        <Text style={styles.resultText}>File execution time: {fileExecTime}ms</Text>
-        <Text style={styles.resultText}>Buffer calc execution time: {bufferCalcExecTime}ms</Text>
+        <Text style={styles.resultText}>
+          Buffer execution time: {bufferExecTime}ms
+        </Text>
+        <Text style={styles.resultText}>
+          File execution time: {fileExecTime}ms
+        </Text>
+        <Text style={styles.resultText}>
+          Buffer calc execution time: {bufferCalcExecTime}ms
+        </Text>
 
         <View style={{height: 20}}/>
 
@@ -182,25 +178,43 @@ export default function App() {
 
 function writeAssetFilesToDocumentsDirectory(): Promise<any> {
   return Promise.all([
-    RNFS.copyFileAssets('circuit_final.zkey', RNFS.DocumentDirectoryPath + '/circuit_final.zkey'),
-    RNFS.copyFileAssets('witness.wtns', RNFS.DocumentDirectoryPath + '/witness.wtns'),
-    RNFS.copyFileAssets('verification_key.json', RNFS.DocumentDirectoryPath + '/verification_key.json'),
+    RNFS.copyFileAssets(
+      'circuit_final.zkey',
+      RNFS.DocumentDirectoryPath + '/circuit_final.zkey'
+    ),
+    RNFS.copyFileAssets(
+      'witness.wtns',
+      RNFS.DocumentDirectoryPath + '/witness.wtns'
+    ),
+    RNFS.copyFileAssets(
+      'verification_key.json',
+      RNFS.DocumentDirectoryPath + '/verification_key.json'
+    ),
   ]);
 }
 
-const zkeyPath = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/circuit_final.zkey';
+const zkeyPath =
+  (Platform.OS === 'android'
+    ? RNFS.DocumentDirectoryPath
+    : RNFS.MainBundlePath) + '/circuit_final.zkey';
 
 function getZkeyFile(): Promise<string> {
   return RNFS.readFile(zkeyPath, 'base64');
 }
 
 function getWtnsFile(): Promise<string> {
-  const path = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/witness.wtns';
+  const path =
+    (Platform.OS === 'android'
+      ? RNFS.DocumentDirectoryPath
+      : RNFS.MainBundlePath) + '/witness.wtns';
   return RNFS.readFile(path, 'base64');
 }
 
 function getVerificationKeyFile(): Promise<string> {
-  const path = (Platform.OS === 'android' ? RNFS.DocumentDirectoryPath : RNFS.MainBundlePath) + '/verification_key.json';
+  const path =
+    (Platform.OS === 'android'
+      ? RNFS.DocumentDirectoryPath
+      : RNFS.MainBundlePath) + '/verification_key.json';
   return RNFS.readFile(path, 'utf8');
 }
 
