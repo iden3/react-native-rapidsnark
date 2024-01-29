@@ -6,11 +6,11 @@
 @implementation Rapidsnark
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
-                  witnessData:(NSString *)wtnsBytes1
-                  proofBufferSize:(NSNumber *)proofBufferSize
-                  publicBufferSize:(NSNumber *)publicBufferSize
-                  errBufferSize:(NSNumber *)errBufferSize
+RCT_EXPORT_METHOD(groth16_prover:(nonnull NSString *)zkeyBytes1
+                  witnessData:(nonnull NSString *)wtnsBytes1
+                  proofBufferSize:(nonnull NSNumber *)proofBufferSize
+                  publicBufferSize:(nonnull NSNumber *)publicBufferSize
+                  errBufferSize:(nonnull NSNumber *)errBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -96,11 +96,11 @@ RCT_EXPORT_METHOD(groth16_prover:(NSString *)zkeyBytes1
     }
 }
 
-RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
-                  witnessData:(NSString *)wtnsBytes1
-                  proofBufferSize:(NSNumber *)proofBufferSize
-                  publicBufferSize:(NSNumber *)publicBufferSize
-                  errBufferSize:(NSNumber *)errBufferSize
+RCT_EXPORT_METHOD(groth16_prover_zkey_file:(nonnull NSString *)zkey_file_path
+                  witnessData:(nonnull NSString *)wtnsBytes1
+                  proofBufferSize:(nonnull NSNumber *)proofBufferSize
+                  publicBufferSize:(nonnull NSNumber *)publicBufferSize
+                  errBufferSize:(nonnull NSNumber *)errBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -188,9 +188,9 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(NSString *)zkey_file_path
     }
 }
 
-RCT_EXPORT_METHOD(groth16_verify:(NSString *)inputs
-        proof:(NSString *)proof
-        verification_key:(NSString *)verification_key
+RCT_EXPORT_METHOD(groth16_verify:(nonnull NSString *)inputs
+        proof:(nonnull NSString *)proof
+        verification_key:(nonnull NSString *)verification_key
         resolve:(RCTPromiseResolveBlock)resolve
         reject:(RCTPromiseRejectBlock)reject)
 {
@@ -216,7 +216,7 @@ RCT_EXPORT_METHOD(groth16_verify:(NSString *)inputs
     }
 }
 
-RCT_EXPORT_METHOD(calculate_public_buffer_size:(NSString *)zkeyBytes1
+RCT_EXPORT_METHOD(calculate_public_buffer_size:(nonnull NSString *)zkeyBytes1
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {

@@ -26,6 +26,8 @@ export default function App() {
 
     const zkeyF = await getZkeyFile();
     const wtnsF = await getWtnsFile();
+    console.log('zkeyF: ', zkeyF.slice(0, 100));
+    console.log('wtnsF: ', wtnsF.slice(0, 100));
 
     return groth16_prover(zkeyF, wtnsF);
   };
@@ -77,7 +79,7 @@ export default function App() {
       }
 
       startTime = performance.now();
-      proverResult = await runGroth16FileProver();
+      proverResult = await runGroth16BufferProver();
       diff = performance.now() - startTime;
       setFileExecTime(diff);
       logProof(proverResult);
