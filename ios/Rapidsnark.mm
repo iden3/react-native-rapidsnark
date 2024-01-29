@@ -125,6 +125,7 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(nonnull NSString *)zkey_file_path
     char error_msg[error_msg_maxsize];
 
     RCTLogInfo(@"groth16_prover_zkey_file prove start");
+    RCTLogInfo(@"%s", file_path);
     int statusCode = groth16_prover_zkey_file(
       file_path,
       wtns_buffer, wtns_size,
@@ -132,6 +133,7 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(nonnull NSString *)zkey_file_path
       public_buffer, &public_buffer_size,
       error_msg, error_msg_maxsize
     );
+    RCTLogInfo(@"groth16_prover_zkey_file prove end");
 
     if (statusCode == PROVER_ERROR) {
       NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
@@ -170,8 +172,6 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(nonnull NSString *)zkey_file_path
       proofResult = [NSString stringWithCString:proof_buffer encoding:NSUTF8StringEncoding];
       publicResult = [NSString stringWithCString:public_buffer encoding:NSUTF8StringEncoding];
     }
-
-    RCTLogInfo(@"groth16_prover_zkey_file prove end");
 
     RCTLogInfo(@"%i", statusCode);
     if (proofResult.length > 0) {

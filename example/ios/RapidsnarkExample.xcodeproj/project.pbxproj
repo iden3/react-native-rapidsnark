@@ -12,9 +12,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		86AE9A97D55524ACFEBE1964 /* Pods_RapidsnarkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6462460858153BB68C04764 /* Pods_RapidsnarkExample.framework */; };
-		8D0B44F92B6837F300206E1F /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44F62B6837F300206E1F /* circuit_final.zkey */; };
-		8D0B44FA2B6837F300206E1F /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44F72B6837F300206E1F /* verification_key.json */; };
-		8D0B44FB2B6837F300206E1F /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44F82B6837F300206E1F /* witness.wtns */; };
+		8D0B44FF2B68404D00206E1F /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FC2B68404D00206E1F /* witness.wtns */; };
+		8D0B45002B68404D00206E1F /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FD2B68404D00206E1F /* verification_key.json */; };
+		8D0B45012B68404D00206E1F /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FE2B68404D00206E1F /* circuit_final.zkey */; };
 		8D13329B2B111E9F0045657C /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D77C8E92B0F7F3A00E660D1 /* Rapidsnark.xcframework */; };
 /* End PBXBuildFile section */
 
@@ -33,9 +33,9 @@
 		5B7EB9410499542E8C5724F5 /* Pods-RapidsnarkExample-RapidsnarkExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample-RapidsnarkExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RapidsnarkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		8D0B44F62B6837F300206E1F /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; name = circuit_final.zkey; path = ../circuit_final.zkey; sourceTree = "<group>"; };
-		8D0B44F72B6837F300206E1F /* verification_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = verification_key.json; path = ../verification_key.json; sourceTree = "<group>"; };
-		8D0B44F82B6837F300206E1F /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; name = witness.wtns; path = ../witness.wtns; sourceTree = "<group>"; };
+		8D0B44FC2B68404D00206E1F /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = witness.wtns; sourceTree = "<group>"; };
+		8D0B44FD2B68404D00206E1F /* verification_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
+		8D0B44FE2B68404D00206E1F /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = circuit_final.zkey; sourceTree = "<group>"; };
 		8D77C8E92B0F7F3A00E660D1 /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = ../../ios/Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
 		C6462460858153BB68C04764 /* Pods_RapidsnarkExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RapidsnarkExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -105,9 +105,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8D0B44F62B6837F300206E1F /* circuit_final.zkey */,
-				8D0B44F72B6837F300206E1F /* verification_key.json */,
-				8D0B44F82B6837F300206E1F /* witness.wtns */,
+				8D0B44FE2B68404D00206E1F /* circuit_final.zkey */,
+				8D0B44FD2B68404D00206E1F /* verification_key.json */,
+				8D0B44FC2B68404D00206E1F /* witness.wtns */,
 				13B07FAE1A68108700A75B9A /* RapidsnarkExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RapidsnarkExampleTests */,
@@ -200,11 +200,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D0B44FA2B6837F300206E1F /* verification_key.json in Resources */,
+				8D0B45002B68404D00206E1F /* verification_key.json in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				8D0B44FB2B6837F300206E1F /* witness.wtns in Resources */,
-				8D0B44F92B6837F300206E1F /* circuit_final.zkey in Resources */,
+				8D0B45012B68404D00206E1F /* circuit_final.zkey in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				8D0B44FF2B68404D00206E1F /* witness.wtns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

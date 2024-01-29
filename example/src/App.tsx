@@ -79,7 +79,7 @@ export default function App() {
       }
 
       startTime = performance.now();
-      proverResult = await runGroth16BufferProver();
+      proverResult = await runGroth16FileProver();
       diff = performance.now() - startTime;
       setFileExecTime(diff);
       logProof(proverResult);
