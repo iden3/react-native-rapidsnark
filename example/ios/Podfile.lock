@@ -428,7 +428,7 @@ PODS:
     - React-jsi (= 0.72.4)
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
-  - RNCClipboard (1.12.1):
+  - RNCClipboard (1.13.2):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
@@ -616,7 +616,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: f109b1b816584970ef4d57567f74983d96f9c914
   React-utils: 85a3a94fa8123b028071849bfd263078692de0ad
   ReactCommon: 44afd2dd5a43fa4e72d76604384baa94bb5fca87
-  RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
+  RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
