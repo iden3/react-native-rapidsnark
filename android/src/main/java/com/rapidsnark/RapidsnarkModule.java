@@ -52,6 +52,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // PROVER_ERROR                  0x1
   // PROVER_ERROR_SHORT_BUFFER     0x2 - in case of a short buffer error, also updates proof_size and public_size with actual proof and public sizess
   // PROVER_INVALID_WITNESS_LENGTH 0x3
+  //
+  // In case of error promis.reject(statusCode, errorString);
   @ReactMethod
   public void groth16_prover(String zkeyBytes1, String wtnsBytes1,
                              Integer proofBufferSize, Integer publicBufferSize,
@@ -78,12 +80,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       if (statusCode != PROVER_OK) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
 
-        if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
-          promise.reject("groth16_prover error - invalid witness length:", errorString);
-          return;
-        }
-
-        promise.reject("groth16_prover error:", errorString);
+        promise.reject(String.valueOf(statusCode), errorString);
         return;
       }
 
@@ -93,7 +90,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       if (proofResult.isEmpty()) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover error:", errorString);
+        promise.reject(String.valueOf(statusCode), errorString);
         return;
       }
 
@@ -104,7 +101,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       promise.resolve(result);
 
     } catch (Exception e) {
-      promise.reject("groth16_prover error", e.getMessage());
+      promise.reject("1", e.getMessage());
     }
   }
 
@@ -120,7 +117,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     );
 
     if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
-      Log.d("RapidsnarkModule", "groth16Prove: PROVER_ERROR_SHORT_BUFFER:" + public_buffer_size[0]);
+      Log.w("RapidsnarkModule", "PROVER_ERROR_SHORT_BUFFER:" + public_buffer_size[0]);
       public_buffer = new byte[(int) public_buffer_size[0]];
       return groth16Prove(rapidsnarkJNI, zkeyBytes, wtnsBytes, proof_buffer,
         proof_buffer_size, public_buffer, public_buffer_size, error_msg);
@@ -143,6 +140,8 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // PROVER_ERROR                  0x1
   // PROVER_ERROR_SHORT_BUFFER     0x2 - in case of a short buffer error, also updates proof_size and public_size with actual proof and public sizess
   // PROVER_INVALID_WITNESS_LENGTH 0x3
+  //
+  // In case of error promis.reject(statusCode, errorString);
   @ReactMethod
   public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1,
                                        Integer proofBufferSize, Integer publicBufferSize,
@@ -167,7 +166,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       if (statusCode != PROVER_OK) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover_zkey_file error:", errorString);
+        promise.reject(String.valueOf(statusCode), errorString);
         return;
       }
 
@@ -177,7 +176,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       if (proofResult.isEmpty()) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover_zkey_file error:", errorString);
+        promise.reject(String.valueOf(statusCode), errorString);
       }
 
       WritableMap result = new WritableNativeMap();
@@ -187,7 +186,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       promise.resolve(result);
 
     } catch (Exception e) {
-      promise.reject("groth16_prover_zkey_file error", e.getMessage());
+      promise.reject("1", e.getMessage());
     }
   }
 
@@ -204,7 +203,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     );
 
     if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
-      Log.d("RapidsnarkModule", "groth16Prove: PROVER_ERROR_SHORT_BUFFER:" + public_buffer_size[0]);
+      Log.w("RapidsnarkModule", "PROVER_ERROR_SHORT_BUFFER:" + public_buffer_size[0]);
       public_buffer = new byte[(int) public_buffer_size[0]];
       return groth16ProverZkeyFile(rapidsnarkJNI, zkeyPath, wtnsBytes, proof_buffer,
         proof_buffer_size, public_buffer, public_buffer_size, error_msg);
@@ -222,7 +221,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       boolean proofValid = new RapidsnarkJniBridge().groth16Verifier(inputs, proof, verificationKey);
       promise.resolve(proofValid);
     } catch (Exception e) {
-      promise.reject("groth16_verify error", e.getMessage());
+      promise.reject(e.getMessage());
     }
   }
 
@@ -239,7 +238,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       promise.resolve(public_buffer_size);
     } catch (Exception e) {
-      promise.reject("calculate_public_buffer_size error", e.getMessage());
+      promise.reject(e.getMessage());
     }
   }
 }
