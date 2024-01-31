@@ -8,36 +8,46 @@ export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
-  const [bufferExecTime, setBufferExecTime] = React.useState(0);
-  const [fileExecTime, setFileExecTime] = React.useState(0);
+  const [proofExecTime, setProofExecTime] = React.useState(0);
   const [bufferCalcExecTime, setBufferCalcExecTime] = React.useState(0);
+  const [bufferSize, setBufferSize] = React.useState(0);
   const [verificationResult, setVerificationResult] =
     React.useState<boolean>(null);
+    const [verificationExecTime, setVerificationExecTime] = React.useState(0);
 
   const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
 
-  const runCalculatePublicBufferSize = async () => {
-    const zkeyF = await getZkeyFile();
-    return calculate_public_buffer_size(zkeyF);
-  };
-
+  // groth16 prover with reading zkey from buffer.
+  // this function in React Native is limited, not applicable for
+  // large files. It is better to use groth16_prover_zkey_file
   const runGroth16BufferProver = async () => {
     console.log('Calling useGroth16BufferProver');
 
     const zkeyF = await getZkeyFile();
     const wtnsF = await getWtnsFile();
-    console.log('zkeyF: ', zkeyF.slice(0, 100));
-    console.log('wtnsF: ', wtnsF.slice(0, 100));
+    console.log('zkeyF: ', zkeyF.length);
+    console.log('wtnsF: ', wtnsF.length);
 
-    return groth16_prover(zkeyF, wtnsF);
+    const startTime = performance.now();
+    const proverResult = await groth16_prover(zkeyF, wtnsF);
+    const diff = performance.now() - startTime;
+    setProofExecTime(diff);
+
+    return proverResult;
   };
 
+  // groth16 prover with reading zkey from C++ library.
+  // this function has better performance than groth16_prover
   const runGroth16FileProver = async () => {
     console.log('Calling useGroth16FileProver');
 
     const wtnsF = await getWtnsFile();
 
-    return groth16_prover_zkey_file(zkeyPath, wtnsF);
+    const startTime = performance.now();
+    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF);
+    const diff = performance.now() - startTime;
+    setProofExecTime(diff);
+    return proverResult;
   };
 
   const logProof = ({proof, pub_signals}) => {
@@ -56,70 +66,66 @@ export default function App() {
   };
 
   const runProver = React.useCallback(async () => {
-    let proof: string;
-    let publicInputs: string;
+    console.log('Calling groth16_prover');
 
     // Copy assets to documents directory on Android
     if (Platform.OS === 'android') {
       await writeAssetFilesToDocumentsDirectory();
     }
 
-    console.log('Calling groth16_prover');
-
-    let startTime: number;
     let proverResult: { proof: string; pub_signals: string; };
-    let diff: number;
+
+    // Generate proof
     try {
       if (enableBufferProver) {
-        startTime = performance.now();
         proverResult = await runGroth16BufferProver();
-        diff = performance.now() - startTime;
-        setBufferExecTime(diff);
-        logProof(proverResult);
+      }else{
+        proverResult = await runGroth16FileProver();
       }
 
-      startTime = performance.now();
-      proverResult = await runGroth16FileProver();
-      diff = performance.now() - startTime;
-      setFileExecTime(diff);
       logProof(proverResult);
-
-      proof = proverResult.proof;
-      publicInputs = proverResult.pub_signals;
-      setProofResult(proof);
-      setPublicResult(publicInputs);
-
-      if (enableBufferProver) {
-        startTime = performance.now();
-        const publicBufferSize = await runCalculatePublicBufferSize();
-        diff = performance.now() - startTime;
-        setBufferCalcExecTime(diff);
-        console.log('publicBufferSize: ', publicBufferSize);
-      }
+      setProofResult(proverResult.proof);
+      setPublicResult(proverResult.pub_signals);
     } catch (error) {
       console.error('Error proving circuit', error);
       return;
     }
 
+    // Verify proof
     try {
-      const startTime = performance.now();
 
       const verificationKey = await getVerificationKeyFile();
 
+      const startTime = performance.now();
       const result = await groth16_verifier(
-        publicInputs,
-        proof,
+        proverResult.pub_signals,
+        proverResult.proof,
         verificationKey
       );
-      setVerificationResult(result);
-
-      console.log('verification result proof valid:' + result);
       const diffVerification = performance.now() - startTime;
+
+      setVerificationResult(result);
+      setVerificationExecTime(diffVerification);
+      console.log('verification result proof valid:' + result);
       console.log('verification exec time:' + diffVerification);
     } catch (error) {
       console.error('Error verifying proof', error);
     }
   }, [enableBufferProver]);
+
+  const calculateBufferSize = React.useCallback(async () => {
+    console.log('Calling calculate_public_buffer_size');
+    const zkeyF = await getZkeyFile();
+
+    const startTime = performance.now();
+    const publicBufferSize = await calculate_public_buffer_size(zkeyF);
+    const diff = performance.now() - startTime;
+
+    setBufferCalcExecTime(diff);
+    console.log('publicBufferSize exec: ', diff);
+    setBufferSize(publicBufferSize);
+    console.log('publicBufferSize: ', publicBufferSize);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -139,13 +145,23 @@ export default function App() {
         <View style={{height: 20}}/>
 
         <Text style={styles.resultText}>
-          Buffer execution time: {bufferExecTime}ms
+          Execution time: {proofExecTime}ms
         </Text>
         <Text style={styles.resultText}>
-          File execution time: {fileExecTime}ms
+          Proof valid: {verificationResult?.toString() ?? 'checking'}
         </Text>
+        <Text style={styles.resultText}>
+          Verification exec: {verificationExecTime}ms
+        </Text>
+
+        <TouchableOpacity style={styles.button} onPress={() => calculateBufferSize()}>
+                  <Text style={styles.buttonText}>Calc. input buffer size</Text>
+        </TouchableOpacity>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
+        </Text>
+        <Text style={styles.resultText}>
+                 Buffer: {bufferSize} bytes
         </Text>
 
         <View style={{height: 20}}/>
@@ -169,8 +185,6 @@ export default function App() {
             {publicResult}
           </Text>
         </View>
-
-        <Text>Proof valid: {verificationResult?.toString() ?? 'checking'}</Text>
 
         <View style={{height: 20}}/>
       </ScrollView>
