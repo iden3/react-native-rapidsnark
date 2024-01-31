@@ -44,11 +44,7 @@ export default function App() {
     const wtnsF = await getWtnsFile();
 
     const startTime = performance.now();
-    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF, {
-      proofBufferSize: 128,
-      publicBufferSize: 128,
-      errorBufferSize: 256,
-    });
+    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF);
     const diff = performance.now() - startTime;
     setProofExecTime(diff);
     return proverResult;
