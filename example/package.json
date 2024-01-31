@@ -24,7 +24,10 @@
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.11",
     "babel-plugin-module-resolver": "^5.0.0",
-    "metro-react-native-babel-preset": "0.76.8"
+    "metro-react-native-babel-preset": "0.76.8",
+    "ora": "5.4.1",
+    "strip-ansi": "5.0.0",
+    "string-width": "4.2.3"
   },
   "engines": {
     "node": ">=16"
