@@ -13,7 +13,7 @@ export default function App() {
   const [bufferSize, setBufferSize] = React.useState(0);
   const [verificationResult, setVerificationResult] =
     React.useState<boolean>(null);
-    const [verificationExecTime, setVerificationExecTime] = React.useState(0);
+  const [verificationExecTime, setVerificationExecTime] = React.useState(0);
 
   const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
 
@@ -44,7 +44,11 @@ export default function App() {
     const wtnsF = await getWtnsFile();
 
     const startTime = performance.now();
-    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF);
+    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF, {
+      proofBufferSize: 16384,
+      publicBufferSize: 16384,
+      errorBufferSize: 256,
+    });
     const diff = performance.now() - startTime;
     setProofExecTime(diff);
     return proverResult;
@@ -73,13 +77,13 @@ export default function App() {
       await writeAssetFilesToDocumentsDirectory();
     }
 
-    let proverResult: { proof: string; pub_signals: string; };
+    let proverResult: { proof: string; pub_signals: string };
 
     // Generate proof
     try {
       if (enableBufferProver) {
         proverResult = await runGroth16BufferProver();
-      }else{
+      } else {
         proverResult = await runGroth16FileProver();
       }
 
@@ -87,13 +91,12 @@ export default function App() {
       setProofResult(proverResult.proof);
       setPublicResult(proverResult.pub_signals);
     } catch (error) {
-      console.error('Error proving circuit', error);
+      console.error('Error proving circuit, code: ', error.code, ', err:', error.message);
       return;
     }
 
     // Verify proof
     try {
-
       const verificationKey = await getVerificationKeyFile();
 
       const startTime = performance.now();
@@ -155,13 +158,13 @@ export default function App() {
         </Text>
 
         <TouchableOpacity style={styles.button} onPress={() => calculateBufferSize()}>
-                  <Text style={styles.buttonText}>Calc. input buffer size</Text>
+          <Text style={styles.buttonText}>Calc. input buffer size</Text>
         </TouchableOpacity>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
         </Text>
         <Text style={styles.resultText}>
-                 Buffer: {bufferSize} bytes
+          Buffer: {bufferSize} bytes
         </Text>
 
         <View style={{height: 20}}/>
