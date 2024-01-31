@@ -60,13 +60,14 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
         proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode != PROVER_OK) {
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
+
         if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
-          String errorString = "Invalid witness length";
-          promise.reject("groth16_prover error - invalid witness length", errorString);
+          promise.reject("groth16_prover error - invalid witness length:", errorString);
           return;
         }
-        String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover error", errorString);
+
+        promise.reject("groth16_prover error:", errorString);
         return;
       }
 
@@ -74,21 +75,18 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       String proofResult = new String(proof_buffer, StandardCharsets.UTF_8).trim();
       String publicResult = new String(public_buffer, StandardCharsets.UTF_8).trim();
 
-      if (!proofResult.isEmpty()) {
-        HashMap<String, String> result = new HashMap<>();
-        result.put("proof", proofResult);
-        result.put("pub_signals", publicResult);
-
-        WritableMap map = new WritableNativeMap();
-        for (Map.Entry<String, String> entry : result.entrySet()) {
-          map.putString(entry.getKey(), entry.getValue());
-        }
-
-        promise.resolve(map);
-      } else {
+      if (proofResult.isEmpty()) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover error", errorString);
+        promise.reject("groth16_prover error:", errorString);
+        return;
       }
+
+      WritableMap result = new WritableNativeMap();
+      result.putString("proof", proofResult);
+      result.putString("pub_signals", publicResult);
+
+      promise.resolve(result);
+
     } catch (Exception e) {
       promise.reject("groth16_prover error", e.getMessage());
     }
@@ -137,13 +135,12 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
         proof_buffer, proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode != PROVER_OK) {
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
         if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
-          String errorString = new String(error_msg, StandardCharsets.UTF_8);
-          promise.reject("groth16_prover_zkey_file error - invalid witness length", errorString);
+          promise.reject("groth16_prover_zkey_file error - invalid witness length:", errorString);
           return;
         }
-        String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover_zkey_file error", errorString);
+        promise.reject("groth16_prover_zkey_file error:", errorString);
         return;
       }
 
@@ -151,21 +148,17 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       String proofResult = new String(proof_buffer, StandardCharsets.UTF_8).trim();
       String publicResult = new String(public_buffer, StandardCharsets.UTF_8).trim();
 
-      if (!proofResult.isEmpty()) {
-        HashMap<String, String> result = new HashMap<>();
-        result.put("proof", proofResult);
-        result.put("pub_signals", publicResult);
-
-        WritableMap map = new WritableNativeMap();
-        for (Map.Entry<String, String> entry : result.entrySet()) {
-          map.putString(entry.getKey(), entry.getValue());
-        }
-
-        promise.resolve(map);
-      } else {
+      if (proofResult.isEmpty()) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        promise.reject("groth16_prover_zkey_file error", errorString);
+        promise.reject("groth16_prover_zkey_file error:", errorString);
       }
+
+      WritableMap result = new WritableNativeMap();
+      result.putString("proof", proofResult);
+      result.putString("pub_signals", publicResult);
+
+      promise.resolve(result);
+
     } catch (Exception e) {
       promise.reject("groth16_prover_zkey_file error", e.getMessage());
     }
