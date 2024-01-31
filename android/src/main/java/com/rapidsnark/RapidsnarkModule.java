@@ -36,6 +36,22 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
+  // groth16_prover is a JNI bridge to the C library rapidsnark.
+  // It takes a zkey and witness as byte arrays and returns a proof and public signals as byte arrays.
+  // This function is used to generate groth16 proofs.
+  // For small zkey file it can be used as is. (apx. up to ~80mb) For big zkey files it is better to use `groth16_prover_zkey_file`
+  // @zkeyBytes - zkey file as byte array
+  // @wtnsBytes - witness file as byte array
+  // @proofBufferSize - size of the proof buffer, in most case default value should be ok (16384)
+  // @publicBufferSize - size of the public buffer, can be calculated with `calculate_public_buffer_size`
+  // @errorBufferSize - 256 should be enough
+  // @return - promise with result object {proof: string, pub_signals: string}
+  //
+  // Error codes:
+  // PROVER_OK                     0x0
+  // PROVER_ERROR                  0x1
+  // PROVER_ERROR_SHORT_BUFFER     0x2 - in case of a short buffer error, also updates proof_size and public_size with actual proof and public sizess
+  // PROVER_INVALID_WITNESS_LENGTH 0x3
   @ReactMethod
   public void groth16_prover(String zkeyBytes1, String wtnsBytes1,
                              Integer proofBufferSize, Integer publicBufferSize,
@@ -112,6 +128,21 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return statusCode;
   }
 
+  // groth16_prover_zkey_file is a JNI bridge to the C library rapidsnark.
+  // It takes a PATH to  zKey and witness as byte arrays and returns a proof and public signals as byte arrays.
+  // This function is used to generate groth16 proofs.
+  // @zkeyPath - path to zkey file
+  // @wtnsBytes - witness file as byte array
+  // @proofBufferSize - size of the proof buffer, in most case default value should be ok ()
+  // @publicBufferSize - size of the public buffer, can be calculated with `calculate_public_buffer_size`
+  // @errorBufferSize - 256 should be enough
+  // @return - promise with result object {proof: string, pub_signals: string}
+  //
+  // Error codes:
+  // PROVER_OK                     0x0
+  // PROVER_ERROR                  0x1
+  // PROVER_ERROR_SHORT_BUFFER     0x2 - in case of a short buffer error, also updates proof_size and public_size with actual proof and public sizess
+  // PROVER_INVALID_WITNESS_LENGTH 0x3
   @ReactMethod
   public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1,
                                        Integer proofBufferSize, Integer publicBufferSize,
@@ -136,10 +167,6 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
 
       if (statusCode != PROVER_OK) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
-        if (statusCode == PROVER_INVALID_WITNESS_LENGTH) {
-          promise.reject("groth16_prover_zkey_file error - invalid witness length:", errorString);
-          return;
-        }
         promise.reject("groth16_prover_zkey_file error:", errorString);
         return;
       }
@@ -185,6 +212,10 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return statusCode;
   }
 
+  // groth16_verify is a JNI bridge to the C library rapidsnark.
+  // Verifies a proof and returns true or false.
+  // @inputs - public signals as string
+  // @proof - proof as string
   @ReactMethod
   public void groth16_verify(String inputs, String proof, String verificationKey, Promise promise) {
     try {
@@ -195,6 +226,9 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     }
   }
 
+  // calculate_public_buffer_size is a JNI bridge to the C library rapidsnark.
+  // Calculates the size of the public buffer for a given zkey.
+  // In production better to use hardcoded values or cashed values, because the calculation is slow.
   @ReactMethod
   public void calculate_public_buffer_size(String zkeyBytes1, Promise promise) {
     try {
