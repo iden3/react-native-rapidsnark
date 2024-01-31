@@ -45,8 +45,8 @@ export default function App() {
 
     const startTime = performance.now();
     const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF, {
-      proofBufferSize: 16384,
-      publicBufferSize: 16384,
+      proofBufferSize: 128,
+      publicBufferSize: 128,
       errorBufferSize: 256,
     });
     const diff = performance.now() - startTime;

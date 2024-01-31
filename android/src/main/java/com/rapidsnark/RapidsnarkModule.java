@@ -89,12 +89,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       String publicResult = new String(public_buffer, StandardCharsets.UTF_8).trim();
 
       if (proofResult.isEmpty()) {
-        String errorString;
-        if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
-          errorString = "Prover error public buffer is too small, required size is " + public_buffer_size[0] + " bytes. Please use calculate_public_buffer_size.";
-        } else {
-          errorString = new String(error_msg, StandardCharsets.UTF_8);
-        }
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
         promise.reject(String.valueOf(statusCode), errorString);
         return;
       }
@@ -164,12 +159,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
         proof_buffer, proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode != PROVER_OK) {
-        String errorString;
-        if (statusCode == PROVER_ERROR_SHORT_BUFFER) {
-          errorString = "Prover error public buffer is too small, required size is " + public_buffer_size[0] + " bytes. Please use calculate_public_buffer_size.";
-        } else {
-          errorString = new String(error_msg, StandardCharsets.UTF_8);
-        }
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
         promise.reject(String.valueOf(statusCode), errorString);
         return;
       }
@@ -181,6 +171,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       if (proofResult.isEmpty()) {
         String errorString = new String(error_msg, StandardCharsets.UTF_8);
         promise.reject(String.valueOf(statusCode), errorString);
+        return;
       }
 
       WritableMap result = new WritableNativeMap();
