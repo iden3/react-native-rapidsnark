@@ -21,10 +21,16 @@ import android.util.Log;
 public class RapidsnarkModule extends ReactContextBaseJavaModule {
   public static final String NAME = "Rapidsnark";
 
+  // Prover status codes
   public static final int PROVER_OK = 0x0;
   public static final int PROVER_ERROR = 0x1;
   public static final int PROVER_ERROR_SHORT_BUFFER = 0x2;
   public static final int PROVER_INVALID_WITNESS_LENGTH = 0x3;
+
+  // Verifier status codes
+  public static final int VERIFIER_VALID_PROOF = 0x0;
+  public static final int VERIFIER_INVALID_PROOF = 0x1;
+  public static final int VERIFIER_ERROR = 0x2;
 
   public RapidsnarkModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -205,10 +211,25 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // @inputs - public signals as string
   // @proof - proof as string
   @ReactMethod
-  public void groth16_verify(String inputs, String proof, String verificationKey, Promise promise) {
+  public void groth16_verify(String proof, String inputs, String verificationKey,
+                             Integer errorBufferSize, Promise promise) {
     try {
-      boolean proofValid = new RapidsnarkJniBridge().groth16Verifier(inputs, proof, verificationKey);
-      promise.resolve(proofValid);
+      byte[] error_msg = new byte[errorBufferSize];
+
+      int status_code = new RapidsnarkJniBridge().groth16Verifier(
+        proof,
+        inputs,
+        verificationKey,
+        error_msg,
+        error_msg.length
+      );
+      if (status_code == VERIFIER_ERROR) {
+        String errorString = new String(error_msg, StandardCharsets.UTF_8);
+        promise.reject(String.valueOf(status_code), errorString);
+        return;
+      }
+
+      promise.resolve(status_code == VERIFIER_VALID_PROOF);
     } catch (Exception e) {
       promise.reject(e.getMessage());
     }
@@ -218,12 +239,36 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // Calculates the size of the public buffer for a given zkey.
   // In production better to use hardcoded values or cashed values, because the calculation is slow.
   @ReactMethod
-  public void calculate_public_buffer_size(String zkeyBytes1, Promise promise) {
+  public void groth16_public_size_for_zkey_buf(String zkeyBytes1, Integer errorBufferSize, Promise promise) {
     try {
+      byte[] error_msg = new byte[errorBufferSize];
+
       // Decode base64
       byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
 
-      int public_buffer_size = (int) (new RapidsnarkJniBridge().calculatePublicBufferSize(zkeyBytes, zkeyBytes.length));
+      long public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyBuf(
+        zkeyBytes, zkeyBytes.length,
+        error_msg, errorBufferSize
+      ));
+
+      promise.resolve(public_buffer_size);
+    } catch (Exception e) {
+      promise.reject(e.getMessage());
+    }
+  }
+
+  // calculate_public_buffer_size is a JNI bridge to the C library rapidsnark.
+  // Calculates the size of the public buffer for a given zkey.
+  // In production better to use hardcoded values or cashed values, because the calculation is slow.
+  @ReactMethod
+  public void groth16_public_size_for_zkey_file(String zkeyPath, Integer errorBufferSize, Promise promise) {
+    try {
+      byte[] error_msg = new byte[errorBufferSize];
+
+      long public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyFile(
+        zkeyPath,
+        error_msg, errorBufferSize
+      ));
 
       promise.resolve(public_buffer_size);
     } catch (Exception e) {
@@ -250,7 +295,10 @@ class RapidsnarkJniBridge {
                                           byte[] publicBuffer, long[] publicSize,
                                           byte[] errorMsg, long errorMsgMaxSize);
 
-  public native boolean groth16Verifier(String inputs, String proof, String verificationKey);
+  public native int groth16Verifier(String proof, String inputs, String verificationKey,
+                                    byte[] errorMsg, long errorMsgMaxSize);
 
-  public native long calculatePublicBufferSize(byte[] zkeyBuffer, long zkeySize);
+  public native long groth16PublicSizeForZkeyBuf(byte[] zkeyBuffer, long zkeySize, byte[] errorMsg, long errorMsgMaxSize);
+
+  public native long groth16PublicSizeForZkeyFile(String zkeyPath, byte[] errorMsg, long errorMsgMaxSize);
 }

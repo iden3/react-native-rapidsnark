@@ -126,35 +126,42 @@ RCT_EXPORT_METHOD(groth16_prover_zkey_file:(nonnull NSString *)zkey_file_path
     }
 }
 
-RCT_EXPORT_METHOD(groth16_verify:(nonnull NSString *)inputs
-        proof:(nonnull NSString *)proof
+RCT_EXPORT_METHOD(groth16_verify:(nonnull NSString *)proof
+        inputs:(nonnull NSString *)inputs
         verification_key:(nonnull NSString *)verification_key
+        errBufferSize:(nonnull NSNumber *)errBufferSize
         resolve:(RCTPromiseResolveBlock)resolve
         reject:(RCTPromiseRejectBlock)reject)
 {
     RCTLogInfo(@"groth16_verify called");
-    RCTLogInfo(@"inputs: %@", inputs);
     RCTLogInfo(@"proof: %@", proof);
+    RCTLogInfo(@"inputs: %@", inputs);
     RCTLogInfo(@"verification_key: %@", verification_key);
 
     // Convert NSString to C-style strings
-    const char *cInputs = [inputs UTF8String];
     const char *cProof = [proof UTF8String];
+    const char *cInputs = [inputs UTF8String];
     const char *cVerificationKey = [verification_key UTF8String];
 
-    // Call the Rust function
-    bool result = groth16_verify(cInputs, cProof, cVerificationKey);
+    unsigned long error_msg_maxsize = (unsigned long) [errBufferSize intValue];
+    char error_msg[error_msg_maxsize];
 
-    if (result) {
-        RCTLogInfo(@"Verified true");
-        resolve(@(result));
+    // Call the Rust function
+    int result = groth16_verify(cProof, cInputs, cVerificationKey, error_msg, error_msg_maxsize);
+
+    if (result != VERIFIER_ERROR) {
+      bool proofValid = result == VERIFIER_VALID_PROOF;
+      RCTLogInfo(@"Proof valid: %d", proofValid);
+      resolve(@(proofValid));
     } else {
-        RCTLogInfo(@"Verified false");
-        reject(@"groth16_verify error", @"Verification failed", nil);
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"Error:%@", errorString);
+      reject([NSString stringWithFormat:@"%d", result], errorString, nil);
     }
 }
 
-RCT_EXPORT_METHOD(calculate_public_buffer_size:(nonnull NSString *)zkeyBytes1
+RCT_EXPORT_METHOD(groth16_public_size_for_zkey_buf:(nonnull NSString *)zkeyBytes1
+                  errBufferSize:(nonnull NSNumber *)errBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -164,9 +171,51 @@ RCT_EXPORT_METHOD(calculate_public_buffer_size:(nonnull NSString *)zkeyBytes1
     const void *zkey_buffer = [zkeyBytes bytes];
     unsigned long zkey_size = [zkeyBytes length];
 
-    NSInteger public_buffer_size = (NSInteger) ((int) CalcPublicBufferSize(zkey_buffer, zkey_size));
+    unsigned long error_msg_maxsize = (unsigned long) [errBufferSize intValue];
+    char error_msg[error_msg_maxsize];
 
-    resolve(@(public_buffer_size));
+    size_t public_buffer_size = 0;
+
+    int status_code = groth16_public_size_for_zkey_buf(
+      zkey_buffer, zkey_size,
+      &public_buffer_size,
+      error_msg, error_msg_maxsize
+    );
+
+    if (status_code == PROVER_OK) {
+      resolve(@(public_buffer_size));
+    } else {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"Error:%@", errorString);
+      reject([NSString stringWithFormat:@"%d", status_code], errorString, nil);
+    }
+}
+
+RCT_EXPORT_METHOD(groth16_public_size_for_zkey_file:(nonnull NSString *)zkey_file_path
+                  errBufferSize:(nonnull NSNumber *)errBufferSize
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    const char *file_path = [zkey_file_path UTF8String];
+
+    unsigned long error_msg_maxsize = (unsigned long) [errBufferSize intValue];
+    char error_msg[error_msg_maxsize];
+
+    unsigned long public_buffer_size = 0;
+
+    int status_code = groth16_public_size_for_zkey_file(
+      file_path,
+      &public_buffer_size,
+      error_msg, error_msg_maxsize
+    );
+
+    if (status_code == PROVER_OK) {
+      resolve(@(public_buffer_size));
+    } else {
+      NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
+      RCTLogInfo(@"Error:%@", errorString);
+      reject([NSString stringWithFormat:@"%d", status_code], errorString, nil);
+    }
 }
 
 @end

@@ -27,13 +27,22 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16ProverZkey
         jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
-JNIEXPORT jboolean JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Verifier(
-        JNIEnv *env, jobject obj, jstring inputs, jstring proof, jstring verificationKey
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Verifier(
+        JNIEnv *env, jobject obj,
+        jstring proof, jstring inputs, jstring verificationKey,
+        jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
-JNIEXPORT jlong JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_calculatePublicBufferSize(
+JNIEXPORT jlong JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16PublicSizeForZkeyBuf(
         JNIEnv *env, jobject obj,
-        jbyteArray zkeyBuffer, jlong zkeySize
+        jbyteArray zkeyBuffer, jlong zkeySize,
+        jbyteArray errorMsg, jlong errorMsgMaxSize
+);
+
+JNIEXPORT jlong JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16PublicSizeForZkeyFile(
+        JNIEnv *env, jobject obj,
+        jstring zkeyPath,
+        jbyteArray errorMsg, jlong errorMsgMaxSize
 );
 
 }

@@ -97,8 +97,8 @@ export default function App() {
 
       const startTime = performance.now();
       const result = await groth16_verifier(
-        proverResult.pub_signals,
         proverResult.proof,
+        proverResult.pub_signals,
         verificationKey
       );
       const diffVerification = performance.now() - startTime;

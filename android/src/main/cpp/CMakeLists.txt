@@ -23,18 +23,9 @@ set(
         SHARED_PROVER_LIBRARY_SO
         ${CMAKE_CURRENT_SOURCE_DIR}/../../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/librapidsnark.so
 )
-set(
-        SHARED_VERIFIER_LIBRARY_SO
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/libgroth16_verify.so
-)
 # IMPORTED allows to depends on a library file outside the project.
 add_library(
         rapidsnark_prover_lib
-        SHARED
-        IMPORTED
-)
-add_library(
-        rapidsnark_verifier_lib
         SHARED
         IMPORTED
 )
@@ -44,17 +35,10 @@ set_target_properties(
         PROPERTIES
         IMPORTED_LOCATION ${SHARED_PROVER_LIBRARY_SO}
 )
-set_target_properties(
-        rapidsnark_verifier_lib
-        PROPERTIES
-        IMPORTED_LOCATION ${SHARED_VERIFIER_LIBRARY_SO}
-        IMPORTED_NO_SONAME TRUE
-)
 # Add the library to this project
 target_link_libraries(
         ${PROJECT_NAME}
         rapidsnark_prover_lib
-        rapidsnark_verifier_lib
 )
 
 # Add the log library

@@ -10,7 +10,7 @@ generation of proofs for specified circuits and witnesses within a React Native 
 **iOS**: Compatible with any iOS device with 64 bit architecture.
 > Version for emulator built without assembly optimizations, resulting in slower performance.
 
-**Android**: Compatible with arm64-v8a, armeabi-v7a, x86_64 architectures.
+**Android**: Compatible with arm64-v8a, x86_64 architectures.
 
 ## Installation
 
@@ -64,20 +64,24 @@ Both `groth16_prover` and `groth16_prover_zkey_file` has an optional `proofBuffe
 
 These parameters are used to set the size of the buffers used to store the proof, public signals and error.
 
-To calculate the size of public buffer call `calculate_public_buffer_size` function and cache it to reuse later.
+To calculate the size of public buffer call `groth16_public_size_for_zkey_buf` function and cache it to reuse later.
 
-#### calculate_public_buffer_size
+For file based prover use `groth16_public_size_for_zkey_file`.
+
+#### groth16_public_size_for_zkey_buf
 
 Calculates public buffer size for specified zkey.
 
 ```js
-import {calculate_public_buffer_size} from "react-native-rapidsnark";
+import { groth16_public_size_for_zkey_buf, groth16_public_size_for_zkey_file } from "react-native-rapidsnark";
 
 // ...
 
 const zkey = await RNFS.readFile("path/to/zkey", "base64");
 
-const {proof, pub_signals} = await calculate_public_buffer_size(zkey);
+const public_buffer_size = await groth16_public_size_for_zkey_buf(zkey);
+
+const public_buffer_size_file = await groth16_public_size_for_zkey_file("path/to/zkey");
 ```
 
 ### Verifier
@@ -93,10 +97,11 @@ import {groth16_prover, groth16_verifier} from "react-native-rapidsnark";
 
 const zkey = await RNFS.readFile("path/to/zkey", "base64");
 const wtns = await RNFS.readFile("path/to/wtns", "base64");
+const verificationKey = await RNFS.readFile("path/to/verification_key", "base64");
 
 const {proof, pub_signals} = await groth16_prover(zkey, wtns);
 
-const proofValid = groth16_verifier(zkey, proof, pub_signals);
+const proofValid = groth16_verifier(proof, pub_signals, verificationKey);
 ```
 
 ## Troubleshooting
@@ -120,15 +125,6 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 3. Select `Build Phases` tab
 4. Expand `Link Binary With Libraries`
 5. Add `RapidSnark.xcframework` from `Workspace/Pods` folder.
-
-#### libgroth16_verify.a is not an object file
-
-If you're trying to run package locally, you might get an error like this:
-
-```
-error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: file: libs_ios/libgroth16_verify.a is not an object file (not allowed in a library)
-```
-Install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory to fetch large files.
 
 
 ## Example App

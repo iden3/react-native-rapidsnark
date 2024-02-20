@@ -41,10 +41,26 @@ export function groth16_prover_zkey_file(zkey_path: string, witness: string, {
   return Rapidsnark.groth16_prover_zkey_file(zkey_path, witness, proofBufferSize, publicBufferSize, errorBufferSize);
 }
 
-export function groth16_verifier(inputs: string, proof: string, verificationKey: string): Promise<boolean> {
-  return Rapidsnark.groth16_verify(inputs, proof, verificationKey);
+export function groth16_verifier(proof: string, inputs: string, verificationKey: string, {
+  errorBufferSize = 256,
+} = {
+  errorBufferSize: 256,
+}): Promise<boolean> {
+  return Rapidsnark.groth16_verify(proof, inputs, verificationKey, errorBufferSize);
 }
 
-export function calculate_public_buffer_size(zkey: string): Promise<number> {
-  return Rapidsnark.calculate_public_buffer_size(zkey);
+export function groth16_public_size_for_zkey_buf(zkey: string, {
+  errorBufferSize = 256,
+} = {
+  errorBufferSize: 256,
+}): Promise<number> {
+  return Rapidsnark.groth16_public_size_for_zkey_buf(zkey, errorBufferSize);
+}
+
+export function groth16_public_size_for_zkey_file(zkeyPath: string, {
+  errorBufferSize = 256,
+} = {
+  errorBufferSize: 256,
+}): Promise<number> {
+  return Rapidsnark.groth16_public_size_for_zkey_file(zkeyPath, errorBufferSize);
 }
