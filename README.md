@@ -129,24 +129,45 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 
 ## Example App
 
-Check out the [example app](./example) for a working example.
+Check out the [example app](./example) and [example README](./example/README.md) for a working example.
 
-To run the example app, call `yarn install` in the [`example`](./example) directory and then `yarn ios` or `yarn android` or `yarn ios`.
+To setup the example app, call
+```bash
+yarn install && yarn pods
+```
 
-To use bundled circuits, install [git-lfs](https://git-lfs.com/) and run `git lfs pull` in the root directory to fetch large files.
+in the [`example`](./example) directory.
 
-To use custom circuits, place your circuit, witness and zkey files in the [`example/ios`](./example/ios) or [`example/android/app/src/main/assets`](./example/android/app/src/main/assets) directory depending on your platform.
+#### iOS
 
-## Circuits generation
+```bash
+yarn ios
+```
+
+#### Android
+
+```bash
+yarn android
+```
+
+## Circuits
+
+Zkey, witness and verification key files should be named:
+- `circuit.zkey`
+- `witness.wtns`
+- `verification_key.json`
+
+### Custom circuits
+
+To use custom circuits, place your circuit, witness and zkey files in the [`example/ios`](./example/ios) for iOS and to [`example/android/app/src/main/assets`](./example/android/app/src/main/assets) for Android.
+
+Or put these files in the [`example`](./example) folder and call [`example/scripts/copy_assets.sh`](./example/scripts/copy_assets.sh) to copy them to the correct location.
+
+### Circuits generation
 
 You can build your own circuits and witnesses to use with example app.
 
 Check out the [circuits](./circuits) directory and [REAMDE.md](./circuits/README.md) inside for more details.
-
-## TODO:
-
-- [x] Add verification.
-- [x] Dynamic buffers size. Currently set to 16384 and error 256
 
 ## License
 

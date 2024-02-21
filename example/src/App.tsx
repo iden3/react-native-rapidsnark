@@ -1,8 +1,8 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {calculate_public_buffer_size, groth16_prover, groth16_prover_zkey_file, groth16_verifier,} from '../../src';
+import {groth16_prover, groth16_prover_zkey_file, groth16_public_size_for_zkey_buf, groth16_verifier,} from '../../src';
 
 export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
@@ -87,7 +87,12 @@ export default function App() {
       setProofResult(proverResult.proof);
       setPublicResult(proverResult.pub_signals);
     } catch (error) {
-      console.error('Error proving circuit, code: ', error.code, ', err:', error.message);
+      console.error(
+        'Error proving circuit, code: ',
+        error.code,
+        ', err:',
+        error.message
+      );
       return;
     }
 
@@ -117,7 +122,7 @@ export default function App() {
     const zkeyF = await getZkeyFile();
 
     const startTime = performance.now();
-    const publicBufferSize = await calculate_public_buffer_size(zkeyF);
+    const publicBufferSize = await groth16_public_size_for_zkey_buf(zkeyF);
     const diff = performance.now() - startTime;
 
     setBufferCalcExecTime(diff);
@@ -131,7 +136,13 @@ export default function App() {
       <ScrollView style={styles.scrollView}>
         <View style={{height: 40}}/>
 
-        <View style={{flexDirection: "row", alignItems: "center", alignContent: "center"}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            alignContent: 'center',
+          }}
+        >
           <Switch value={enableBufferProver} onValueChange={onToggleSwitch}/>
           <View style={{width: 10}}/>
           <Text style={styles.resultText}>Enable buffer prover</Text>
@@ -143,9 +154,7 @@ export default function App() {
 
         <View style={{height: 20}}/>
 
-        <Text style={styles.resultText}>
-          Execution time: {proofExecTime}ms
-        </Text>
+        <Text style={styles.resultText}>Execution time: {proofExecTime}ms</Text>
         <Text style={styles.resultText}>
           Proof valid: {verificationResult?.toString() ?? 'checking'}
         </Text>
@@ -153,15 +162,16 @@ export default function App() {
           Verification exec: {verificationExecTime}ms
         </Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => calculateBufferSize()}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => calculateBufferSize()}
+        >
           <Text style={styles.buttonText}>Calc. input buffer size</Text>
         </TouchableOpacity>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
         </Text>
-        <Text style={styles.resultText}>
-          Buffer: {bufferSize} bytes
-        </Text>
+        <Text style={styles.resultText}>Buffer: {bufferSize} bytes</Text>
 
         <View style={{height: 20}}/>
 
@@ -211,7 +221,7 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
 const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
-    : RNFS.MainBundlePath) + '/circuit_final.zkey';
+    : RNFS.MainBundlePath) + '/circuit.zkey';
 
 function getZkeyFile(): Promise<string> {
   return RNFS.readFile(zkeyPath, 'base64');
