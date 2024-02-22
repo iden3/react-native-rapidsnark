@@ -75,3 +75,10 @@ circuits/dist
 
 target/
 a.out
+
+/example/circuits/dist/
+
+/example/android/app/src/main/assets
+/example/ios/circuit.zkey
+/example/ios/verification_key.json
+/example/ios/witness.wtns
