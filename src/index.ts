@@ -92,7 +92,7 @@ export function groth16_verifier(
   );
 }
 
-export function groth16_public_size_for_zkey_buf(
+function groth16_public_size_for_zkey_buf(
   zkey: string,
   {errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE} = {
     errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,

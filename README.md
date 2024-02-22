@@ -64,22 +64,16 @@ Both `groth16_prover` and `groth16_prover_zkey_file` has an optional `proofBuffe
 
 These parameters are used to set the size of the buffers used to store the proof, public signals and error.
 
-To calculate the size of public buffer call `groth16_public_size_for_zkey_buf` function and cache it to reuse later.
+To calculate the size of public buffer call `groth16_public_size_for_zkey_file` function and cache it to reuse later.
 
-For file based prover use `groth16_public_size_for_zkey_file`.
-
-#### groth16_public_size_for_zkey_buf
+#### groth16_public_size_for_zkey_file
 
 Calculates public buffer size for specified zkey.
 
 ```js
-import { groth16_public_size_for_zkey_buf, groth16_public_size_for_zkey_file } from "react-native-rapidsnark";
+import { groth16_public_size_for_zkey_file } from "react-native-rapidsnark";
 
 // ...
-
-const zkey = await RNFS.readFile("path/to/zkey", "base64");
-
-const public_buffer_size = await groth16_public_size_for_zkey_buf(zkey);
 
 const public_buffer_size_file = await groth16_public_size_for_zkey_file("path/to/zkey");
 ```
@@ -132,7 +126,7 @@ Check out the [example app](./example) and [example README](./example/README.md)
 
 ### Circuits generation
 
-Check out the [circuits](./circuits) directory and [REAMDE.md](./circuits/README.md) inside for more details.
+Check out the [example/circuits](./example/circuits) directory and [example REAMDE.md](./example/README.md) inside for more details.
 
 ## License
 

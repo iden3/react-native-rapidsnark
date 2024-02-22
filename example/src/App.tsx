@@ -2,7 +2,12 @@ import React from 'react';
 import RNFS from 'react-native-fs';
 import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {groth16_prover, groth16_prover_zkey_file, groth16_public_size_for_zkey_buf, groth16_verifier,} from '../../src';
+import {
+  groth16_prover,
+  groth16_prover_zkey_file,
+  groth16_public_size_for_zkey_file,
+  groth16_verifier,
+} from '../../src';
 
 export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
@@ -118,11 +123,10 @@ export default function App() {
   }, [enableBufferProver]);
 
   const calculateBufferSize = React.useCallback(async () => {
-    console.log('Calling calculate_public_buffer_size');
-    const zkeyF = await getZkeyFile();
+    console.log('Calling groth16_public_size_for_zkey_file');
 
     const startTime = performance.now();
-    const publicBufferSize = await groth16_public_size_for_zkey_buf(zkeyF);
+    const publicBufferSize = await groth16_public_size_for_zkey_file(zkeyPath);
     const diff = performance.now() - startTime;
 
     setBufferCalcExecTime(diff);

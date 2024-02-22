@@ -8,9 +8,9 @@ WITNESS=$DIST/circuit_js/witness.wtns
 echo "--------------------"
 
 if [[ -f $ZKEY ]]; then
-  cp $ZKEY ../../example/circuit.zkey
-  cp $ZKEY ../../example/ios/circuit.zkey
-  cp $ZKEY ../../example/android/app/src/main/assets/circuit.zkey
+  cp $ZKEY ../../circuit.zkey
+  cp $ZKEY ../../ios/circuit.zkey
+  cp $ZKEY ../../android/app/src/main/assets/circuit.zkey
   echo "zkey copied"
 else
   echo "zkey not found"
@@ -19,9 +19,9 @@ fi
 echo "--------------------"
 
 if [[ -f $VERIFICATION_KEY ]]; then
-  cp $VERIFICATION_KEY ../../example
-  cp $VERIFICATION_KEY ../../example/ios
-  cp $VERIFICATION_KEY ../../example/android/app/src/main/assets
+  cp $VERIFICATION_KEY ../../
+  cp $VERIFICATION_KEY ../../ios
+  cp $VERIFICATION_KEY ../../android/app/src/main/assets
   echo "verification key copied"
 else
   echo "verification key not found"
@@ -30,9 +30,9 @@ fi
 echo "--------------------"
 
 if [[ -f $WITNESS ]]; then
-  cp $WITNESS ../../example
-  cp $WITNESS ../../example/ios
-  cp $WITNESS ../../example/android/app/src/main/assets
+  cp $WITNESS ../../
+  cp $WITNESS ../../ios
+  cp $WITNESS ../../android/app/src/main/assets
   echo "witness copied"
 else
   echo "witness not found"
