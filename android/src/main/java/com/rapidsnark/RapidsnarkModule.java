@@ -61,7 +61,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   //
   // In case of error promis.reject(statusCode, errorString);
   @ReactMethod
-  public void groth16Prover(String zkeyBytes1, String wtnsBytes1,
+  public void groth16Prove(String zkeyBytes1, String wtnsBytes1,
                              Integer proofBufferSize, Integer publicBufferSize,
                              Integer errorBufferSize,
                              Promise promise) {
