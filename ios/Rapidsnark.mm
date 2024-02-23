@@ -135,7 +135,6 @@ RCT_EXPORT_METHOD(groth16Verify:(nonnull NSString *)proof
 
     if (result != VERIFIER_ERROR) {
       bool proofValid = result == VERIFIER_VALID_PROOF;
-      RCTLogError(@"Proof valid: %d", proofValid);
       resolve(@(proofValid));
     } else {
       NSString *errorString = [NSString stringWithCString:error_msg encoding:NSUTF8StringEncoding];
