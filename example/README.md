@@ -1,6 +1,13 @@
 
 ## Example
 
+Before running the example app, you need to compile test circuit, and copy necessary files to the example app.
+```bash
+cd circuits/scripts &&
+./build.sh &&
+./copy_to_example.sh
+```
+
 To setup the example app, call
 ```bash
 yarn install && yarn pods
@@ -26,7 +33,7 @@ Or put these files in the [`example`](.) root folder and call [`scripts/copy_ass
 
 ### Circuits generation
 
-You can build your own circuits and witnesses to use with example app.
+You can build your own circuits and witnesses to use with example app. [`Circom`](https://docs.circom.io)
 
 #### MacOS Setup
 
