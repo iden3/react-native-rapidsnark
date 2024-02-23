@@ -46,10 +46,6 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 
 Check out the [example app](./example) for a working example.
 
-## TODO:
-[-]: Add verification.
-[-]: Dynamic buffers size. Currently set to 16384 and error 256
-
 ## License
 
 react-native-rapidsnark is part of the iden3 project 0KIMS association. Please check the [COPYING](./COPYING) file for more details.
