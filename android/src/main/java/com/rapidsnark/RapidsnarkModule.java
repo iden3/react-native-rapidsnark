@@ -246,9 +246,9 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       // Decode base64
       byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
 
-      long public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyBuf(
+      int public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyBuf(
         zkeyBytes, zkeyBytes.length,
-        error_msg, errorBufferSize
+        error_msg, Long.valueOf(errorBufferSize)
       ));
 
       promise.resolve(public_buffer_size);
@@ -265,9 +265,9 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     try {
       byte[] error_msg = new byte[errorBufferSize];
 
-      long public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyFile(
+      int public_buffer_size = (int) (new RapidsnarkJniBridge().groth16PublicSizeForZkeyFile(
         zkeyPath,
-        error_msg, errorBufferSize
+        error_msg, Long.valueOf(errorBufferSize)
       ));
 
       promise.resolve(public_buffer_size);
