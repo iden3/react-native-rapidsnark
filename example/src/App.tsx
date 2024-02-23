@@ -208,8 +208,8 @@ export default function App() {
 function writeAssetFilesToDocumentsDirectory(): Promise<any> {
   return Promise.all([
     RNFS.copyFileAssets(
-      'circuit.zkey',
-      RNFS.DocumentDirectoryPath + '/circuit.zkey'
+      'circuit_final.zkey',
+      RNFS.DocumentDirectoryPath + '/circuit_final.zkey'
     ),
     RNFS.copyFileAssets(
       'witness.wtns',
