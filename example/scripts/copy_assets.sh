@@ -1,7 +1,7 @@
 echo "Copying zkey, verification key and witness files to assets folder"
 
 DIST=$(pwd)/..
-ZKEY=$DIST/circuit.zkey
+ZKEY=$DIST/circuit_final.zkey
 VERIFICATION_KEY=$DIST/verification_key.json
 WITNESS=$DIST/witness.wtns
 
