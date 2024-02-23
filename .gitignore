@@ -79,6 +79,6 @@ a.out
 /example/circuits/dist/
 
 /example/android/app/src/main/assets
-/example/ios/circuit.zkey
+/example/ios/circuit_final.zkey
 /example/ios/verification_key.json
 /example/ios/witness.wtns
