@@ -42,7 +42,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
-  // groth16_prover is a JNI bridge to the C library rapidsnark.
+  // groth16Prover is a JNI bridge to the C library rapidsnark.
   // It takes a zkey and witness as byte arrays and returns a proof and public signals as byte arrays.
   // This function is used to generate groth16 proofs.
   // For small zkey file it can be used as is. (apx. up to ~80mb) For big zkey files it is better to use `groth16_prover_zkey_file`
@@ -61,7 +61,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   //
   // In case of error promis.reject(statusCode, errorString);
   @ReactMethod
-  public void groth16_prover(String zkeyBytes1, String wtnsBytes1,
+  public void groth16Prover(String zkeyBytes1, String wtnsBytes1,
                              Integer proofBufferSize, Integer publicBufferSize,
                              Integer errorBufferSize,
                              Promise promise) {
@@ -80,7 +80,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       byte[] error_msg = new byte[errorBufferSize];
 
       // This will require you to write a JNI bridge to your C library.
-      int statusCode = groth16Prove(rapidsnarkJNI, zkeyBytes, wtnsBytes, proof_buffer,
+      int statusCode = groth16_prove(rapidsnarkJNI, zkeyBytes, wtnsBytes, proof_buffer,
         proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode != PROVER_OK) {
@@ -111,10 +111,10 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     }
   }
 
-  private static int groth16Prove(RapidsnarkJniBridge rapidsnarkJNI, byte[] zkeyBytes,
+  private static int groth16_prove(RapidsnarkJniBridge rapidsnarkJNI, byte[] zkeyBytes,
                                   byte[] wtnsBytes, byte[] proof_buffer, long[] proof_buffer_size,
                                   byte[] public_buffer, long[] public_buffer_size, byte[] error_msg) {
-    int statusCode = rapidsnarkJNI.groth16Prover(
+    int statusCode = rapidsnarkJNI.groth16Prove(
       zkeyBytes, zkeyBytes.length,
       wtnsBytes, wtnsBytes.length,
       proof_buffer, proof_buffer_size,
@@ -125,7 +125,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return statusCode;
   }
 
-  // groth16_prover_zkey_file is a JNI bridge to the C library rapidsnark.
+  // groth16ProveWithZKeyFilePath is a JNI bridge to the C library rapidsnark.
   // It takes a PATH to  zKey and witness as byte arrays and returns a proof and public signals as byte arrays.
   // This function is used to generate groth16 proofs.
   // @zkeyPath - path to zkey file
@@ -143,7 +143,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   //
   // In case of error promis.reject(statusCode, errorString);
   @ReactMethod
-  public void groth16_prover_zkey_file(String zkeyPath, String wtnsBytes1,
+  public void groth16ProveWithZKeyFilePath(String zkeyPath, String wtnsBytes1,
                                        Integer proofBufferSize, Integer publicBufferSize,
                                        Integer errorBufferSize,
                                        Promise promise) {
@@ -161,7 +161,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       byte[] error_msg = new byte[errorBufferSize];
 
       // This will require you to write a JNI bridge to your C library.
-      int statusCode = groth16ProverZkeyFile(rapidsnarkJNI, zkeyPath, wtnsBytes,
+      int statusCode = groth16ProveWithZKeyFilePath(rapidsnarkJNI, zkeyPath, wtnsBytes,
         proof_buffer, proof_buffer_size, public_buffer, public_buffer_size, error_msg);
 
       if (statusCode != PROVER_OK) {
@@ -191,11 +191,11 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     }
   }
 
-  private static int groth16ProverZkeyFile(RapidsnarkJniBridge rapidsnarkJNI, String zkeyPath,
+  private static int groth16ProveWithZKeyFilePath(RapidsnarkJniBridge rapidsnarkJNI, String zkeyPath,
                                            byte[] wtnsBytes, byte[] proof_buffer,
                                            long[] proof_buffer_size, byte[] public_buffer,
                                            long[] public_buffer_size, byte[] error_msg) {
-    int statusCode = rapidsnarkJNI.groth16ProverZkeyFile(
+    int statusCode = rapidsnarkJNI.groth16ProveWithZKeyFilePath(
       zkeyPath,
       wtnsBytes, wtnsBytes.length,
       proof_buffer, proof_buffer_size,
@@ -206,17 +206,17 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
     return statusCode;
   }
 
-  // groth16_verify is a JNI bridge to the C library rapidsnark.
+  // groth16Verify is a JNI bridge to the C library rapidsnark.
   // Verifies a proof and returns true or false.
   // @inputs - public signals as string
   // @proof - proof as string
   @ReactMethod
-  public void groth16_verify(String proof, String inputs, String verificationKey,
+  public void groth16Verify(String proof, String inputs, String verificationKey,
                              Integer errorBufferSize, Promise promise) {
     try {
       byte[] error_msg = new byte[errorBufferSize];
 
-      int status_code = new RapidsnarkJniBridge().groth16Verifier(
+      int status_code = new RapidsnarkJniBridge().groth16Verify(
         proof,
         inputs,
         verificationKey,
@@ -239,7 +239,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // Calculates the size of the public buffer for a given zkey.
   // In production better to use hardcoded values or cashed values, because the calculation is slow.
   @ReactMethod
-  public void groth16_public_size_for_zkey_buf(String zkeyBytes1, Integer errorBufferSize, Promise promise) {
+  public void groth16PublicSizeForZkeyBuf(String zkeyBytes1, Integer errorBufferSize, Promise promise) {
     try {
       byte[] error_msg = new byte[errorBufferSize];
 
@@ -261,7 +261,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   // Calculates the size of the public buffer for a given zkey.
   // In production better to use hardcoded values or cashed values, because the calculation is slow.
   @ReactMethod
-  public void groth16_public_size_for_zkey_file(String zkeyPath, Integer errorBufferSize, Promise promise) {
+  public void groth16PublicSizeForZkeyFile(String zkeyPath, Integer errorBufferSize, Promise promise) {
     try {
       byte[] error_msg = new byte[errorBufferSize];
 
@@ -283,19 +283,19 @@ class RapidsnarkJniBridge {
     System.loadLibrary("rapidsnark_module");
   }
 
-  public native int groth16Prover(byte[] zkeyBuffer, long zkeySize,
+  public native int groth16Prove(byte[] zkeyBuffer, long zkeySize,
                                   byte[] wtnsBuffer, long wtnsSize,
                                   byte[] proofBuffer, long[] proofSize,
                                   byte[] publicBuffer, long[] publicSize,
                                   byte[] errorMsg, long errorMsgMaxSize);
 
-  public native int groth16ProverZkeyFile(String zkeyPath,
+  public native int groth16ProveWithZKeyFilePath(String zkeyPath,
                                           byte[] wtnsBuffer, long wtnsSize,
                                           byte[] proofBuffer, long[] proofSize,
                                           byte[] publicBuffer, long[] publicSize,
                                           byte[] errorMsg, long errorMsgMaxSize);
 
-  public native int groth16Verifier(String proof, String inputs, String verificationKey,
+  public native int groth16Verify(String proof, String inputs, String verificationKey,
                                     byte[] errorMsg, long errorMsgMaxSize);
 
   public native long groth16PublicSizeForZkeyBuf(byte[] zkeyBuffer, long zkeySize, byte[] errorMsg, long errorMsgMaxSize);

@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Prover(
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Prove(
         JNIEnv *env, jobject obj,
         jbyteArray zkeyBuffer, jlong zkeySize,
         jbyteArray wtnsBuffer, jlong wtnsSize,
@@ -60,7 +60,7 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Prover(
     return result;
 }
 
-JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16ProverZkeyFile(
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16ProveWithZKeyFilePath(
         JNIEnv *env, jobject obj,
         jstring zkeyPath,
         jbyteArray wtnsBuffer, jlong wtnsSize,
@@ -113,7 +113,7 @@ JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16ProverZkey
     return status_code;
 }
 
-JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Verifier(
+JNIEXPORT jint JNICALL Java_com_rapidsnark_RapidsnarkJniBridge_groth16Verify(
         JNIEnv *env, jobject obj,
         jstring proof, jstring inputs, jstring verificationKey,
         jbyteArray errorMsg, jlong errorMsgMaxSize
