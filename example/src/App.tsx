@@ -3,10 +3,10 @@ import RNFS from 'react-native-fs';
 import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
-  groth16_prover,
-  groth16_prover_zkey_file,
-  groth16_public_size_for_zkey_file,
-  groth16_verifier,
+  groth16Prove,
+  groth16ProveWithZKeyFilePath,
+  groth16PublicSizeForZkeyFile,
+  groth16Verify,
 } from '../../src';
 
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
 
   // groth16 prover with reading zkey from buffer.
   // this function in React Native is limited, not applicable for
-  // large files. It is better to use groth16_prover_zkey_file
+  // large files. It is better to use groth16ProveWithZKeyFilePath
   const runGroth16BufferProver = async () => {
     console.log('Calling useGroth16BufferProver');
 
@@ -34,7 +34,7 @@ export default function App() {
     console.log('wtnsF: ', wtnsF.length);
 
     const startTime = performance.now();
-    const proverResult = await groth16_prover(zkeyF, wtnsF);
+    const proverResult = await groth16Prove(zkeyF, wtnsF);
     const diff = performance.now() - startTime;
     setProofExecTime(diff);
 
@@ -49,7 +49,7 @@ export default function App() {
     const wtnsF = await getWtnsFile();
 
     const startTime = performance.now();
-    const proverResult = await groth16_prover_zkey_file(zkeyPath, wtnsF);
+    const proverResult = await groth16ProveWithZKeyFilePath(zkeyPath, wtnsF);
     const diff = performance.now() - startTime;
     setProofExecTime(diff);
     return proverResult;
@@ -71,7 +71,7 @@ export default function App() {
   };
 
   const runProver = React.useCallback(async () => {
-    console.log('Calling groth16_prover');
+    console.log('Calling groth16Prove');
 
     // Copy assets to documents directory on Android
     if (Platform.OS === 'android') {
@@ -106,7 +106,7 @@ export default function App() {
       const verificationKey = await getVerificationKeyFile();
 
       const startTime = performance.now();
-      const result = await groth16_verifier(
+      const result = await groth16Verify(
         proverResult.proof,
         proverResult.pub_signals,
         verificationKey
@@ -123,10 +123,10 @@ export default function App() {
   }, [enableBufferProver]);
 
   const calculateBufferSize = React.useCallback(async () => {
-    console.log('Calling groth16_public_size_for_zkey_file');
+    console.log('Calling groth16PublicSizeForZkeyFile');
 
     const startTime = performance.now();
-    const publicBufferSize = await groth16_public_size_for_zkey_file(zkeyPath);
+    const publicBufferSize = await groth16PublicSizeForZkeyFile(zkeyPath);
     const diff = performance.now() - startTime;
 
     setBufferCalcExecTime(diff);
@@ -225,7 +225,7 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
 const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
-    : RNFS.MainBundlePath) + '/circuit.zkey';
+    : RNFS.MainBundlePath) + '/circuit_final.zkey';
 
 function getZkeyFile(): Promise<string> {
   return RNFS.readFile(zkeyPath, 'base64');
