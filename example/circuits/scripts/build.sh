@@ -1,7 +1,7 @@
 echo "Compile test circuit"
 echo "--------------------"
 
-PTAU=powersOfTau28_hez_final_20.ptau
+PTAU=powersOfTau28_hez_final_16.ptau
 INPUTS=$(pwd)/../circuits/input.json
 
 DIST="$(pwd)/../dist"
