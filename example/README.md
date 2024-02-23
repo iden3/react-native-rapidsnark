@@ -4,8 +4,10 @@
 Before running the example app, you need to compile test circuit, and copy necessary files to the example app.
 ```bash
 cd circuits/scripts &&
+yarn install &&
 ./build.sh &&
-./copy_to_example.sh
+./copy_to_example.sh &&
+cd ../..
 ```
 
 To setup the example app, call
