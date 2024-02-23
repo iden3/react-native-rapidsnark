@@ -3,7 +3,7 @@
 ---
 
 This library is React Native wrapper for the [Rapidsnark](https://github.com/iden3/rapidsnark). It enables the
-generation of proofs for specified circuits and witnesses within a React Native environment.
+generation of proofs for specified circuits within a React Native environment.
 
 ## Platform Support
 
@@ -20,15 +20,49 @@ npm i @iden3/react-native-rapidsnark
 
 ## Usage
 
-### Prover
+#### groth16ProveWithZKeyFilePath
 
-#### groth16_prover
+Function takes path to .zkey file and witness file (base64 encoded) and returns proof and public signals.
 
-Function that takes zkey and witness files and returns proof and public signals.
+Reads .zkey file directly from filesystem.
+
+
+```js
+import {groth16ProveWithZKeyFilePath} from "react-native-rapidsnark";
+
+// ...
+
+const zkeyPath = "path/to/zkey";
+const wtns = await RNFS.readFile("path/to/wtns", "base64");
+
+const {proof, pub_signals} = await groth16ProveWithZKeyFilePath(zkeyPath, wtns);
+```
+
+#### groth16Verify
+
+Verifies proof and public signals against zkey.
+
+```js
+import {groth16Prove, groth16Verify} from "react-native-rapidsnark";
+
+// ...
+
+const zkey = await RNFS.readFile("path/to/zkey", "base64");
+const wtns = await RNFS.readFile("path/to/wtns", "base64");
+const verificationKey = await RNFS.readFile("path/to/verification_key", "base64");
+
+const {proof, pub_signals} = await groth16Prove(zkey, wtns);
+
+const proofValid = groth16Verify(proof, pub_signals, verificationKey);
+```
+
+#### groth16Prove
+
+Function that takes zkey and witness files encoded as base64.
 
 `proof` and `pub_signals` are JSON encoded strings.
 
-Large circuits might cause OOM. Use with caution.
+>Large circuits might cause OOM. Use with caution.
 
 ```js
 import {groth16_prover} from "react-native-rapidsnark";
@@ -38,64 +72,29 @@ import {groth16_prover} from "react-native-rapidsnark";
 const zkey = await RNFS.readFile("path/to/zkey", "base64");
 const wtns = await RNFS.readFile("path/to/wtns", "base64");
 
-const {proof, pub_signals} = await groth16_prover(zkey, wtns);
+const {proof, pub_signals} = await groth16Prove(zkey, wtns);
 ```
 
-#### groth16_prover_zkey_file
-
-Function that takes zkey file path and witness file and returns proof and public signals.
-
-Reads zkey file directly from filesystem, so it's more memory and efficient than `groth16_prover`.
-
-```js
-import {groth16_prover_zkey_file} from "react-native-rapidsnark";
-
-// ...
-
-const zkeyPath = "path/to/zkey";
-const wtns = await RNFS.readFile("path/to/wtns", "base64");
-
-const {proof, pub_signals} = await groth16_prover_zkey_file(zkeyPath, wtns);
-```
 
 ### Public buffer size
 
-Both `groth16_prover` and `groth16_prover_zkey_file` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
+Both `groth16Prove` and `groth16ProveWithZKeyFilePath` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
 
 These parameters are used to set the size of the buffers used to store the proof, public signals and error.
 
-To calculate the size of public buffer call `groth16_public_size_for_zkey_file` function and cache it to reuse later.
+If you have embedded circuit in the app, it is recommended to calculate the size of the public buffer once and reuse it.
+To calculate the size of public buffer call `groth16ProveWithZKeyFilePath`.
 
-#### groth16_public_size_for_zkey_file
+#### groth16PublicSizeForZkeyFile
 
 Calculates public buffer size for specified zkey.
 
 ```js
-import { groth16_public_size_for_zkey_file } from "react-native-rapidsnark";
+import { groth16PublicSizeForZkeyFile } from "react-native-rapidsnark";
 
 // ...
 
-const public_buffer_size_file = await groth16_public_size_for_zkey_file("path/to/zkey");
-```
-
-### Verifier
-
-#### groth16_verifier
-
-Verifies proof and public signals against zkey.
-
-```js
-import {groth16_prover, groth16_verifier} from "react-native-rapidsnark";
-
-// ...
-
-const zkey = await RNFS.readFile("path/to/zkey", "base64");
-const wtns = await RNFS.readFile("path/to/wtns", "base64");
-const verificationKey = await RNFS.readFile("path/to/verification_key", "base64");
-
-const {proof, pub_signals} = await groth16_prover(zkey, wtns);
-
-const proofValid = groth16_verifier(proof, pub_signals, verificationKey);
+const public_buffer_size_file = await groth16PublicSizeForZkeyFile("path/to/zkey");
 ```
 
 ## Troubleshooting
