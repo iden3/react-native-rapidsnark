@@ -43,7 +43,7 @@ export async function groth16Prove(
   return Rapidsnark.groth16Prove(
     zkey,
     witness,
-    publicBufferSize,
+    proofBufferSize,
     public_buffer_size,
     errorBufferSize
   );
