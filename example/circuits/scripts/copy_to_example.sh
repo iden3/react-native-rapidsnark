@@ -8,9 +8,9 @@ WITNESS=$DIST/circuit_js/witness.wtns
 echo "--------------------"
 
 if [[ -f $ZKEY ]]; then
-  cp $ZKEY ../../circuit_final.zkey
-  cp $ZKEY ../../ios/circuit_final.zkey
-  cp $ZKEY ../../android/app/src/main/assets/circuit_final.zkey
+  cp $ZKEY ../../
+  cp $ZKEY ../../ios
+  cp $ZKEY ../../android/app/src/main/assets
   echo "zkey copied"
 else
   echo "zkey not found"

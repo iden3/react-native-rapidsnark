@@ -6,7 +6,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "pods": "pod-install --quiet"
+    "pods": "pod-install --quiet",
+    "build_circuits": "./circuits/scripts/build.sh"
   },
   "dependencies": {
     "base-64": "^1.0.0",
