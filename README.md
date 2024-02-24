@@ -74,17 +74,6 @@ const wtns = await RNFS.readFile("path/to/wtns", "base64");
 
 const {proof, pub_signals} = await groth16Prove(zkey, wtns);
 ```
-
-
-### Public buffer size
-
-Both `groth16Prove` and `groth16ProveWithZKeyFilePath` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
-
-These parameters are used to set the size of the buffers used to store the proof, public signals and error.
-
-If you have embedded circuit in the app, it is recommended to calculate the size of the public buffer once and reuse it.
-To calculate the size of public buffer call `groth16ProveWithZKeyFilePath`.
-
 #### groth16PublicSizeForZkeyFile
 
 Calculates public buffer size for specified zkey.
@@ -96,6 +85,15 @@ import { groth16PublicSizeForZkeyFile } from "react-native-rapidsnark";
 
 const public_buffer_size_file = await groth16PublicSizeForZkeyFile("path/to/zkey");
 ```
+
+### Public buffer size
+
+Both `groth16Prove` and `groth16ProveWithZKeyFilePath` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
+
+These parameters are used to set the size of the buffers used to store the proof, public signals and error.
+
+If you have embedded circuit in the app, it is recommended to calculate the size of the public buffer once and reuse it.
+To calculate the size of public buffer call `groth16ProveWithZKeyFilePath`.
 
 ## Troubleshooting
 
