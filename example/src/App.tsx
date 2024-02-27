@@ -2,12 +2,7 @@ import React from 'react';
 import RNFS from 'react-native-fs';
 import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {
-  groth16Prove,
-  groth16ProveWithZKeyFilePath,
-  groth16PublicSizeForZkeyFile,
-  groth16Verify,
-} from '../../src';
+import {groth16Prove, groth16ProveWithZKeyFilePath, groth16PublicSizeForZkeyFile, groth16Verify,} from '../../src';
 
 export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
@@ -16,8 +11,9 @@ export default function App() {
   const [proofExecTime, setProofExecTime] = React.useState(0);
   const [bufferCalcExecTime, setBufferCalcExecTime] = React.useState(0);
   const [bufferSize, setBufferSize] = React.useState(0);
-  const [verificationResult, setVerificationResult] =
-    React.useState<boolean>(null);
+  const [verificationResult, setVerificationResult] = React.useState<
+    boolean | null
+  >(null);
   const [verificationExecTime, setVerificationExecTime] = React.useState(0);
 
   const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
@@ -55,7 +51,13 @@ export default function App() {
     return proverResult;
   };
 
-  const logProof = ({proof, pub_signals}) => {
+  const logProof = ({
+                      proof,
+                      pub_signals,
+                    }: {
+    proof: string;
+    pub_signals: string;
+  }) => {
     console.log('proofResult: ', proof);
     console.log('publicResult: ', pub_signals);
 
@@ -91,7 +93,7 @@ export default function App() {
       logProof(proverResult);
       setProofResult(proverResult.proof);
       setPublicResult(proverResult.pub_signals);
-    } catch (error) {
+    } catch (error: any) {
       console.error(
         'Error proving circuit, code: ',
         error.code,
