@@ -19,6 +19,8 @@ prepare_react_native_project!
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
+
+# Flipper is disabled because it is not supported with use_frameworks! :linkage => :static
 # flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 flipper_config = FlipperConfiguration.disabled
 
@@ -31,16 +33,10 @@ end
 target 'RapidsnarkExample' do
   config = use_native_modules!
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
-
   use_frameworks! :linkage => :static
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => false,
-    :fabric_enabled => flags[:fabric_enabled],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -50,6 +46,11 @@ target 'RapidsnarkExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  target 'RapidsnarkExampleTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
@@ -57,6 +58,5 @@ target 'RapidsnarkExample' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    #__apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
