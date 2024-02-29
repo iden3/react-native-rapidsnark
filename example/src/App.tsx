@@ -1,8 +1,13 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {groth16Prove, groth16ProveWithZKeyFilePath, groth16PublicSizeForZkeyFile, groth16Verify,} from '../../src';
+import {
+  groth16Prove,
+  groth16ProveWithZKeyFilePath,
+  groth16PublicSizeForZkeyFile,
+  groth16Verify
+} from '@iden3/react-native-rapidsnark';
 
 export default function App() {
   const [enableBufferProver, setEnableBufferProver] = React.useState(false);
