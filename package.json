@@ -141,5 +141,13 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "RNRapidsnarkSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.rapidsnark"
+    }
   }
 }

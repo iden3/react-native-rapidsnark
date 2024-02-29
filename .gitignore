@@ -79,3 +79,7 @@ a.out
 /example/ios/circuit_final.zkey
 /example/ios/verification_key.json
 /example/ios/witness.wtns
+
+/example/circuit_final.zkey
+/example/verification_key.json
+/example/witness.wtns

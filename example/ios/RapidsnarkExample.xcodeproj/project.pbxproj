@@ -12,8 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		52DEAD4DB4C43869F2345E7B /* Pods_RapidsnarkExample_RapidsnarkExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028C031EA0835CC896AA8BB8 /* Pods_RapidsnarkExample_RapidsnarkExampleTests.framework */; };
+		5C5412A67C38FA345B39FCC2 /* Pods_RapidsnarkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B652347A424E2B50EE3BED8 /* Pods_RapidsnarkExample.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		86AE9A97D55524ACFEBE1964 /* Pods_RapidsnarkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6462460858153BB68C04764 /* Pods_RapidsnarkExample.framework */; };
 		8D0B44FF2B68404D00206E1F /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FC2B68404D00206E1F /* witness.wtns */; };
 		8D0B45002B68404D00206E1F /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FD2B68404D00206E1F /* verification_key.json */; };
 		8D0B45012B68404D00206E1F /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FE2B68404D00206E1F /* circuit_final.zkey */; };
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B93A30807856559BACD3E755 /* Pods_RapidsnarkExample.framework in Frameworks */,
+				5C5412A67C38FA345B39FCC2 /* Pods_RapidsnarkExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,13 +595,17 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -677,13 +681,17 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
