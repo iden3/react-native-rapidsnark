@@ -1,6 +1,6 @@
 {
   "name": "@iden3/react-native-rapidsnark",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "React-native wrapper for rapidsnark",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -54,6 +54,9 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.24.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
@@ -141,5 +144,13 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "RNRapidsnarkSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.rapidsnark"
+    }
   }
 }

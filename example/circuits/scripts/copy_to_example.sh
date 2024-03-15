@@ -1,9 +1,16 @@
 echo "Copying zkey, verification key and witness files to example folder"
 
+ANDROID_DIR=../../android/app/src/main/assets
+
 DIST=$(pwd)/../dist
 ZKEY=$DIST/circuit_final.zkey
 VERIFICATION_KEY=$DIST/verification_key.json
 WITNESS=$DIST/circuit_js/witness.wtns
+
+if [[ ! -f $ANDROID_DIR ]]; then
+  echo "created Android assets dir"
+  mkdir -p ../../android/app/src/main/assets
+fi
 
 echo "--------------------"
 
