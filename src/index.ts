@@ -28,9 +28,9 @@ export async function groth16Prove(
     publicBufferSize,
     errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE,
   }: {
-    proofBufferSize: number;
+    proofBufferSize: number | undefined;
     publicBufferSize: number | undefined;
-    errorBufferSize: number;
+    errorBufferSize: number | undefined;
   } = {
     proofBufferSize: DEFAULT_PROOF_BUFFER_SIZE,
     publicBufferSize: undefined,
@@ -62,9 +62,9 @@ export async function groth16ProveWithZKeyFilePath(
     publicBufferSize,
     errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE,
   }: {
-    proofBufferSize: number;
+    proofBufferSize: number | undefined;
     publicBufferSize: number | undefined;
-    errorBufferSize: number;
+    errorBufferSize: number | undefined;
   } = {
     proofBufferSize: DEFAULT_PROOF_BUFFER_SIZE,
     publicBufferSize: undefined,
@@ -94,7 +94,7 @@ export function groth16Verify(
   {
     errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE,
   }: {
-    errorBufferSize: number;
+    errorBufferSize: number | undefined;
   } = {
     errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,
   }
@@ -112,7 +112,7 @@ function groth16PublicSizeForZkeyBuf(
   {
     errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE,
   }: {
-    errorBufferSize: number;
+    errorBufferSize: number | undefined;
   } = {
     errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,
   }
@@ -125,7 +125,7 @@ export function groth16PublicSizeForZkeyFile(
   {
     errorBufferSize = DEFAULT_ERROR_BUFFER_SIZE,
   }: {
-    errorBufferSize: number;
+    errorBufferSize: number | undefined;
   } = {
     errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,
   }

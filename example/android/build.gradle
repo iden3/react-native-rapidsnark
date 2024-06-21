@@ -11,6 +11,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
+        maven {
+          url "/Users/moria/.m2/repository"
+        }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")

@@ -2,6 +2,10 @@ buildscript {
   repositories {
     google()
     mavenCentral()
+    mavenLocal()
+    maven {
+      url "/Users/moria/.m2/repository"
+    }
   }
 
   dependencies {
@@ -72,14 +76,6 @@ android {
       }
     }
   }
-  sourceSets {
-      main.jniLibs.srcDirs += "src/jniLibs"
-  }
-  externalNativeBuild {
-    cmake {
-      path "src/main/cpp/CMakeLists.txt"
-    }
-  }
   buildTypes {
     release {
       minifyEnabled false
@@ -99,6 +95,10 @@ android {
 
 repositories {
   mavenCentral()
+  mavenLocal()
+  maven {
+    url "/Users/moria/.m2/repository"
+  }
   google()
 }
 
@@ -108,6 +108,9 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+//  implementation 'com.facebook.react:react-android:0.74.2'
+
+  implementation "io.iden3:rapidsnark:0.0.1-alpha.1"
 }
 
 if (isNewArchitectureEnabled()) {

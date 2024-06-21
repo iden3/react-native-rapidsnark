@@ -18,21 +18,23 @@ RCT_EXPORT_METHOD(groth16Prove:(nonnull NSString *)zkeyBytes
     NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkeyBytes options:0];
     NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:wtnsBytes options:0];
 
-    @try {
-        NSDictionary *result = [
-            RapidsnarkProxy
-            groth16ProveProxyWithZkey: zkeyData
-            witness: wtnsData
-            proofBufferSize: proofBufferSize
-            publicBufferSize: publicBufferSize
-            errBufferSize: errBufferSize
-        ];
+    NSError* error;
+    NSDictionary *result = [
+        RapidsnarkProxy
+        groth16ProveProxyWithZkey: zkeyData
+        witness: wtnsData
+        proofBufferSize: proofBufferSize
+        publicBufferSize: publicBufferSize
+        errBufferSize: errBufferSize
+        error: &error
+    ];
 
+    if (!error) {
         resolve(result);
-     }
-     @catch (NSException *exception) {
-        reject([NSString stringWithFormat:@"%d", 0], exception.reason, nil);
-     }
+    } else {
+        NSString* message = error.userInfo[@"message"];
+        reject([@(error.code) stringValue], message, nil);
+    }
 }
 
 RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkey_file_path
@@ -45,44 +47,48 @@ RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkey_file_pat
 {
     NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:wtnsBytes options:0];
 
-    @try {
-        NSDictionary *result = [
-            RapidsnarkProxy
-            groth16ProveWithZkeyFilePathProxyWithZkeyFilePath: zkey_file_path
-            witness: wtnsData
-            proofBufferSize: proofBufferSize
-            publicBufferSize: publicBufferSize
-            errBufferSize: errBufferSize
-        ];
+    NSError* error;
+    NSDictionary* result = [
+        RapidsnarkProxy
+        groth16ProveWithZkeyFilePathProxyWithZkeyFilePath: zkey_file_path
+        witness: wtnsData
+        proofBufferSize: proofBufferSize
+        publicBufferSize: publicBufferSize
+        errBufferSize: errBufferSize
+        error: &error
+    ];
 
+    if (!error) {
         resolve(result);
-     }
-     @catch (NSException *exception) {
-        reject([NSString stringWithFormat:@"%d", 0], exception.reason, nil);
-     }
+    } else {
+        NSString* message = error.userInfo[@"message"];
+        reject([@(error.code) stringValue], message, nil);
+    }
 }
 
 RCT_EXPORT_METHOD(groth16Verify:(nonnull NSString *)proof
-        inputs:(nonnull NSString *)inputs
-        verification_key:(nonnull NSString *)verification_key
-        errBufferSize:(nonnull NSNumber *)errBufferSize
-        resolve:(RCTPromiseResolveBlock)resolve
-        reject:(RCTPromiseRejectBlock)reject)
+                  inputs:(nonnull NSString *)inputs
+                  verification_key:(nonnull NSString *)verification_key
+                  errBufferSize:(nonnull NSNumber *)errBufferSize
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
-    @try {
-        bool result = [
-            RapidsnarkProxy
-            groth16VerifyProxyWithProof: proof
-            inputs: inputs
-            verificationKey: verification_key
-            errorBufferSize: errBufferSize
-        ];
+    NSError* error;
+    NSNumber* result = [
+        RapidsnarkProxy
+        groth16VerifyProxyWithProof: proof
+        inputs: inputs
+        verificationKey: verification_key
+        errorBufferSize: errBufferSize
+        error: &error
+    ];
 
-        resolve(@(result));
-     }
-     @catch (NSException *exception) {
-        reject([NSString stringWithFormat:@"%d", 0], exception.reason, nil);
-     }
+    if (!error) {
+        resolve(@(result == 0));
+    } else {
+        NSString* message = error.userInfo[@"message"];
+        reject([@(error.code) stringValue], message, nil);
+    }
 }
 
 RCT_EXPORT_METHOD(groth16PublicSizeForZkeyBuf:(nonnull NSString *)zkeyBytes
@@ -93,13 +99,20 @@ RCT_EXPORT_METHOD(groth16PublicSizeForZkeyBuf:(nonnull NSString *)zkeyBytes
     // NSData decode base64
     NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkeyBytes options:0];
 
-    NSInteger publicBufferSize = [
+    NSError* error;
+    NSNumber* publicBufferSize = [
         RapidsnarkProxy
         groth16PublicSizeForZkeyBufProxyWithZkey: zkeyData
         errorBufferSize: errBufferSize
+        error: &error
     ];
 
-    resolve(@(publicBufferSize));
+    if (!error) {
+        resolve(publicBufferSize);
+    } else {
+        NSString* message = error.userInfo[@"message"];
+        reject([@(error.code) stringValue], message, nil);
+    }
 }
 
 RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkey_file_path
@@ -107,11 +120,19 @@ RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkey_file_pat
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-    NSInteger publicBufferSize = [
+    NSError* error;
+    NSNumber* publicBufferSize = [
         RapidsnarkProxy
         groth16PublicSizeForZkeyFileProxyWithZkeyPath: zkey_file_path
         errorBufferSize: errBufferSize
+        error: &error
     ];
-    resolve(@(publicBufferSize));
+
+    if (!error) {
+        resolve(publicBufferSize);
+    } else {
+        NSString* message = error.userInfo[@"message"];
+        reject([@(error.code) stringValue], message, nil);
+    }
 }
 @end
