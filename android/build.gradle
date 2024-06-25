@@ -95,11 +95,11 @@ android {
 
 repositories {
   mavenCentral()
-  mavenLocal()
-  maven {
-    url "/Users/moria/.m2/repository"
-  }
   google()
+  maven {
+    name = "GitHubPackages"
+    url = uri("https://maven.pkg.github.com/iden3/android-rapidsnark")
+  }
 }
 
 
