@@ -2,10 +2,6 @@ buildscript {
   repositories {
     google()
     mavenCentral()
-    mavenLocal()
-    maven {
-      url "/Users/moria/.m2/repository"
-    }
   }
 
   dependencies {
@@ -71,7 +67,6 @@ android {
     externalNativeBuild {
       cmake {
         cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
-//        abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
         abiFilters "x86_64", "arm64-v8a"
       }
     }
@@ -99,6 +94,10 @@ repositories {
   maven {
     name = "GitHubPackages"
     url = uri("https://maven.pkg.github.com/iden3/android-rapidsnark")
+    credentials {
+      username = "user_id"
+      password = "token"
+    }
   }
 }
 

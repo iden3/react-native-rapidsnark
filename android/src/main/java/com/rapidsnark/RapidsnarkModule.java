@@ -106,8 +106,11 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void groth16PublicSizeForZkeyBuf(String zkeyBytes1, Integer errorBufferSize, Promise promise) {
     try {
+      // Decode base64
+      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
+
       int publicBufferSize = RapidsnarkKt.groth16PublicSizeForZkeyBuf(
-        zkeyBytes1,
+        zkeyBytes,
         errorBufferSize
       );
 

@@ -33,7 +33,7 @@ const config = {
       acc[name] = path.join(__dirname, 'node_modules', name);
       return acc;
     }, {}),
-    assetExts: [defaultAssetExts,'zkey','wtns', 'png'],
+    assetExts: [defaultAssetExts, 'zkey', 'wtns', 'png'],
   },
 
   transformer: {
@@ -45,5 +45,14 @@ const config = {
     }),
   },
 };
+
+const workspaceRoot = path.resolve(__dirname, '../');
+const projectRoot = __dirname;
+
+config.watchFolders = [workspaceRoot];
+config.resolver.nodeModulesPaths = [
+  path.resolve(projectRoot, 'node_modules'),
+  path.resolve(workspaceRoot, 'node_modules'),
+];
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);

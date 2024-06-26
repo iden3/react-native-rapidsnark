@@ -1,7 +1,7 @@
 buildscript {
     ext {
         buildToolsVersion = "34.0.0"
-        minSdkVersion = 23
+        minSdkVersion = 24
         compileSdkVersion = 34
         targetSdkVersion = 34
 
@@ -11,10 +11,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
-        maven {
-          url "/Users/moria/.m2/repository"
-        }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
