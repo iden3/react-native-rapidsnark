@@ -1,19 +1,19 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import type { TurboModule } from "react-native";
+import { TurboModuleRegistry } from "react-native";
 
 export interface Spec extends TurboModule {
   groth16Prove: (
     zkey: string,
     witness: string,
     proofBufferSize: number,
-    public_buffer_size: number,
+    publicBufferSize: number,
     errorBufferSize: number
   ) => Promise<{ proof: string; pub_signals: string }>;
   groth16ProveWithZKeyFilePath: (
     zkey_path: string,
     witness: string,
     proofBufferSize: number,
-    public_buffer_size: number,
+    publicBufferSize: number,
     errorBufferSize: number
   ) => Promise<{ proof: string; pub_signals: string }>;
   groth16Verify: (

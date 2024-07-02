@@ -1,12 +1,12 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
   groth16Prove,
   groth16ProveWithZKeyFilePath,
   groth16PublicSizeForZkeyFile,
-  groth16Verify
+  groth16Verify,
 } from '@iden3/react-native-rapidsnark';
 
 export default function App() {
@@ -103,7 +103,7 @@ export default function App() {
         'Error proving circuit, code: ',
         error.code,
         ', err:',
-        error.message
+        error.message,
       );
       return;
     }
@@ -116,7 +116,7 @@ export default function App() {
       const result = await groth16Verify(
         proverResult.proof,
         proverResult.pub_signals,
-        verificationKey
+        verificationKey,
       );
       const diffVerification = performance.now() - startTime;
 
@@ -152,8 +152,7 @@ export default function App() {
             flexDirection: 'row',
             alignItems: 'center',
             alignContent: 'center',
-          }}
-        >
+          }}>
           <Switch value={enableBufferProver} onValueChange={onToggleSwitch}/>
           <View style={{width: 10}}/>
           <Text style={styles.resultText}>Enable buffer prover</Text>
@@ -175,8 +174,7 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => calculateBufferSize()}
-        >
+          onPress={() => calculateBufferSize()}>
           <Text style={styles.buttonText}>Calc. input buffer size</Text>
         </TouchableOpacity>
         <Text style={styles.resultText}>
@@ -188,8 +186,9 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => Clipboard.setString(proofResult + '\n' + publicResult)}
-        >
+          onPress={() =>
+            Clipboard.setString(proofResult + '\n' + publicResult)
+          }>
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
         </TouchableOpacity>
 
@@ -216,15 +215,15 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
   return Promise.all([
     RNFS.copyFileAssets(
       'circuit_final.zkey',
-      RNFS.DocumentDirectoryPath + '/circuit_final.zkey'
+      RNFS.DocumentDirectoryPath + '/circuit_final.zkey',
     ),
     RNFS.copyFileAssets(
       'witness.wtns',
-      RNFS.DocumentDirectoryPath + '/witness.wtns'
+      RNFS.DocumentDirectoryPath + '/witness.wtns',
     ),
     RNFS.copyFileAssets(
       'verification_key.json',
-      RNFS.DocumentDirectoryPath + '/verification_key.json'
+      RNFS.DocumentDirectoryPath + '/verification_key.json',
     ),
   ]);
 }

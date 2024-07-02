@@ -4,28 +4,57 @@
 #import <react_native_rapidsnark/react_native_rapidsnark-Swift.h>
 
 @implementation Rapidsnark
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(RNRapidsnark)
 
-RCT_EXPORT_METHOD(groth16Prove:(nonnull NSString *)zkeyBytes
-                  witnessData:(nonnull NSString *)wtnsBytes
-                  proofBufferSize:(nonnull NSNumber *)proofBufferSize
-                  publicBufferSize:(nonnull NSNumber *)publicBufferSize
-                  errBufferSize:(nonnull NSNumber *)errBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
++ (BOOL)requiresMainQueueSetup
 {
+    return NO;
+}
+
+- (BOOL)bridgelessEnabled
+{
+    return NO;
+}
+
+RCT_REMAP_METHOD(groth16Prove,
+                 zkeyData:(nonnull NSString *)zkeyBytes
+                 witnessData:(nonnull NSString *)wtnsBytes
+                 proofBufferSize:(nonnull NSNumber *)proofBufferSize
+                 publicBufferSize:(nonnull NSNumber *)publicBufferSize
+                 errBufferSize:(nonnull NSNumber *)errBufferSize
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject)
+{
+    [
+        self groth16Prove: zkeyBytes
+        witness: wtnsBytes
+        proofBufferSize: proofBufferSize.doubleValue
+        publicBufferSize: publicBufferSize.doubleValue
+        errorBufferSize: errBufferSize.doubleValue
+        resolve: resolve
+        reject: reject
+    ];
+}
+
+- (void)groth16Prove:(NSString *)zkey
+             witness:(NSString *)witness
+     proofBufferSize:(double)proofBufferSize
+    publicBufferSize:(double)publicBufferSize
+     errorBufferSize:(double)errorBufferSize
+             resolve:(RCTPromiseResolveBlock)resolve
+              reject:(RCTPromiseRejectBlock)reject {
     // NSData decode base64
-    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkeyBytes options:0];
-    NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:wtnsBytes options:0];
+    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkey options:0];
+    NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:witness options:0];
 
     NSError* error;
     NSDictionary *result = [
         RapidsnarkProxy
         groth16ProveProxyWithZkey: zkeyData
         witness: wtnsData
-        proofBufferSize: proofBufferSize
-        publicBufferSize: publicBufferSize
-        errBufferSize: errBufferSize
+        proofBufferSize: [NSNumber numberWithDouble: proofBufferSize]
+        publicBufferSize: [NSNumber numberWithDouble: publicBufferSize]
+        errBufferSize: [NSNumber numberWithDouble: errorBufferSize]
         error: &error
     ];
 
@@ -37,24 +66,43 @@ RCT_EXPORT_METHOD(groth16Prove:(nonnull NSString *)zkeyBytes
     }
 }
 
-RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkey_file_path
-                  witnessData:(nonnull NSString *)wtnsBytes
-                  proofBufferSize:(nonnull NSNumber *)proofBufferSize
-                  publicBufferSize:(nonnull NSNumber *)publicBufferSize
-                  errBufferSize:(nonnull NSNumber *)errBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(groth16ProveWithZKeyFilePath,
+                 zkeyFilePath:(nonnull NSString *)zkeyFilePath
+                 witnessData:(nonnull NSString *)wtnsBytes
+                 proofBufferSize:(nonnull NSNumber *)proofBufferSize
+                 publicBufferSize:(nonnull NSNumber *)publicBufferSize
+                 errBufferSize:(nonnull NSNumber *)errBufferSize
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject)
 {
-    NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:wtnsBytes options:0];
+    [
+        self groth16ProveWithZKeyFilePath: zkeyFilePath
+        witness: wtnsBytes
+        proofBufferSize: proofBufferSize.doubleValue
+        publicBufferSize: publicBufferSize.doubleValue
+        errorBufferSize: errBufferSize.doubleValue
+        resolve: resolve
+        reject: reject
+    ];
+}
+
+- (void)groth16ProveWithZKeyFilePath:(NSString *)zkeyFilePath
+                             witness:(NSString *)witness
+                     proofBufferSize:(double)proofBufferSize
+                    publicBufferSize:(double)publicBufferSize
+                     errorBufferSize:(double)errorBufferSize
+                             resolve:(RCTPromiseResolveBlock)resolve
+                              reject:(RCTPromiseRejectBlock)reject {
+    NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:witness options:0];
 
     NSError* error;
     NSDictionary* result = [
         RapidsnarkProxy
-        groth16ProveWithZkeyFilePathProxyWithZkeyFilePath: zkey_file_path
+        groth16ProveWithZkeyFilePathProxyWithZkeyFilePath: zkeyFilePath
         witness: wtnsData
-        proofBufferSize: proofBufferSize
-        publicBufferSize: publicBufferSize
-        errBufferSize: errBufferSize
+        proofBufferSize: [NSNumber numberWithDouble: proofBufferSize]
+        publicBufferSize: [NSNumber numberWithDouble: publicBufferSize]
+        errBufferSize: [NSNumber numberWithDouble: errorBufferSize]
         error: &error
     ];
 
@@ -66,20 +114,38 @@ RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkey_file_pat
     }
 }
 
-RCT_EXPORT_METHOD(groth16Verify:(nonnull NSString *)proof
-                  inputs:(nonnull NSString *)inputs
-                  verification_key:(nonnull NSString *)verification_key
-                  errBufferSize:(nonnull NSNumber *)errBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(groth16Verify,
+                 proof:(nonnull NSString *)proof
+                 inputs:(nonnull NSString *)inputs
+                 verification_key:(nonnull NSString *)verification_key
+                 errBufferSize:(nonnull NSNumber *)errBufferSize
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject)
 {
+    [
+        self groth16Verify:proof
+        publicSignals:inputs
+        verificationKey:verification_key
+        errorBufferSize:errBufferSize.doubleValue
+        resolve:resolve
+        reject:reject
+    ];
+}
+
+
+- (void)groth16Verify:(NSString *)proof
+        publicSignals:(NSString *)publicSignals
+      verificationKey:(NSString *)verificationKey
+      errorBufferSize:(double)errorBufferSize
+              resolve:(RCTPromiseResolveBlock)resolve
+               reject:(RCTPromiseRejectBlock)reject {
     NSError* error;
     NSNumber* result = [
         RapidsnarkProxy
         groth16VerifyProxyWithProof: proof
-        inputs: inputs
-        verificationKey: verification_key
-        errorBufferSize: errBufferSize
+        inputs: publicSignals
+        verificationKey: verificationKey
+        errorBufferSize: [NSNumber numberWithDouble: errorBufferSize]
         error: &error
     ];
 
@@ -91,19 +157,33 @@ RCT_EXPORT_METHOD(groth16Verify:(nonnull NSString *)proof
     }
 }
 
-RCT_EXPORT_METHOD(groth16PublicSizeForZkeyBuf:(nonnull NSString *)zkeyBytes
-                  errBufferSize:(nonnull NSNumber *)errBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(groth16PublicSizeForZkeyBuf,
+                 zkeyData:(nonnull NSString *)zkeyBytes
+                 errBufferSize:(nonnull NSNumber *)errBufferSize
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject)
 {
+    [
+        self groth16PublicSizeForZkeyBuf: zkeyBytes
+        errorBufferSize: errBufferSize.doubleValue
+        resolve: resolve
+        reject: reject
+    ];
+}
+
+
+- (void)groth16PublicSizeForZkeyBuf:(NSString *)zkey
+                    errorBufferSize:(double)errorBufferSize
+                            resolve:(RCTPromiseResolveBlock)resolve
+                             reject:(RCTPromiseRejectBlock)reject {
     // NSData decode base64
-    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkeyBytes options:0];
+    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkey options:0];
 
     NSError* error;
     NSNumber* publicBufferSize = [
         RapidsnarkProxy
         groth16PublicSizeForZkeyBufProxyWithZkey: zkeyData
-        errorBufferSize: errBufferSize
+        errorBufferSize: [NSNumber numberWithDouble: errorBufferSize]
         error: &error
     ];
 
@@ -115,16 +195,29 @@ RCT_EXPORT_METHOD(groth16PublicSizeForZkeyBuf:(nonnull NSString *)zkeyBytes
     }
 }
 
-RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkey_file_path
-                  errBufferSize:(nonnull NSNumber *)errBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(groth16PublicSizeForZkeyFile,
+                 zkeyFilePath:(nonnull NSString *)zkeyFilePath
+                 errBufferSize:(nonnull NSNumber *)errBufferSize
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject)
 {
+    [
+        self groth16PublicSizeForZkeyFile: zkeyFilePath
+        errorBufferSize: errBufferSize.doubleValue
+        resolve: resolve
+        reject: reject
+    ];
+}
+
+- (void)groth16PublicSizeForZkeyFile:(NSString *)zkeyPath
+                     errorBufferSize:(double)errorBufferSize
+                             resolve:(RCTPromiseResolveBlock)resolve
+                              reject:(RCTPromiseRejectBlock)reject {
     NSError* error;
     NSNumber* publicBufferSize = [
         RapidsnarkProxy
-        groth16PublicSizeForZkeyFileProxyWithZkeyPath: zkey_file_path
-        errorBufferSize: errBufferSize
+        groth16PublicSizeForZkeyFileProxyWithZkeyPath: zkeyPath
+        errorBufferSize: [NSNumber numberWithDouble: errorBufferSize]
         error: &error
     ];
 
@@ -135,4 +228,14 @@ RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkey_file_pat
         reject([@(error.code) stringValue], message, nil);
     }
 }
+
+// Don't compile this code when we build for the old architecture.
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRapidsnarkSpecJSI>(params);
+}
+#endif
+
 @end
