@@ -28,13 +28,4 @@
 #endif
 }
 
-- (BOOL)bridgelessEnabled
-{
-// If you want to disable then use below code
- return YES;
-// If you want to enable then use below code
-//  return YES;
-}
-
-
 @end

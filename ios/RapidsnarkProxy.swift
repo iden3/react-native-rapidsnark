@@ -71,6 +71,7 @@ public class RapidsnarkProxy : NSObject {
                 verificationKey: (verificationKey as String).data(using: .utf8)!,
                 errorBufferSize: errorBufferSize.intValue
             )
+            print("proof valid:" + result.description)
             if (result) {
                 return 0
             } else {
