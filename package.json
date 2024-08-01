@@ -1,6 +1,6 @@
 {
   "name": "@iden3/react-native-rapidsnark",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "React-native wrapper for rapidsnark",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -35,7 +35,8 @@
     "build:android": "cd example/android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
     "build:ios": "cd example/ios && xcodebuild -workspace RapidsnarkExample.xcworkspace -scheme RapidsnarkExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
     "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
+    "codegen": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath ."
   },
   "keywords": [
     "react-native",
@@ -88,7 +89,6 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -147,7 +147,7 @@
   },
   "codegenConfig": {
     "name": "RNRapidsnarkSpec",
-    "type": "all",
+    "type": "modules",
     "jsSrcsDir": "src",
     "android": {
       "javaPackageName": "com.rapidsnark"
