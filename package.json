@@ -1,6 +1,6 @@
 {
   "name": "@iden3/react-native-rapidsnark",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.6",
   "description": "React-native wrapper for rapidsnark",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
