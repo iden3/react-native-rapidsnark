@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */; };
-		8D65809C2B0ED61E00468A74 /* Rapidsnark.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */; };
+		8D03C7202C1F2A8B00278CD7 /* Rapidsnark.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D03C71F2C1F2A8B00278CD7 /* Rapidsnark.h */; };
+		8D03C7222C1F34DA00278CD7 /* RapidsnarkProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D03C7212C1F34DA00278CD7 /* RapidsnarkProxy.swift */; };
+		8D03C7272C204B7F00278CD7 /* Rapidsnark-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D03C7262C204B7F00278CD7 /* Rapidsnark-Bridging-Header.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,7 +27,9 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRapidsnark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRapidsnark.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Rapidsnark.xcframework; path = Frameworks/Rapidsnark.xcframework; sourceTree = "<group>"; };
+		8D03C71F2C1F2A8B00278CD7 /* Rapidsnark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rapidsnark.h; sourceTree = "<group>"; };
+		8D03C7212C1F34DA00278CD7 /* RapidsnarkProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RapidsnarkProxy.swift; sourceTree = "<group>"; };
+		8D03C7262C204B7F00278CD7 /* Rapidsnark-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rapidsnark-Bridging-Header.h"; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rapidsnark.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -34,7 +38,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D65809C2B0ED61E00468A74 /* Rapidsnark.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,18 +55,12 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				8D03C71F2C1F2A8B00278CD7 /* Rapidsnark.h */,
 				B3E7B5891CC2AC0600A0062D /* Rapidsnark.mm */,
+				8D03C7262C204B7F00278CD7 /* Rapidsnark-Bridging-Header.h */,
+				8D03C7212C1F34DA00278CD7 /* RapidsnarkProxy.swift */,
 				134814211AA4EA7D00B7C361 /* Products */,
-				CC78262D2AAFD13C00124F49 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		CC78262D2AAFD13C00124F49 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8D65809B2B0ED61E00468A74 /* Rapidsnark.xcframework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,6 +70,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D03C7272C204B7F00278CD7 /* Rapidsnark-Bridging-Header.h in Headers */,
+				8D03C7202C1F2A8B00278CD7 /* Rapidsnark.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +107,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1540;
 					};
 				};
 			};
@@ -135,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E555C0D2413F4C50049A1A2 /* Rapidsnark.mm in Sources */,
+				8D03C7222C1F34DA00278CD7 /* RapidsnarkProxy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +243,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -257,12 +259,16 @@
 				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Rapidsnark-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -280,6 +286,8 @@
 				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC";
 				PRODUCT_NAME = Rapidsnark;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Rapidsnark-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
