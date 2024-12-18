@@ -231,7 +231,7 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
 const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
-    : RNFS.MainBundlePath) + '/circuit_final.zkey';
+    : RNFS.MainBundlePath) + '/authV2.zkey';
 
 function getZkeyFile(): Promise<string> {
   return RNFS.readFile(zkeyPath, 'base64');
@@ -241,7 +241,7 @@ function getWtnsFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/witness.wtns';
+      : RNFS.MainBundlePath) + '/authV2.wtns';
   return RNFS.readFile(path, 'base64');
 }
 
@@ -249,7 +249,7 @@ function getVerificationKeyFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/verification_key.json';
+      : RNFS.MainBundlePath) + '/authV2_verification_key.json';
   return RNFS.readFile(path, 'utf8');
 }
 
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   resultText: {
-    fontFamily: 'monospace',
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
     fontSize: 16,
     color: '#000',
   },

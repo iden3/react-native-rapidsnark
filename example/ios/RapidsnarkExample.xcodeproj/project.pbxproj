@@ -15,9 +15,9 @@
 		4752571EA77438C78E92EB10 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9157158EF3BC00A67C1858A3 /* PrivacyInfo.xcprivacy */; };
 		5BA75B496EDBC37AD86CA1DC /* Pods_RapidsnarkExample_RapidsnarkExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8534CA13D796191EFADA5F46 /* Pods_RapidsnarkExample_RapidsnarkExampleTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		8D0B44FF2B68404D00206E1F /* witness.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FC2B68404D00206E1F /* witness.wtns */; };
-		8D0B45002B68404D00206E1F /* verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FD2B68404D00206E1F /* verification_key.json */; };
-		8D0B45012B68404D00206E1F /* circuit_final.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B44FE2B68404D00206E1F /* circuit_final.zkey */; };
+		8D6EDBAD2D13352F005B7BCD /* authV2.wtns in Resources */ = {isa = PBXBuildFile; fileRef = 8D6EDBAA2D13352F005B7BCD /* authV2.wtns */; };
+		8D6EDBAE2D13352F005B7BCD /* authV2.zkey in Resources */ = {isa = PBXBuildFile; fileRef = 8D6EDBAB2D13352F005B7BCD /* authV2.zkey */; };
+		8D6EDBAF2D13352F005B7BCD /* authV2_verification_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D6EDBAC2D13352F005B7BCD /* authV2_verification_key.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,9 +46,9 @@
 		79D3EE442717F09D9DA83D2E /* Pods-RapidsnarkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample.debug.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample/Pods-RapidsnarkExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RapidsnarkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8534CA13D796191EFADA5F46 /* Pods_RapidsnarkExample_RapidsnarkExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RapidsnarkExample_RapidsnarkExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D0B44FC2B68404D00206E1F /* witness.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = witness.wtns; sourceTree = "<group>"; };
-		8D0B44FD2B68404D00206E1F /* verification_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = verification_key.json; sourceTree = "<group>"; };
-		8D0B44FE2B68404D00206E1F /* circuit_final.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = circuit_final.zkey; sourceTree = "<group>"; };
+		8D6EDBAA2D13352F005B7BCD /* authV2.wtns */ = {isa = PBXFileReference; lastKnownFileType = file; path = authV2.wtns; sourceTree = "<group>"; };
+		8D6EDBAB2D13352F005B7BCD /* authV2.zkey */ = {isa = PBXFileReference; lastKnownFileType = file; path = authV2.zkey; sourceTree = "<group>"; };
+		8D6EDBAC2D13352F005B7BCD /* authV2_verification_key.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = authV2_verification_key.json; sourceTree = "<group>"; };
 		9157158EF3BC00A67C1858A3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = RapidsnarkExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B91D23B8DCA02159C5FEFB86 /* Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -125,15 +125,15 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8D0B44FE2B68404D00206E1F /* circuit_final.zkey */,
-				8D0B44FD2B68404D00206E1F /* verification_key.json */,
-				8D0B44FC2B68404D00206E1F /* witness.wtns */,
 				13B07FAE1A68108700A75B9A /* RapidsnarkExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RapidsnarkExampleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				8D6EDBAA2D13352F005B7BCD /* authV2.wtns */,
+				8D6EDBAB2D13352F005B7BCD /* authV2.zkey */,
+				8D6EDBAC2D13352F005B7BCD /* authV2_verification_key.json */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -253,11 +253,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D0B45002B68404D00206E1F /* verification_key.json in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				8D0B45012B68404D00206E1F /* circuit_final.zkey in Resources */,
+				8D6EDBAD2D13352F005B7BCD /* authV2.wtns in Resources */,
+				8D6EDBAE2D13352F005B7BCD /* authV2.zkey in Resources */,
+				8D6EDBAF2D13352F005B7BCD /* authV2_verification_key.json in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				8D0B44FF2B68404D00206E1F /* witness.wtns in Resources */,
 				4752571EA77438C78E92EB10 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -613,10 +613,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DRN_FABRIC_ENABLED",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -699,10 +696,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DRN_FABRIC_ENABLED",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
