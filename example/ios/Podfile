@@ -7,7 +7,9 @@ require Pod::Executable.execute_command('node', ['-p',
 
 use_frameworks! :linkage => :static
 
-platform :ios, min_ios_version_supported
+# platform :ios, min_ios_version_supported
+# puts min_ios_version_supported
+platform :ios, '15.1'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']

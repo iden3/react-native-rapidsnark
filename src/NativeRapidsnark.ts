@@ -32,4 +32,4 @@ export interface Spec extends TurboModule {
   ) => Promise<number>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RNRapidsnark');
+export default TurboModuleRegistry.getEnforcing<Spec>('Rapidsnark');

@@ -1,10 +1,14 @@
 #import "Rapidsnark.h"
 
 #import <React/RCTLog.h>
+#if __has_include(<react_native_rapidsnark/react_native_rapidsnark-Swift.h>)
 #import <react_native_rapidsnark/react_native_rapidsnark-Swift.h>
+#else
+#import "react_native_rapidsnark-Swift.h"
+#endif
 
 @implementation Rapidsnark
-RCT_EXPORT_MODULE(RNRapidsnark)
+RCT_EXPORT_MODULE(Rapidsnark)
 
 + (BOOL)requiresMainQueueSetup
 {

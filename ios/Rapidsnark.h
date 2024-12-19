@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import "RNRapidsnarkSpec.h"
+#import "RapidsnarkSpec.h"
 
 @interface Rapidsnark : NSObject <NativeRapidsnarkSpec>
 #else

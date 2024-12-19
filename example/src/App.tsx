@@ -1,6 +1,6 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
+import {Button, Platform, ScrollView, StyleSheet, Switch, Text, Button, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
   groth16Prove,
@@ -153,14 +153,13 @@ export default function App() {
             alignItems: 'center',
             alignContent: 'center',
           }}>
-          <Switch value={enableBufferProver} onValueChange={onToggleSwitch}/>
           <View style={{width: 10}}/>
           <Text style={styles.resultText}>Enable buffer prover</Text>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => runProver()}>
+        <Button onPress={() => runProver()}>
           <Text style={styles.buttonText}>Run prover</Text>
-        </TouchableOpacity>
+        </Button>
 
         <View style={{height: 20}}/>
 
@@ -172,11 +171,10 @@ export default function App() {
           Verification exec: {verificationExecTime}ms
         </Text>
 
-        <TouchableOpacity
-          style={styles.button}
+        <Button
           onPress={() => calculateBufferSize()}>
           <Text style={styles.buttonText}>Calc. input buffer size</Text>
-        </TouchableOpacity>
+        </Button>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
         </Text>
@@ -184,13 +182,12 @@ export default function App() {
 
         <View style={{height: 20}}/>
 
-        <TouchableOpacity
-          style={styles.button}
+        <Button
           onPress={() =>
             Clipboard.setString(proofResult + '\n' + publicResult)
           }>
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
-        </TouchableOpacity>
+        </Button>
 
         <Text style={styles.title}>Proof:</Text>
         <View style={styles.resultBox}>
@@ -231,7 +228,7 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
 const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
-    : RNFS.MainBundlePath) + '/circuit_final.zkey';
+    : RNFS.MainBundlePath) + '/authV2.zkey';
 
 function getZkeyFile(): Promise<string> {
   return RNFS.readFile(zkeyPath, 'base64');
@@ -241,7 +238,7 @@ function getWtnsFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/witness.wtns';
+      : RNFS.MainBundlePath) + '/authV2.wtns';
   return RNFS.readFile(path, 'base64');
 }
 
@@ -249,7 +246,7 @@ function getVerificationKeyFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/verification_key.json';
+      : RNFS.MainBundlePath) + '/authV2_verification_key.json';
   return RNFS.readFile(path, 'utf8');
 }
 
@@ -281,7 +278,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   resultText: {
-    fontFamily: 'monospace',
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
     fontSize: 16,
     color: '#000',
   },
