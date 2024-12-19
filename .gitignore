@@ -76,10 +76,11 @@ a.out
 /example/circuits/dist/
 
 /example/android/app/src/main/assets
-/example/ios/circuit_final.zkey
-/example/ios/verification_key.json
-/example/ios/witness.wtns
 
-/example/circuit_final.zkey
-/example/verification_key.json
-/example/witness.wtns
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

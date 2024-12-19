@@ -171,8 +171,8 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				34D83E58638351476D5A3340 /* [CP] Embed Pods Frameworks */,
 				D6E07157038A19588592A82D /* [CP] Copy Pods Resources */,
+				2D19342A028448CEBD0E3BF8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -193,8 +193,8 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				69B91BBA414D26CB09E45F6B /* [CP] Embed Pods Frameworks */,
 				EE43E95EA98F90B5A180CA36 /* [CP] Copy Pods Resources */,
+				2AAD9DDD4938D7EF01417439 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -281,24 +281,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		34D83E58638351476D5A3340 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		69B91BBA414D26CB09E45F6B /* [CP] Embed Pods Frameworks */ = {
+		2AAD9DDD4938D7EF01417439 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -313,6 +296,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample/Pods-RapidsnarkExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D19342A028448CEBD0E3BF8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RapidsnarkExample-RapidsnarkExampleTests/Pods-RapidsnarkExample-RapidsnarkExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		855667AEFD665020D031FC7B /* [CP] Check Pods Manifest.lock */ = {
@@ -484,6 +484,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -511,6 +512,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = RapidsnarkExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -613,9 +615,13 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DRN_FABRIC_ENABLED",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -696,7 +702,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DRN_FABRIC_ENABLED",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

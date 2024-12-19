@@ -11,7 +11,7 @@ const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
 const RapidsnarkModule = isTurboModuleEnabled
   ? require('./NativeRapidsnark').default
-  : NativeModules.RNRapidsnark;
+  : NativeModules.Rapidsnark;
 
 const Rapidsnark = RapidsnarkModule
   ? RapidsnarkModule

@@ -1,6 +1,6 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View,} from 'react-native';
+import {Button, Platform, ScrollView, StyleSheet, Switch, Text, Button, View,} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
   groth16Prove,
@@ -153,14 +153,13 @@ export default function App() {
             alignItems: 'center',
             alignContent: 'center',
           }}>
-          <Switch value={enableBufferProver} onValueChange={onToggleSwitch}/>
           <View style={{width: 10}}/>
           <Text style={styles.resultText}>Enable buffer prover</Text>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => runProver()}>
+        <Button onPress={() => runProver()}>
           <Text style={styles.buttonText}>Run prover</Text>
-        </TouchableOpacity>
+        </Button>
 
         <View style={{height: 20}}/>
 
@@ -172,11 +171,10 @@ export default function App() {
           Verification exec: {verificationExecTime}ms
         </Text>
 
-        <TouchableOpacity
-          style={styles.button}
+        <Button
           onPress={() => calculateBufferSize()}>
           <Text style={styles.buttonText}>Calc. input buffer size</Text>
-        </TouchableOpacity>
+        </Button>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
         </Text>
@@ -184,13 +182,12 @@ export default function App() {
 
         <View style={{height: 20}}/>
 
-        <TouchableOpacity
-          style={styles.button}
+        <Button
           onPress={() =>
             Clipboard.setString(proofResult + '\n' + publicResult)
           }>
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
-        </TouchableOpacity>
+        </Button>
 
         <Text style={styles.title}>Proof:</Text>
         <View style={styles.resultBox}>
