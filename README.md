@@ -20,7 +20,7 @@ npm i @iden3/react-native-rapidsnark
 
 ## Usage
 
-#### groth16ProveWithZKeyFilePath
+#### groth16Prove
 
 Function takes path to .zkey file and witness file (base64 encoded) and returns proof and public signals.
 
@@ -28,14 +28,14 @@ Reads .zkey file directly from filesystem.
 
 
 ```js
-import {groth16ProveWithZKeyFilePath} from "react-native-rapidsnark";
+import {groth16Prove} from "react-native-rapidsnark";
 
 // ...
 
 const zkeyPath = "path/to/zkey";
 const wtns = await RNFS.readFile("path/to/wtns", "base64");
 
-const {proof, pub_signals} = await groth16ProveWithZKeyFilePath(zkeyPath, wtns);
+const {proof, pub_signals} = await groth16Prove(zkeyPath, wtns);
 ```
 
 #### groth16Verify
@@ -56,44 +56,26 @@ const {proof, pub_signals} = await groth16Prove(zkey, wtns);
 const proofValid = groth16Verify(proof, pub_signals, verificationKey);
 ```
 
-#### groth16Prove
-
-Function that takes zkey and witness files encoded as base64.
-
-`proof` and `pub_signals` are JSON encoded strings.
-
->Large circuits might cause OOM. Use with caution.
-
-```js
-import {groth16_prover} from "react-native-rapidsnark";
-
-// ...
-
-const zkey = await RNFS.readFile("path/to/zkey", "base64");
-const wtns = await RNFS.readFile("path/to/wtns", "base64");
-
-const {proof, pub_signals} = await groth16Prove(zkey, wtns);
-```
-#### groth16PublicSizeForZkeyFile
+#### groth16PublicBufferSize
 
 Calculates public buffer size for specified zkey.
 
 ```js
-import { groth16PublicSizeForZkeyFile } from "react-native-rapidsnark";
+import { groth16PublicBufferSize } from "react-native-rapidsnark";
 
 // ...
 
-const public_buffer_size_file = await groth16PublicSizeForZkeyFile("path/to/zkey");
+const public_buffer_size_file = await groth16PublicBufferSize("path/to/zkey");
 ```
 
 ### Public buffer size
 
-Both `groth16Prove` and `groth16ProveWithZKeyFilePath` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
+`groth16Prove` has an optional `proofBufferSize`, `publicBufferSize` and `errorBufferSize`  parameters. If publicBufferSize is too small it will be recalculated automatically by library.
 
 These parameters are used to set the size of the buffers used to store the proof, public signals and error.
 
 If you have embedded circuit in the app, it is recommended to calculate the size of the public buffer once and reuse it.
-To calculate the size of public buffer call `groth16ProveWithZKeyFilePath`.
+To calculate the size of public buffer call `groth16PublicBufferSize`.
 
 ## Troubleshooting
 

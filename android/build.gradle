@@ -101,7 +101,7 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
 //  implementation 'com.facebook.react:react-android:0.74.2'
 
-  implementation "io.iden3:rapidsnark:0.0.1-alpha.2"
+  implementation "io.iden3:rapidsnark:0.0.1-alpha.3"
 }
 
 if (isNewArchitectureEnabled()) {

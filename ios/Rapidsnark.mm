@@ -15,38 +15,7 @@ RCT_EXPORT_MODULE(Rapidsnark)
     return NO;
 }
 
-RCT_EXPORT_METHOD(groth16Prove:(nonnull NSString *)zkey
-                  witness:(nonnull NSString *)witness
-                  proofBufferSize:(nonnull NSNumber *)proofBufferSize
-                  publicBufferSize:(nonnull NSNumber *)publicBufferSize
-                  errorBufferSize:(nonnull NSNumber *)errorBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-    // NSData decode base64
-    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkey options:0];
-    NSData* wtnsData = [[NSData alloc]initWithBase64EncodedString:witness options:0];
-
-    NSError* error;
-    NSDictionary *result = [
-        RapidsnarkProxy
-        groth16ProveProxyWithZkey: zkeyData
-        witness: wtnsData
-        proofBufferSize: proofBufferSize
-        publicBufferSize: publicBufferSize
-        errBufferSize: errorBufferSize
-        error: &error
-    ];
-
-    if (!error) {
-        resolve(result);
-    } else {
-        NSString* message = error.userInfo[@"message"];
-        reject([@(error.code) stringValue], message, nil);
-    }
-}
-
-RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkeyFilePath
+RCT_EXPORT_METHOD(groth16Prove:(nonnull NSString *)zkeyFilePath
                   witness:(nonnull NSString *)witness
                   proofBufferSize:(nonnull NSNumber *)proofBufferSize
                   publicBufferSize:(nonnull NSNumber *)publicBufferSize
@@ -59,7 +28,7 @@ RCT_EXPORT_METHOD(groth16ProveWithZKeyFilePath:(nonnull NSString *)zkeyFilePath
     NSError* error;
     NSDictionary* result = [
         RapidsnarkProxy
-        groth16ProveWithZkeyFilePathProxyWithZkeyFilePath: zkeyFilePath
+        groth16ProveProxyWithZkeyFilePath: zkeyFilePath
         witness: wtnsData
         proofBufferSize: proofBufferSize
         publicBufferSize: publicBufferSize
@@ -100,31 +69,7 @@ RCT_EXPORT_METHOD(groth16Verify:(nonnull NSString *)proof
     }
 }
 
-RCT_EXPORT_METHOD(groth16PublicSizeForZkeyBuf:(nonnull NSString *)zkeyBytes
-                  errorBufferSize:(nonnull NSNumber *)errorBufferSize
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-    // NSData decode base64
-    NSData* zkeyData = [[NSData alloc]initWithBase64EncodedString:zkeyBytes options:0];
-
-    NSError* error;
-    NSNumber* publicBufferSize = [
-        RapidsnarkProxy
-        groth16PublicSizeForZkeyBufProxyWithZkey: zkeyData
-        errorBufferSize: errorBufferSize
-        error: &error
-    ];
-
-    if (!error) {
-        resolve(publicBufferSize);
-    } else {
-        NSString* message = error.userInfo[@"message"];
-        reject([@(error.code) stringValue], message, nil);
-    }
-}
-
-RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkeyFilePath
+RCT_EXPORT_METHOD(groth16PublicBufferSize:(nonnull NSString *)zkeyFilePath
                   errorBufferSize:(nonnull NSNumber *)errorBufferSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
@@ -132,7 +77,7 @@ RCT_EXPORT_METHOD(groth16PublicSizeForZkeyFile:(nonnull NSString *)zkeyFilePath
     NSError* error;
     NSNumber* publicBufferSize = [
         RapidsnarkProxy
-        groth16PublicSizeForZkeyFileProxyWithZkeyPath: zkeyFilePath
+        groth16PublicBufferSizeProxyWithZkeyPath: zkeyFilePath
         errorBufferSize: errorBufferSize
         error: &error
     ];

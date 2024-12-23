@@ -1,16 +1,10 @@
 import React from 'react';
 import RNFS from 'react-native-fs';
-import {Button, Platform, ScrollView, StyleSheet, Switch, Text, Button, View,} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {
-  groth16Prove,
-  groth16ProveWithZKeyFilePath,
-  groth16PublicSizeForZkeyFile,
-  groth16Verify,
-} from '@iden3/react-native-rapidsnark';
+import {groth16Prove, groth16PublicBufferSize, groth16Verify} from '@iden3/react-native-rapidsnark';
 
 export default function App() {
-  const [enableBufferProver, setEnableBufferProver] = React.useState(false);
   const [proofResult, setProofResult] = React.useState('');
   const [publicResult, setPublicResult] = React.useState('');
   const [proofExecTime, setProofExecTime] = React.useState(0);
@@ -21,36 +15,15 @@ export default function App() {
   >(null);
   const [verificationExecTime, setVerificationExecTime] = React.useState(0);
 
-  const onToggleSwitch = () => setEnableBufferProver(!enableBufferProver);
-
-  // groth16 prover with reading zkey from buffer.
-  // this function in React Native is limited, not applicable for
-  // large files. It is better to use groth16ProveWithZKeyFilePath
-  const runGroth16BufferProver = async () => {
-    console.log('Calling useGroth16BufferProver');
-
-    const zkeyF = await getZkeyFile();
-    const wtnsF = await getWtnsFile();
-    console.log('zkeyF: ', zkeyF.length);
-    console.log('wtnsF: ', wtnsF.length);
-
-    const startTime = performance.now();
-    const proverResult = await groth16Prove(zkeyF, wtnsF);
-    const diff = performance.now() - startTime;
-    setProofExecTime(diff);
-
-    return proverResult;
-  };
-
   // groth16 prover with reading zkey from C++ library.
   // this function has better performance than groth16_prover
-  const runGroth16FileProver = async () => {
+  const runGroth16Prover = async () => {
     console.log('Calling useGroth16FileProver');
 
     const wtnsF = await getWtnsFile();
 
     const startTime = performance.now();
-    const proverResult = await groth16ProveWithZKeyFilePath(zkeyPath, wtnsF);
+    const proverResult = await groth16Prove(zkeyPath, wtnsF);
     const diff = performance.now() - startTime;
     setProofExecTime(diff);
     return proverResult;
@@ -89,11 +62,7 @@ export default function App() {
 
     // Generate proof
     try {
-      if (enableBufferProver) {
-        proverResult = await runGroth16BufferProver();
-      } else {
-        proverResult = await runGroth16FileProver();
-      }
+      proverResult = await runGroth16Prover();
 
       logProof(proverResult);
       setProofResult(proverResult.proof);
@@ -127,13 +96,13 @@ export default function App() {
     } catch (error) {
       console.error('Error verifying proof', error);
     }
-  }, [enableBufferProver]);
+  }, []);
 
   const calculateBufferSize = React.useCallback(async () => {
     console.log('Calling groth16PublicSizeForZkeyFile');
 
     const startTime = performance.now();
-    const publicBufferSize = await groth16PublicSizeForZkeyFile(zkeyPath);
+    const publicBufferSize = await groth16PublicBufferSize(zkeyPath);
     const diff = performance.now() - startTime;
 
     setBufferCalcExecTime(diff);
@@ -147,19 +116,9 @@ export default function App() {
       <ScrollView style={styles.scrollView}>
         <View style={{height: 40}}/>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignContent: 'center',
-          }}>
-          <View style={{width: 10}}/>
-          <Text style={styles.resultText}>Enable buffer prover</Text>
-        </View>
-
-        <Button onPress={() => runProver()}>
+        <TouchableOpacity style={styles.button} onPress={() => runProver()}>
           <Text style={styles.buttonText}>Run prover</Text>
-        </Button>
+        </TouchableOpacity>
 
         <View style={{height: 20}}/>
 
@@ -171,10 +130,11 @@ export default function App() {
           Verification exec: {verificationExecTime}ms
         </Text>
 
-        <Button
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => calculateBufferSize()}>
           <Text style={styles.buttonText}>Calc. input buffer size</Text>
-        </Button>
+        </TouchableOpacity>
         <Text style={styles.resultText}>
           Buffer calc execution time: {bufferCalcExecTime}ms
         </Text>
@@ -182,12 +142,13 @@ export default function App() {
 
         <View style={{height: 20}}/>
 
-        <Button
+        <TouchableOpacity
+          style={styles.button}
           onPress={() =>
             Clipboard.setString(proofResult + '\n' + publicResult)
           }>
           <Text style={styles.buttonText}>Copy result to clipboard</Text>
-        </Button>
+        </TouchableOpacity>
 
         <Text style={styles.title}>Proof:</Text>
         <View style={styles.resultBox}>
@@ -229,10 +190,6 @@ const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
     : RNFS.MainBundlePath) + '/authV2.zkey';
-
-function getZkeyFile(): Promise<string> {
-  return RNFS.readFile(zkeyPath, 'base64');
-}
 
 function getWtnsFile(): Promise<string> {
   const path =
