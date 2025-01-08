@@ -103,15 +103,16 @@ building for 'iOS-simulator', but linking in object file (${SRC_ROOT}/ios/Framew
 
 Check out the [example app](./example) and [example README](./example/README.md) for a working example.
 
-### Circuits generation
+### Custom circuits
 
-Check out the [example/circuits](./example/circuits) directory and [example REAMDE.md](./example/README.md) inside for more details.
+Place circuits in `example/assets` folder and run `example/assets/copy_assets.sh` to copy them to the app directories.
+Name them `circuit.zkey`, `witness.wtns` and `verification_key.json`.
 
 ## License
 
-react-native-rapidsnark is part of the iden3 project 0KIMS association. Please check the [COPYING](./COPYING) file for
-more details.
+The project is licensed under either of
 
----
+- [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](LICENSE-APACHE))
+- [MIT license](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](LICENSE-MIT))
 
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+at your option.

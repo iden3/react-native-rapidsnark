@@ -23,10 +23,15 @@ export default function App() {
     const wtnsF = await getWtnsFile();
 
     const startTime = performance.now();
-    const proverResult = await groth16Prove(zkeyPath, wtnsF);
-    const diff = performance.now() - startTime;
-    setProofExecTime(diff);
-    return proverResult;
+    try {
+      const proverResult = await groth16Prove(zkeyPath, wtnsF);
+      const diff = performance.now() - startTime;
+      setProofExecTime(diff);
+      return proverResult;
+    } catch (e) {
+      console.error('Error creating proof', e);
+      throw e;
+    }
   };
 
   const logProof = ({
@@ -172,8 +177,8 @@ export default function App() {
 function writeAssetFilesToDocumentsDirectory(): Promise<any> {
   return Promise.all([
     RNFS.copyFileAssets(
-      'circuit_final.zkey',
-      RNFS.DocumentDirectoryPath + '/circuit_final.zkey',
+      'circuit.zkey',
+      RNFS.DocumentDirectoryPath + '/circuit.zkey',
     ),
     RNFS.copyFileAssets(
       'witness.wtns',
@@ -189,13 +194,13 @@ function writeAssetFilesToDocumentsDirectory(): Promise<any> {
 const zkeyPath =
   (Platform.OS === 'android'
     ? RNFS.DocumentDirectoryPath
-    : RNFS.MainBundlePath) + '/authV2.zkey';
+    : RNFS.MainBundlePath) + '/circuit.zkey';
 
 function getWtnsFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/authV2.wtns';
+      : RNFS.MainBundlePath) + '/witness.wtns';
   return RNFS.readFile(path, 'base64');
 }
 
@@ -203,7 +208,7 @@ function getVerificationKeyFile(): Promise<string> {
   const path =
     (Platform.OS === 'android'
       ? RNFS.DocumentDirectoryPath
-      : RNFS.MainBundlePath) + '/authV2_verification_key.json';
+      : RNFS.MainBundlePath) + '/verification_key.json';
   return RNFS.readFile(path, 'utf8');
 }
 
