@@ -32,35 +32,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16Prove(String zkeyBytes1, String wtnsBytes1,
-                           Integer proofBufferSize, Integer publicBufferSize,
-                           Integer errorBufferSize,
-                           Promise promise) {
-    try {
-      // Decode base64
-      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
-      byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
-
-      ProveResponse response = RapidsnarkKt.groth16Prove(
-        zkeyBytes,
-        wtnsBytes,
-        proofBufferSize,
-        publicBufferSize,
-        errorBufferSize
-      );
-
-      WritableMap result = new WritableNativeMap();
-      result.putString("proof", response.getProof());
-      result.putString("pub_signals", response.getPublicSignals());
-
-      promise.resolve(result);
-    } catch (RapidsnarkError e) {
-      promise.reject(String.valueOf(e.getCode()), e.getMessage());
-    }
-  }
-
-  @ReactMethod
-  public void groth16ProveWithZKeyFilePath(String zkeyPath, String wtnsBytes1,
+  public void groth16Prove(String zkeyPath, String wtnsBytes1,
                                            Integer proofBufferSize, Integer publicBufferSize,
                                            Integer errorBufferSize,
                                            Promise promise) {
@@ -68,7 +40,7 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
       // Decode base64
       byte[] wtnsBytes = Base64.decode(wtnsBytes1, Base64.DEFAULT);
 
-      ProveResponse response = RapidsnarkKt.groth16ProveWithZKeyFilePath(
+      ProveResponse response = RapidsnarkKt.groth16Prove(
         zkeyPath,
         wtnsBytes,
         proofBufferSize,
@@ -104,26 +76,9 @@ public class RapidsnarkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void groth16PublicSizeForZkeyBuf(String zkeyBytes1, Integer errorBufferSize, Promise promise) {
+  public void groth16PublicBufferSize(String zkeyPath, Integer errorBufferSize, Promise promise) {
     try {
-      // Decode base64
-      byte[] zkeyBytes = Base64.decode(zkeyBytes1, Base64.DEFAULT);
-
-      int publicBufferSize = RapidsnarkKt.groth16PublicSizeForZkeyBuf(
-        zkeyBytes,
-        errorBufferSize
-      );
-
-      promise.resolve(publicBufferSize);
-    } catch (RapidsnarkError e) {
-      promise.reject(String.valueOf(e.getCode()), e.getMessage());
-    }
-  }
-
-  @ReactMethod
-  public void groth16PublicSizeForZkeyFile(String zkeyPath, Integer errorBufferSize, Promise promise) {
-    try {
-      int publicBufferSize = RapidsnarkKt.groth16PublicSizeForZkeyFile(
+      int publicBufferSize = RapidsnarkKt.groth16PublicBufferSize(
         zkeyPath,
         errorBufferSize
       );

@@ -7,32 +7,6 @@ import rapidsnark
 public class RapidsnarkProxy : NSObject {
     @objc
     public static func groth16ProveProxy(
-        zkey: NSData,
-        witness: NSData,
-        proofBufferSize: NSNumber,
-        publicBufferSize: NSNumber,
-        errBufferSize: NSNumber
-    ) throws -> NSDictionary {
-        do {
-            let proof = try groth16Prove(
-                zkey: zkey as Data,
-                witness: witness as Data,
-                proofBufferSize: proofBufferSize.intValue,
-                publicBufferSize: publicBufferSize.intValue,
-                errorBufferSize: errBufferSize.intValue
-            )
-
-            return [
-                "proof": proof.proof,
-                "pub_signals": proof.publicSignals
-            ]
-        } catch let error {
-            throw error
-        }
-    }
-
-    @objc
-    public static func groth16ProveWithZkeyFilePathProxy(
         zkeyFilePath: NSString,
         witness: NSData,
         proofBufferSize: NSNumber,
@@ -40,7 +14,7 @@ public class RapidsnarkProxy : NSObject {
         errBufferSize: NSNumber
     ) throws -> NSDictionary {
         do {
-            let proof = try groth16ProveWithZKeyFilePath(
+            let proof = try groth16Prove(
                 zkeyPath: zkeyFilePath as String,
                 witness: witness as Data,
                 proofBufferSize: proofBufferSize.intValue,
@@ -83,28 +57,12 @@ public class RapidsnarkProxy : NSObject {
     }
 
     @objc
-    public static func groth16PublicSizeForZkeyBufProxy(
-        zkey: NSData,
-        errorBufferSize: NSNumber
-    ) throws -> NSNumber {
-        do {
-            let publicBufferSize: Int = try groth16PublicSizeForZkeyBuf(
-                zkey: zkey as Data,
-                errorBufferSize: errorBufferSize.intValue
-            )
-            return NSNumber(value: publicBufferSize)
-        } catch let error {
-            throw error
-        }
-    }
-
-    @objc
-    public static func groth16PublicSizeForZkeyFileProxy(
+    public static func groth16PublicBufferSizeProxy(
         zkeyPath: NSString,
         errorBufferSize: NSNumber
     ) throws -> NSNumber {
         do {
-            let publicBufferSize: Int = try groth16PublicSizeForZkeyFile(
+            let publicBufferSize: Int = try groth16PublicBufferSize(
                 zkeyPath: zkeyPath as String,
                 errorBufferSize: errorBufferSize.intValue
             )

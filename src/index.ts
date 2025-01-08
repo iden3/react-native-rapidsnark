@@ -28,42 +28,6 @@ export const DEFAULT_PROOF_BUFFER_SIZE = 1024;
 export const DEFAULT_ERROR_BUFFER_SIZE = 256;
 
 export async function groth16Prove(
-  zkey: string,
-  witness: string,
-  {
-    proofBufferSize,
-    publicBufferSize,
-    errorBufferSize,
-  }: {
-    proofBufferSize?: number;
-    publicBufferSize?: number | undefined;
-    errorBufferSize?: number;
-  } = {
-    proofBufferSize: DEFAULT_PROOF_BUFFER_SIZE,
-    publicBufferSize: undefined,
-    errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,
-  }
-): Promise<{ proof: string; pub_signals: string }> {
-  let proof_buffer_size = proofBufferSize ?? DEFAULT_PROOF_BUFFER_SIZE;
-  let public_buffer_size: number;
-  let error_buffer_size = errorBufferSize ?? DEFAULT_ERROR_BUFFER_SIZE;
-
-  if (!publicBufferSize) {
-    public_buffer_size = await groth16PublicSizeForZkeyBuf(zkey);
-  } else {
-    public_buffer_size = publicBufferSize;
-  }
-
-  return Rapidsnark.groth16Prove(
-    zkey,
-    witness,
-    proof_buffer_size,
-    public_buffer_size,
-    error_buffer_size
-  );
-}
-
-export async function groth16ProveWithZKeyFilePath(
   zkeyPath: string,
   witness: string,
   {
@@ -85,12 +49,12 @@ export async function groth16ProveWithZKeyFilePath(
   let error_buffer_size = errorBufferSize ?? DEFAULT_ERROR_BUFFER_SIZE;
 
   if (!publicBufferSize) {
-    public_buffer_size = await groth16PublicSizeForZkeyFile(zkeyPath);
+    public_buffer_size = await groth16PublicBufferSize(zkeyPath);
   } else {
     public_buffer_size = publicBufferSize;
   }
 
-  return Rapidsnark.groth16ProveWithZKeyFilePath(
+  return Rapidsnark.groth16Prove(
     zkeyPath,
     witness,
     proof_buffer_size,
@@ -121,22 +85,7 @@ export function groth16Verify(
   );
 }
 
-function groth16PublicSizeForZkeyBuf(
-  zkey: string,
-  {
-    errorBufferSize,
-  }: {
-    errorBufferSize: number | undefined;
-  } = {
-    errorBufferSize: DEFAULT_ERROR_BUFFER_SIZE,
-  }
-): Promise<number> {
-  let error_buffer_size = errorBufferSize ?? DEFAULT_ERROR_BUFFER_SIZE;
-
-  return Rapidsnark.groth16PublicSizeForZkeyBuf(zkey, error_buffer_size);
-}
-
-export function groth16PublicSizeForZkeyFile(
+export function groth16PublicBufferSize(
   zkeyPath: string,
   {
     errorBufferSize,
@@ -148,5 +97,5 @@ export function groth16PublicSizeForZkeyFile(
 ): Promise<number> {
   let error_buffer_size = errorBufferSize ?? DEFAULT_ERROR_BUFFER_SIZE;
 
-  return Rapidsnark.groth16PublicSizeForZkeyFile(zkeyPath, error_buffer_size);
+  return Rapidsnark.groth16PublicBufferSize(zkeyPath, error_buffer_size);
 }
