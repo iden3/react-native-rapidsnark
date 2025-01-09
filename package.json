@@ -142,5 +142,6 @@
     "android": {
       "javaPackageName": "com.rapidsnark"
     }
-  }
+  },
+  "packageManager": "yarn@4.6.0"
 }
