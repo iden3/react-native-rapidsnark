@@ -73,10 +73,6 @@ circuits/dist
 target/
 a.out
 
-/example/circuits/dist/
-
-/example/android/app/src/main/assets
-
 # Yarn
 .yarn/*
 !.yarn/patches

@@ -1,13 +1,9 @@
 
 ## Example
 
-Before running the example app, you need to compile test circuit, and copy necessary files to the example app.
+Before running the example app, you need to copy necessary circuit files you want to use to the example app.
 ```bash
-cd circuits/scripts &&
-yarn install &&
-./build.sh &&
-./copy_to_example.sh &&
-cd ../..
+assets/copy_assets.sh
 ```
 
 To setup the example app, call
@@ -31,9 +27,12 @@ yarn android
 
 ### Custom circuits
 
-To use custom circuits, place your circuit, witness and zkey files in the [`ios`](./ios) for iOS and to [`android/app/src/main/assets`](./android/app/src/main/assets) for Android.
+To use custom circuits, place your circuit, witness and zkey files in the [`assets`](./assets) folder and run
+```bash
+assets/copy_assets.sh
+```
 
-Or put these files in the [`example`](.) root folder and call [`scripts/copy_assets.sh`](./scripts/copy_assets.sh) to copy them to the correct location.
+Or put these files in the [`ios`](./ios) for iOS and to [`android/app/src/main/assets`](./android/app/src/main/assets) for Android directly.
 
 ### Circuits generation
 
