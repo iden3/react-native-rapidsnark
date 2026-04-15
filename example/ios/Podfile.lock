@@ -7,11 +7,11 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - rapidsnark (0.0.1-beta.1):
-    - rapidsnark/rapidsnark (= 0.0.1-beta.1)
-  - rapidsnark/rapidsnark (0.0.1-beta.1):
+  - rapidsnark (0.0.1-beta.4):
+    - rapidsnark/rapidsnark (= 0.0.1-beta.4)
+  - rapidsnark/rapidsnark (0.0.1-beta.4):
     - rapidsnark/rapidsnarkC
-  - rapidsnark/rapidsnarkC (0.0.1-beta.1)
+  - rapidsnark/rapidsnarkC (0.0.1-beta.4)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1242,11 +1242,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-rapidsnark (0.0.1-beta.1):
+  - react-native-rapidsnark (0.0.1-beta.3):
     - DoubleConversion
     - glog
     - hermes-engine
-    - rapidsnark (= 0.0.1-beta.1)
+    - rapidsnark (= 0.0.1-beta.4)
     - RCT-Folly (= 2024.01.01.00)
     - RCTRequired
     - RCTTypeSafety
@@ -1745,8 +1745,8 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  rapidsnark: cd77f2c59e1dafe07482f642145931bea25a056b
-  RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
+  rapidsnark: 6cdb0bdf3cd19330ae513bcab02b99c1c8883d59
+  RCT-Folly: 34124ae2e667a0e5f0ea378db071d27548124321
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
   RCTRequired: a94e7febda6db0345d207e854323c37e3a31d93b
   RCTTypeSafety: 28e24a6e44f5cbf912c66dde6ab7e07d1059a205
@@ -1775,7 +1775,7 @@ SPEC CHECKSUMS:
   React-logger: 80d87daf2f98bf95ab668b79062c1e0c3f0c2f8a
   React-Mapbuffer: b2642edd9be75d51ead8cda109c986665eae09cf
   React-microtasksnativemodule: 94f7e35c4984282f04f946fb1be1d008aff4bdf0
-  react-native-rapidsnark: 4fb9b3aadc5d8e218f99fd727f57ccc04d915fe4
+  react-native-rapidsnark: c3902599199277eba6428398a6cfa702cbe8b95d
   React-nativeconfig: 31072ab0146e643594f6959c7f970a04b6c9ddd0
   React-NativeModulesApple: 356d0eb7e3b79603e9d611cd3bac658a998c71db
   React-perflogger: 59e1a3182dca2cee7b9f1f7aab204018d46d1914

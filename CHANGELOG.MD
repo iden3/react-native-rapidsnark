@@ -1,3 +1,7 @@
+## 0.0.1-beta.3 (2026-04-15)
+
+Updated native libs.
+
 ## 0.0.1-beta.2 (2025-12-16)
 
 Updated Android native libs to support 16k page size.

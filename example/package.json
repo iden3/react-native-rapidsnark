@@ -1,6 +1,6 @@
 {
   "name": "RapidsnarkExample",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -42,5 +42,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "packageManager": "yarn@4.13.0"
 }
