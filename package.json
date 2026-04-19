@@ -49,7 +49,7 @@
   "repository": "https://github.com/iden3/react-native-rapidsnark",
   "homepage": "https://github.com/iden3/react-native-rapidsnark",
   "author": "demonsh <dmytro.sukhiy@gmail.com>",
-  "license": "GPL-3.0",
+  "license": "(MIT OR Apache-2.0)",
   "bugs": {
     "url": "https://github.com/iden3/react-native-rapidsnark/issues"
   },
