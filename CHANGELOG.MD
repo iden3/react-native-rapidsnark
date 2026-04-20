@@ -1,6 +1,7 @@
 ## 0.0.1-beta.3 (2026-04-15)
 
-Updated native libs.
+Updated Android rapidsnark lib to 0.0.1-beta-5.
+Updated iOS rapidsnark lib to 0.0.1-beta-4.
 
 ## 0.0.1-beta.2 (2025-12-16)
 
