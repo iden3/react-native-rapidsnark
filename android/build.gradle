@@ -101,7 +101,11 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
 //  implementation 'com.facebook.react:react-android:0.74.2'
 
-  implementation "io.iden3:rapidsnark:0.0.1-beta.2"
+  implementation("io.iden3:rapidsnark:0.0.1-beta.5") {
+    // rapidsnark is a native C++ library; its transitive kotlin-stdlib (2.x) conflicts
+    // with the Kotlin 1.9.x compiler used by RN 0.75. The app's own stdlib is sufficient.
+    exclude group: "org.jetbrains.kotlin"
+  }
 }
 
 if (isNewArchitectureEnabled()) {

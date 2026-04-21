@@ -4,5 +4,3 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'RapidsnarkExample'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
-include ':react-native-fs'
-project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/react-native-fs/android')
