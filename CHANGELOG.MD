@@ -3,9 +3,9 @@
 Rapidsnark is updated to version 0.0.8.
 https://github.com/iden3/rapidsnark/releases/tag/v0.0.8
 Significant performance improvements on IOS and Android.
-
 Updated Android rapidsnark lib to 0.0.1-beta-5.
 Updated iOS rapidsnark lib to 0.0.1-beta-4.
+Updated example to support react-native@0.85.1.
 
 ## 0.0.1-beta.2 (2025-12-16)
 

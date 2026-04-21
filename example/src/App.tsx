@@ -1,5 +1,5 @@
 import React from 'react';
-import RNFS from 'react-native-fs';
+import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {groth16Prove, groth16PublicBufferSize, groth16Verify} from '@iden3/react-native-rapidsnark';
